@@ -1,0 +1,78 @@
+<main>
+  <div class="container">
+
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+            <div class="d-flex justify-content-center py-4">
+              <a class="logo d-flex align-items-center w-auto">
+                <!-- <img src="assets/img/logo.png" alt=""> -->
+                <span class="d-none d-lg-block" style="font-family:Open Sans">ErrandRunners</span>
+              </a>
+            </div><!-- End Logo -->
+
+            <div class="card mb-3">
+
+              <div class="card-body">
+
+                <div class="pt-4 pb-2">
+                  <h5 class="card-title text-center pb-0 fs-4">Login</h5>
+                  <p class="text-center small">Enter your personal details to login</p>
+                </div>
+                <!-- <form [formGroup]="loginForm" (ngSubmit)="loginUser()" novalidate>
+                  <div class="col-12">
+                    <label for="yourEmail" class="form-label">Email</label>
+                    <input type="email" formControlName="email" class="form-control" id="yourEmail" required>
+                    <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="invalid-feedback">
+                      <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</span>
+                      <span *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email.</span>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="yourPassword" class="form-label">Password</label>
+                    <input type="password" formControlName="password" class="form-control" id="yourPassword" required>
+                    <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="invalid-feedback">
+                      <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</span>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                  </div>
+                </form> -->
+
+
+                <form class="row g-3 needs-validation" [formGroup]="loginForm" (ngSubmit)="loginUser()">
+                  <div class="col-12">
+                    <label for="yourEmail" class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" required formControlName="email">
+                    <div class="invalid-feedback" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">Please enter your email.</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="yourPassword" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" required formControlName="password">
+                    <div class="invalid-feedback" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">Please enter your password.</div>
+                  </div>
+                  <div class="col-12">
+                    <button class="btn btn-primary w-100" type="button" >Login</button>
+                  </div>
+                  <div class="col-12">
+                    <p class="small mb-0">Don't have an account? <a routerLink="/authentication/register">Sign up</a></p>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+</main>

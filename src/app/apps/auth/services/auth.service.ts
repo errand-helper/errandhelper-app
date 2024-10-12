@@ -1,3 +1,4 @@
+import { environment } from './../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -6,9 +7,17 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
 
+  baseUrl = environment.baseUrl
+
   constructor(private http:HttpClient) { }
 
   registerUser(data:any){
-   return this.http.post(`http://127.0.0.1:8000/register/`,data)
+   return this.http.post(`${this.baseUrl}register/`,data)
   }
+
+  loginUser(data:any){
+    return this.http.post(`${this.baseUrl}login/`,data)
+   }
+
+
 }

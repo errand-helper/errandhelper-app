@@ -1,0 +1,7 @@
+/* .ng-invalid.ng-touched .form-control {
+  border-color: #dc3545;
+}
+*/
+.ng-invalid.ng-touched .invalid-feedback {
+  display: block;
+}
