@@ -27,6 +27,7 @@ export class LoginComponent {
     }
    this.authService.loginUser(data).subscribe((res:any)=>{
     console.log(res);
+    localStorage.setItem('access_token', res.access);
     this.toastr.success('Login successful');
     this.route.navigate(['/profile']);
     },(error)=>{
