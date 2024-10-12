@@ -28,7 +28,7 @@ export class LoginComponent {
    this.authService.loginUser(data).subscribe((res:any)=>{
     console.log(res);
     this.toastr.success('Login successful');
-    this.route.navigate(['/']);
+    this.route.navigate(['/profile']);
     },(error)=>{
       console.log(error);
       this.toastr.error('An error occurred, please try again')
