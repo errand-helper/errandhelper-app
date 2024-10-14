@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProfileService } from '../../../../profile/services/profile.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +11,7 @@ export class NavbarComponent implements OnInit {
 
   profileImg:any;
 
-  constructor(private profileService:ProfileService){}
+  constructor(private profileService:ProfileService,private router:Router){}
 
 
   ngOnInit(): void {
@@ -23,6 +24,12 @@ export class NavbarComponent implements OnInit {
       this.profileImg = res.image
     })
   }
+
+  logout() {
+    localStorage.removeItem('access_token');
+    this.router.navigate(['authentication/login']);
+  }
+
 
 
 
