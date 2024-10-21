@@ -1,0 +1,12 @@
+.hero-img{
+  width: 20rem;
+  height: 35rem;
+}
+
+@media only screen and (max-width: 600px) {
+
+  .hero-img{
+    width: 20rem;
+    height: 20rem;
+  }
+}

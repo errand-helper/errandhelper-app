@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HomepageComponent } from './components/homepage/homepage.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    HomepageComponent,
 
   ],
   imports: [

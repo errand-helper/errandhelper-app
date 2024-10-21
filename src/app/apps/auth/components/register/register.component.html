@@ -4,50 +4,75 @@
     <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-
-            <div class="d-flex justify-content-center py-4">
-              <a class="logo d-flex align-items-center w-auto">
-                <!-- <img src="assets/img/logo.png" alt=""> -->
-                <span class="d-none d-lg-block" style="font-family:Open Sans">ErrandRunners</span>
-              </a>
-            </div><!-- End Logo -->
-
+          <div class="col-lg-6 col-md-6 d-flex flex-column align-items-center justify-content-center">
             <div class="card mb-3">
-
               <div class="card-body">
-
                 <div class="pt-4 pb-2">
-                  <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
+                  <h5 class="card-title text-center pb-0 fs-4">ErrandHelpers</h5>
                   <p class="text-center small">Enter your personal details to create account</p>
                 </div>
 
-                <form class="row g-3 needs-validation" [formGroup]="registerForm">
-                  <div class="col-12">
+                <form action="" [formGroup]="userTypeForm">
+                  <label for="">Select User type</label>
+                  <div class="row g-3">
+                    <div class="col-md-6 col-sm-12">
+                      <label for="customer" class="form-label">Customer</label>&nbsp;
+                      <input type="radio" value="customer" formControlName="user_type">
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                      <label for="business" class="form-label">Business</label>&nbsp;
+                      <input type="radio" value="business" formControlName="user_type">
+                    </div>
+                  </div>
+                </form>
+
+                <form class="row g-3 needs-validation" [formGroup]="registerForm" (ngSubmit)="registerUser()">
+                  <div class="col-md-6 col-sm-12" *ngIf="customer || business">
                     <label for="yourName" class="form-label">First Name</label>
                     <input type="text" name="name" class="form-control" required formControlName="first_name">
                     <div class="invalid-feedback" *ngIf="registerForm.get('first_name')?.invalid && registerForm.get('first_name')?.touched">Please enter your first name.</div>
                   </div>
-                  <div class="col-12">
+                  <div class="col-md-6 col-sm-12" *ngIf="customer || business">
                     <label for="yourName" class="form-label">Last Name</label>
                     <input type="text" name="name" class="form-control" required formControlName="last_name">
                     <div class="invalid-feedback" *ngIf="registerForm.get('last_name')?.invalid && registerForm.get('last_name')?.touched">Please enter your last name.</div>
                   </div>
 
 
-                  <div class="col-12">
-                    <label for="yourEmail" class="form-label">Email</label>
+                  <div class="col-md-6 col-sm-12" *ngIf="customer || business">
+                    <label for="yourEmail" class="form-label">Phone Number</label>
+                    <input type="tel" name="phone" class="form-control" required formControlName="phone">
+                    <div class="invalid-feedback" *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">Please enter your phone number.</div>
+                  </div>
+
+                  <div class="col-md-6 col-sm-12" *ngIf="customer || business">
+                    <label for="" class="form-label">Email</label>
                     <input type="email" name="email" class="form-control" required formControlName="email">
                     <div class="invalid-feedback" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">Please enter your email.</div>
                   </div>
+                  <div class="col-md-6 col-sm-12" *ngIf="business">
+                    <label for="" class="form-label">Business name</label>
+                    <input type="text" name="business_name" class="form-control" required formControlName="business_name">
+                    <div class="invalid-feedback" *ngIf="registerForm.get('business_name')?.invalid && registerForm.get('business_name')?.touched">Please enter your business name.</div>
+                  </div>
+                  <div class="col-md-6 col-sm-12"  *ngIf="business">
+                    <label for="" class="form-label">Activation fee(to be removed)</label>
+                    <input type="text" name="activation_fee" class="form-control" required formControlName="activation_fee">
+                    <div class="invalid-feedback" *ngIf="registerForm.get('activation_fee')?.invalid && registerForm.get('activation_fee')?.touched">Please enter your business name.</div>
+                  </div>
+                  <div class="col-md-6 col-sm-12"  *ngIf="business">
+                    <label for="" class="form-label">Registration number</label>
+                    <input type="text" name="registration_number" class="form-control" required formControlName="registration_number">
+                    <div class="invalid-feedback" *ngIf="registerForm.get('registration_number')?.invalid && registerForm.get('registration_number')?.touched">Please enter your registration number.</div>
+                  </div>
 
-                  <div class="col-12">
+                  <div class="col-md-6 col-sm-12"  *ngIf="customer || business">
                     <label for="yourPassword" class="form-label">Password</label>
                     <input type="password" name="password" class="form-control" required formControlName="password">
                     <div class="invalid-feedback" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">Please enter your password.</div>
                   </div>
 
-                  <div class="col-12">
+                  <div class="col-md-6 col-sm-12"  *ngIf="customer || business">
                     <label for="yourPassword" class="form-label">Confirm Password</label>
                     <input type="password" name="password" class="form-control" required formControlName="confirm_password">
                     <div class="invalid-feedback" *ngIf="registerForm.get('confirm_password')?.invalid && registerForm.get('confirm_password')?.touched">Please enter your password.</div>
@@ -60,7 +85,7 @@
                     </div>
                   </div> -->
                   <div class="col-12">
-                    <button class="btn btn-primary w-100" type="button" (click)="registerUser()">Create Account</button>
+                    <button class="btn btn-primary w-100" type="submit">Create Account</button>
                   </div>
                   <div class="col-12">
                     <p class="small mb-0">Already have an account? <a routerLink="/authentication/login">Log in</a></p>
