@@ -15,6 +15,11 @@ export class AuthService {
    return this.http.post(`${this.baseUrl}register/`,data)
   }
 
+  registerBusiness(data:any){
+    return this.http.post(`${this.baseUrl}business/register/`,data)
+
+  }
+
   loginUser(data:any){
     return this.http.post(`${this.baseUrl}login/`,data)
    }

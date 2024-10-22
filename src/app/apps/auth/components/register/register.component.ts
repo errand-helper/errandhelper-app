@@ -2,6 +2,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,7 @@ export class RegisterComponent implements OnInit {
   customer = false;
   business = false;
 
-  constructor(private authService:AuthService, private fb: FormBuilder,private toastr: ToastrService){
+  constructor(private authService:AuthService, private fb: FormBuilder,private toastr: ToastrService,private route:Router){
 
   }
   ngOnInit() {
@@ -65,21 +66,53 @@ export class RegisterComponent implements OnInit {
 
 
   registerUser(){
-    let data = this.registerForm.value
-    // if(this.registerForm.invalid){
-    //   return
-    // }
+    let data
+    if(this.customer){
+      data = {
+        first_name:this.registerForm.value.first_name,
+        last_name:this.registerForm.value.last_name,
+        phone:this.registerForm.value.phone,
+        email:this.registerForm.value.email,
+        password:this.registerForm.value.password,
+        confirm_password:this.registerForm.value.confirm_password,
+      }
+    }else if(this.business){
+      data = {
+        first_name:this.registerForm.value.first_name,
+        last_name:this.registerForm.value.last_name,
+        phone:this.registerForm.value.phone,
+        email:this.registerForm.value.email,
+        business_name:this.registerForm.value.business_name,
+        activation_fee:this.registerForm.value.activation_fee,
+        registration_number:this.registerForm.value.registration_number,
+        password:this.registerForm.value.password,
+        confirm_password:this.registerForm.value.confirm_password,
+      }
+    }
     console.log(data);
+    const methodMap = {
+      registerUser: this.authService.registerUser.bind(this.authService),
+      registerBusiness: this.authService.registerBusiness.bind(this.authService),
+    };
 
-    // return
-   this.authService.registerUser(data).subscribe((res:any)=>{
-    console.log(res);
-    this.toastr.success('User successfully registered');
-    },(error)=>{
-      console.log(error);
-      this.toastr.error('An error occurred, please try again')
-      // this.toastr.error(error.error);
-    })
+
+    const endpoint = this.customer ? 'registerUser' : 'registerBusiness';
+
+    let message = this.customer ? 'User' : 'Business'
+
+    methodMap[endpoint](data).subscribe(
+      (res: any) => {
+        console.log(res);
+        this.registerForm.reset()
+        this.toastr.success(`${message} successfully registered`);
+        this.route.navigate(['/authentication/login'])
+      },
+      (error: any) => {
+        console.log(error);
+        this.toastr.error('An error occurred, please try again');
+      }
+    );
+
 
   }
 

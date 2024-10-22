@@ -110,7 +110,7 @@
                 </li>
                 <li class="nav-item" role="presentation">
                   <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
-                    type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
+                    type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Update Profile</button>
                 </li>
                 <li class="nav-item" role="presentation">
                   <button class="nav-link" id="email-tab" data-bs-toggle="tab" data-bs-target="#email-tab-pane"
@@ -120,42 +120,48 @@
                   <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password-tab-pane"
                     type="button" role="tab" aria-controls="password-tab-pane" aria-selected="false">Password</button>
                 </li>
+                @if(user_type ==='ADMIN'){
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#categories-tab-pane"
+                    type="button" role="tab" aria-controls="password-tab-pane" aria-selected="false">Add Categories</button>
+                </li>
+              }
               </ul>
               <div class="tab-content pt-4" id="profileTabContent">
                 <div class="tab-pane fade show active" id="overview-tab-pane" role="tabpanel"
                   aria-labelledby="overview-tab" tabindex="0">
                   <h5 class="mb-3">About</h5>
-                  <p class="mb-3">{{profile?.bio}}</p>
+                  <p class="mb-3">{{profile?.bio ? profile?.bio : 'Not Available'}}</p>
                   <div class="row g-0">
                     <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
                       <div class="p-2">Phone</div>
                     </div>
                     <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                      <div class="p-2">{{profile?.phone_number}}</div>
+                      <div class="p-2">{{profile?.phone_number ? profile?.phone_number : 'Not Available'}}</div>
                     </div>
                     <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
                       <div class="p-2">Address</div>
                     </div>
                     <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                      <div class="p-2">{{profile?.location?.address | titlecase}}</div>
+                      <div class="p-2">{{profile?.location?.address ? profile?.location?.address : 'Not Available' | titlecase}}</div>
                     </div>
                     <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
                       <div class="p-2">Location</div>
                     </div>
                     <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                      <div class="p-2">{{profile?.location?.location | titlecase}}</div>
+                      <div class="p-2">{{profile?.location?.location ? profile?.location?.address : 'Not Available' | titlecase}}</div>
                     </div>
                     <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
                       <div class="p-2">Town</div>
                     </div>
                     <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                      <div class="p-2">{{profile?.location?.town | titlecase}}</div>
+                      <div class="p-2">{{profile?.location?.town ? profile?.location?.town : "Not Available" | titlecase}}</div>
                     </div>
                     <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
                       <div class="p-2">City</div>
                     </div>
                     <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                      <div class="p-2">{{profile?.location?.city | titlecase}}</div>
+                      <div class="p-2">{{profile?.location?.city ? profile?.location?.city : 'Not Available' | titlecase}}</div>
                     </div>
 
                     <div  *ngIf="profile?.user_type === 'BUSINESS'">
@@ -176,7 +182,7 @@
                 </div>
                 <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab"
                   tabindex="0">
-                  <form action="#!" class="row gy-3 gy-xxl-4" [formGroup]="updateProfileForm"
+                  <form class="row gy-3 gy-xxl-4" [formGroup]="updateProfileForm"
                     (ngSubmit)="updateProfile()">
                     <div class="col-12">
                       <div class="row gy-2">
@@ -199,61 +205,61 @@
                     <div class="col-12 col-md-6">
                       <label for="inputPhone" class="form-label">Phone</label>
                       <input type="tel" class="form-control"
-                        placeholder="{{profile?.phone_number ? profile?.phone_number : '25486798745'}}"
+                        placeholder="{{profile?.phone_number ? profile?.phone_number : ''}}"
                         formControlName="phone_number">
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="inputEmail" class="form-label">Location</label>
                       <input type="email" class="form-control"
-                        placeholder="{{profile?.location?.location ? profile?.location?.location : 'leo@example.com'}}"
+                        placeholder="{{profile?.location?.location ? profile?.location?.location : ''}}"
                         formControlName="location">
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="inputAddress" class="form-label">Address</label>
                       <input type="text" class="form-control"
-                        placeholder="{{profile?.location?.address ? profile?.location?.address : 'Mountain View, California'}}"
+                        placeholder="{{profile?.location?.address ? profile?.location?.address : ''}}"
                         formControlName="address">
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="inputCountry" class="form-label">Town</label>
                       <input type="text" class="form-control"
-                        placeholder="{{profile?.location?.town ? profile?.location?.town : 'https://www.youtube.com/EthanLeo'}}"
+                        placeholder="{{profile?.location?.town ? profile?.location?.town : ''}}"
                         formControlName="town">
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="inputCountry" class="form-label">City</label>
                       <input type="text" class="form-control"
-                        placeholder="{{profile?.location?.city ? profile?.location?.city : 'https://www.youtube.com/EthanLeo'}}"
+                        placeholder="{{profile?.location?.city ? profile?.location?.city : ''}}"
                         formControlName="city">
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="inputYouTube" class="form-label">Facebook</label>
                       <input type="text" class="form-control"
-                        placeholder="{{profile?.social_media?.facebook ? profile?.social_media?.facebook : 'https://www.youtube.com/EthanLeo'}}"
+                        placeholder="{{profile?.social_media?.facebook ? profile?.social_media?.facebook : ''}}"
                         formControlName="facebook">
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="inputX" class="form-label">X</label>
                       <input type="text" class="form-control"
-                        placeholder="{{profile?.social_media?.twitter ? profile?.social_media?.twitter : 'https://twitter.com/EthanLeo'}}"
+                        placeholder="{{profile?.social_media?.twitter ? profile?.social_media?.twitter : ''}}"
                         formControlName="twitter">
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="inputFacebook" class="form-label">Instagram</label>
                       <input type="text" class="form-control"
-                        placeholder="{{profile?.social_media?.instagram ? profile?.social_media?.instagram : 'https://www.facebook.com/EthanLeo'}}"
+                        placeholder="{{profile?.social_media?.instagram ? profile?.social_media?.instagram : ''}}"
                         formControlName="instagram">
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="inputLinkedIn" class="form-label">LinkedIn</label>
                       <input type="text" class="form-control"
-                        placeholder="{{profile?.social_media?.linkedin ? profile?.social_media?.linkedin : 'https://www.linkedin.com/EthanLeo'}}"
+                        placeholder="{{profile?.social_media?.linkedin ? profile?.social_media?.linkedin : ''}}"
                         formControlName="linkedin">
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="inputLinkedIn" class="form-label">Website</label>
                       <input type="text" class="form-control"
-                        placeholder="{{profile?.social_media?.website ? profile?.social_media?.website : 'https://www.linkedin.com/EthanLeo'}}"
+                        placeholder="{{profile?.social_media?.website ? profile?.social_media?.website : ''}}"
                         formControlName="website">
                     </div>
                     <div class="col-12">
@@ -321,6 +327,21 @@
                       </div>
                       <div class="col-12">
                         <button type="submit" class="btn btn-primary">Change Password</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="tab-pane fade" id="categories-tab-pane" role="tabpanel" aria-labelledby="categories-tab"
+                  tabindex="0">
+                  <form [formGroup]="categoryForm">
+                    <div class="row gy-3 gy-xxl-4">
+                      <div class="col-md-6">
+                        <label for="" class="form-label">Category name</label>
+                        <input type="text" class="form-control" formControlName="name">
+                      </div>
+                      <br>
+                      <div class="col-md-12">
+                        <button type="button" (click)="addCategory()" class="btn btn-primary">Add Category</button>
                       </div>
                     </div>
                   </form>

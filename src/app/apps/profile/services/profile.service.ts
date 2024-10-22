@@ -35,5 +35,11 @@ export class ProfileService {
     });
   }
 
+  addCategory(data:any){
+    return this.http.post(`${this.baseUrl}service/category/`, data, {
+      headers: headers,
+    });
+  }
+
 
 }
