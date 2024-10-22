@@ -15,12 +15,27 @@ jobs:
             node-version: [18.x]
 
     steps:
-        - uses: actions/checkout@v4
-        - name: Use Node.js ${{ matrix.node-version }}
-          uses: actions/setup-node@v4
-          with:
-            node-version: ${{ matrix.node-version }}
-            cache: 'npm'
-        - run: npm ci
-        - run: npm run build --if-present
-        - run: npm test
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libnotify-dev \
+            libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test -- --no-watch --browsers=ChromeHeadless
+
+
+    # steps:
+    #     - uses: actions/checkout@v4
+    #     - name: Use Node.js ${{ matrix.node-version }}
+    #       uses: actions/setup-node@v4
+    #       with:
+    #         node-version: ${{ matrix.node-version }}
+    #         cache: 'npm'
+    #     - run: npm ci
+    #     - run: npm run build --if-present
+    #     - run: npm test
