@@ -17,6 +17,9 @@ declare var bootstrap: any;
 })
 export class ProfileComponent implements OnInit{
 
+  modalTitle: string = 'Add New Category';
+
+
   profile:any;
   updateProfileForm!: FormGroup;
   categoryForm!: FormGroup;
@@ -24,7 +27,8 @@ export class ProfileComponent implements OnInit{
 
   categories$!: Observable<Category[]>;
 	total$!: Observable<number>;
-
+  selectedCategory: any = null;
+  id:any
   @ViewChildren(SortableDirective) headers!: QueryList<SortableDirective>;
 
 
@@ -33,16 +37,16 @@ export class ProfileComponent implements OnInit{
 		this.total$ = service.total$;
   }
 
-  onSort({ column, direction }: SortEvent) {
-		this.headers.forEach((header) => {
-			if (header.sortable !== column) {
-				header.direction = '';
-			}
-		});
+  // onSort({ column, direction }: SortEvent) {
+	// 	this.headers.forEach((header) => {
+	// 		if (header.sortable !== column) {
+	// 			header.direction = '';
+	// 		}
+	// 	});
 
-		this.service.sortColumn = column;
-		this.service.sortDirection = direction;
-	}
+	// 	this.service.sortColumn = column;
+	// 	this.service.sortDirection = direction;
+	// }
 
   ngOnInit(){
     this.getProfile()
@@ -75,6 +79,78 @@ export class ProfileComponent implements OnInit{
     )
   }
 
+  addNewUser() {
+    this.resetForm();
+    this.modalTitle = 'Add New User';
+    this.selectedCategory = null;
+  }
+
+  resetForm() {
+    this.categoryForm.reset({
+      name: ''
+    });
+  }
+
+  setEditForm(category: any) {
+    this.id = category.id;
+    this.categoryForm.patchValue({
+      name: category?.name,
+
+    });
+  }
+
+  editUser(category: any) {
+    this.setEditForm(category);
+    this.modalTitle = 'Edit Category';
+    this.selectedCategory = category;
+  }
+
+  submitForm() {
+    const modalElement = document.getElementById('basicModal2');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    const data = this.categoryForm.value;
+
+    if (this.selectedCategory) {
+      this.profileService.updateCategory(data,this.id).subscribe(
+        (res: any) => {
+          this.categories$ = this.service.categories$
+          modalInstance.hide();
+          this.toastr.success('updated added successfully');
+        },
+        (error: any) => {
+          this.toastr.error('Failed to update user details');
+        }
+      );
+    } else {
+      if (this.categoryForm.valid) {
+        this.profileService.addCategory(data).subscribe(
+          (response: any) => {
+            this.categoryForm.reset()
+            this.categories$ = this.service.categories$
+            modalInstance.hide();
+            this.toastr.success('user added successfully');
+          },
+          (error: any) => {
+            this.toastr.error('Failed add user');
+          }
+        );
+      }
+    }
+  }
+  selectedCategoryId:any
+
+  deleteCategory(){
+    const modalElement = document.getElementById('basicModal3');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+
+    this.profileService.deleteCategory(this.selectedCategoryId).subscribe((res:any)=>{
+      this.categories$ = this.service.categories$
+      modalInstance.hide();
+      this.toastr.success('deleted successfully');
+    }, (error: any) => {
+      this.toastr.error('An error occurred');
+    })
+  }
 
   getProfile(){
     this.profileService.getProfile().subscribe((res:any)=>{
@@ -130,8 +206,8 @@ export class ProfileComponent implements OnInit{
 
   }
 
-  trackByCountryId(index: number, country: any): number {
-    return country.id;
+  trackByCountryId(index: number, category: any): number {
+    return category.id;
   }
 
 

@@ -94,36 +94,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="col-12">
-              <div class="card widget-card border-light shadow-sm">
-                <div class="card-header text-bg-primary">About Me</div>
-                <div class="card-body">
-                  <ul class="list-group list-group-flush mb-0">
-                    <li class="list-group-item">
-                      <h6 class="mb-1">
-                        <span class="bii bi-mortarboard-fill me-2"></span>
-                        Education
-                      </h6>
-                      <span>M.S Computer Science</span>
-                    </li>
-                    <li class="list-group-item">
-                      <h6 class="mb-1">
-                        <span class="bii bi-geo-alt-fill me-2"></span>
-                        Location
-                      </h6>
-                      <span>Mountain View, California</span>
-                    </li>
-                    <li class="list-group-item">
-                      <h6 class="mb-1">
-                        <span class="bii bi-building-fill-gear me-2"></span>
-                        Company
-                      </h6>
-                      <span>GitHub Inc</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>-->
           </div>
         </div>
         <div class="col-12 col-lg-8 col-xl-9">
@@ -259,7 +229,7 @@
                       <div class="p-2">
                         {{
                           profile?.location?.location
-                            ? profile?.location?.address
+                            ? profile?.location?.location
                             : ("Not Available" | titlecase)
                         }}
                       </div>
@@ -500,6 +470,7 @@
                         rows="5"
                         cols="8"
                         formControlName="bio"
+                        placeholder="{{ profile?.bio ? profile?.bio : '' }}"
                       ></textarea>
                     </div>
                     <div class="col-12">
@@ -634,21 +605,13 @@
                   tabindex="0"
                 >
                   <!-- Button trigger modal -->
-                  <div class="mb-2">
-                    <button
-                      type="button"
-                      class="btn btn-primary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#basicModal2"
-                    >
-                     Add category
-                    </button>
+                  <div>
                     <!-- modal 2 -->
                     <div class="modal fade" id="basicModal2" tabindex="-1">
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">Add Category</h5>
+                            <h5 class="modal-title">{{ modalTitle }}</h5>
                             <button
                               type="button"
                               class="btn-close"
@@ -661,7 +624,9 @@
                             <form [formGroup]="categoryForm">
                               <div class="row gy-3 gy-xxl-4">
                                 <div class="col-md-12">
-                                  <label for="" class="form-label">Category name</label>
+                                  <label for="" class="form-label"
+                                    >Category name</label
+                                  >
                                   <input
                                     type="text"
                                     class="form-control"
@@ -680,7 +645,11 @@
                             >
                               Close
                             </button>
-                            <button type="submit" class="btn btn-primary" (click)="addCategory()">
+                            <button
+                              type="submit"
+                              class="btn btn-primary"
+                              (click)="submitForm()"
+                            >
                               Submit
                             </button>
                           </div>
@@ -692,13 +661,25 @@
 
                   <!--  -->
                   <form class="row">
-                    <div class="mb-3 row d-flex justify-content-end">
+                    <div class="mb-3 row d-flex justify-content-between">
+                      <div class="col-md-6">
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-bs-toggle="modal"
+                          data-bs-target="#basicModal2"
+                          (click)="addNewUser()"
+                        >
+                          Add category
+                        </button>
+                      </div>
                       <div class="col-md-6 row">
                         <input
                           id="table-complete-search"
                           type="text"
                           class="form-control"
                           name="searchTerm"
+                          placeholder="search"
                           [(ngModel)]="service.searchTerm"
                         />
                       </div>
@@ -712,22 +693,82 @@
                         <tr>
                           <th scope="col">#</th>
                           <th scope="col" sortable="name">Category Name</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr
                           *ngFor="
-                            let country of categories$ | async;
+                            let category of categories$ | async;
                             index as i;
                             trackBy: trackByCountryId
                           "
                         >
-                          <th scope="row">{{ i + 1 }}</th>
+                          <td scope="row">{{ i + 1 }}</td>
                           <td>
                             <ngb-highlight
-                              [result]="country.name | titlecase"
+                              [result]="category.name | titlecase"
                               [term]="service.searchTerm"
                             ></ngb-highlight>
+                          </td>
+                          <td>
+                            <a
+                              class="d-inline-block bg-primary link-light lh-1 p-2 rounded"
+                              data-bs-toggle="modal"
+                              data-bs-target="#basicModal2"
+                              (click)="editUser(category)"
+                            >
+                              <i class="bi bi-pencil-square"></i> </a
+                            >&nbsp;&nbsp;&nbsp;
+                            <a
+                              data-bs-toggle="modal"
+                              data-bs-target="#basicModal3"
+                              (click)="selectedCategoryId = category.id"
+                              class="d-inline-block bg-danger link-light lh-1 p-2 rounded"
+                            >
+                              <i class="bi bi-trash"></i>
+                            </a>
+                            <!-- delete modal -->
+                            <div
+                              class="modal fade"
+                              id="basicModal3"
+                              tabindex="-1"
+                            >
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title">
+                                      Are you sure you want to delete this
+                                      category?
+                                    </h5>
+                                    <button
+                                      type="button"
+                                      class="btn-close"
+                                      data-bs-dismiss="modal"
+                                      aria-label="Close"
+                                    ></button>
+                                  </div>
+
+                                  <div class="modal-footer">
+                                    <button
+                                      type="button"
+                                      class="btn btn-secondary"
+                                      data-bs-dismiss="modal"
+                                    >
+                                      No
+                                    </button>
+                                    <button
+                                      type="submit"
+                                      class="btn btn-primary"
+                                      (click)="deleteCategory()"
+                                    >
+                                      Yes
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- delete modal end -->
                           </td>
                         </tr>
                         <tr *ngIf="(categories$ | async)?.length === 0">

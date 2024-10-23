@@ -41,5 +41,17 @@ export class ProfileService {
     });
   }
 
+  updateCategory(data:any,id:any){
+    return this.http.put(`${this.baseUrl}service/category/${id}/`, data, {
+      headers: headers,
+    });
+  }
+
+  deleteCategory(id:any){
+    return this.http.delete(`${this.baseUrl}service/category/${id}/`, {
+      headers: headers,
+    });
+  }
+
 
 }

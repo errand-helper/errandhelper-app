@@ -8,10 +8,10 @@ import { SortableDirective } from './services/sortable.directive';
 
 
 @NgModule({
-  declarations: [FooterComponent, NavbarComponent, SidebarComponent],
+  declarations: [FooterComponent, NavbarComponent, SidebarComponent,SortableDirective],
   imports: [
     CommonModule,
-    SortableDirective
+
   ],
   exports: [
     FooterComponent,
