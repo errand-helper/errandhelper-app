@@ -7,6 +7,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomepageComponent } from './components/homepage/homepage.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DecimalPipe } from '@angular/common';
 
 
 @NgModule({
@@ -21,8 +23,12 @@ import { HomepageComponent } from './components/homepage/homepage.component';
     HttpClientModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
+    NgbModule
   ],
-  providers: [],
+  providers: [
+    DecimalPipe, // Add DecimalPipe here
+    // other services
+  ],
   bootstrap: [AppComponent],
   exports:[]
 })

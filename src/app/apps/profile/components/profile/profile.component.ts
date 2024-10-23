@@ -1,7 +1,14 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProfileService } from './../../services/profile.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { Category } from '../../../sharedmodule/models/category';
+import { SortableDirective, SortEvent } from '../../../sharedmodule/services/sortable.directive';
+import { CategoryService } from '../../../sharedmodule/services/category.service';
+
+declare var bootstrap: any;
+
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +20,29 @@ export class ProfileComponent implements OnInit{
   profile:any;
   updateProfileForm!: FormGroup;
   categoryForm!: FormGroup;
-  constructor(private profileService:ProfileService,private toastr: ToastrService){}
+  user_type: any
+
+  categories$!: Observable<Category[]>;
+	total$!: Observable<number>;
+
+  @ViewChildren(SortableDirective) headers!: QueryList<SortableDirective>;
+
+
+  constructor(private profileService:ProfileService,private toastr: ToastrService,public service: CategoryService){
+    this.categories$ = service.categories$;
+		this.total$ = service.total$;
+  }
+
+  onSort({ column, direction }: SortEvent) {
+		this.headers.forEach((header) => {
+			if (header.sortable !== column) {
+				header.direction = '';
+			}
+		});
+
+		this.service.sortColumn = column;
+		this.service.sortDirection = direction;
+	}
 
   ngOnInit(){
     this.getProfile()
@@ -46,17 +75,12 @@ export class ProfileComponent implements OnInit{
     )
   }
 
-  user_type: any
 
   getProfile(){
     this.profileService.getProfile().subscribe((res:any)=>{
       this.profile = res;
-
       this.user_type = this.profile['user_type']
-      console.log(this.user_type);
       localStorage.setItem('user_type', JSON.stringify(this.user_type));
-
-
     })
   }
 
@@ -90,9 +114,13 @@ export class ProfileComponent implements OnInit{
   }
 
   addCategory(){
+    const modalElement = document.getElementById('basicModal2');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+
     this.profileService.addCategory(this.categoryForm.value).subscribe((res:any)=>{
-      console.log(res);
       this.categoryForm.reset()
+      this.categories$ = this.service.categories$
+      modalInstance.hide();
       this.toastr.success('Category added successfully');
     },(error: any) => {
       console.log(error);
@@ -101,6 +129,11 @@ export class ProfileComponent implements OnInit{
 
 
   }
+
+  trackByCountryId(index: number, country: any): number {
+    return country.id;
+  }
+
 
 
 
