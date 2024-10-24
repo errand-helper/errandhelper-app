@@ -172,6 +172,22 @@
                   </button>
                 </li>
                 }
+                @if(user_type ==='BUSINESS'){
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="services-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#services-tab-pane"
+                      type="button"
+                      role="tab"
+                      aria-controls="services-tab-pane"
+                      aria-selected="false"
+                    >
+                      Services
+                    </button>
+                  </li>
+                  }
               </ul>
               <div class="tab-content pt-4" id="profileTabContent">
                 <div
@@ -774,6 +790,209 @@
                         <tr *ngIf="(categories$ | async)?.length === 0">
                           <td colspan="4" style="text-align: center">
                             No countries found
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                      <ngb-pagination
+                        [collectionSize]="(total$ | async)!"
+                        [(page)]="service.page"
+                        [pageSize]="service.pageSize"
+                      >
+                      </ngb-pagination>
+
+                      <select
+                        class="form-select"
+                        style="width: auto"
+                        name="pageSize"
+                        [(ngModel)]="service.pageSize"
+                      >
+                        <option [ngValue]="4">4</option>
+                        <option [ngValue]="6">6</option>
+                      </select>
+                    </div>
+                  </form>
+                  <!--  -->
+                </div>
+                <div
+                  class="tab-pane fade"
+                  id="services-tab-pane"
+                  role="tabpanel"
+                  aria-labelledby="services-tab"
+                  tabindex="0"
+                >
+                  <!-- Button trigger modal -->
+                  <div>
+                    <!-- modal 2 -->
+                    <div class="modal fade" id="basicModalService" tabindex="-1">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">{{ modalTitle }}</h5>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+
+                          <div class="modal-body">
+                            <form [formGroup]="categoryForm">
+                              <div class="row gy-3 gy-xxl-4">
+                                <div class="col-md-12">
+                                  <label for="" class="form-label"
+                                    >Category name</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    formControlName="name"
+                                  />
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-secondary"
+                              data-bs-dismiss="modal"
+                            >
+                              Close
+                            </button>
+                            <button
+                              type="submit"
+                              class="btn btn-primary"
+                              (click)="submitForm()"
+                            >
+                              Submit
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- modal 2 end -->
+                  </div>
+
+                  <!--  -->
+                  <form class="row">
+                    <div class="mb-3 row d-flex justify-content-between">
+                      <div class="col-md-6">
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-bs-toggle="modal"
+                          data-bs-target="#basicModalService"
+                          (click)="addNewUser()"
+                        >
+                          Add service
+                        </button>
+                      </div>
+                      <div class="col-md-6 row">
+                        <input
+                          id="table-complete-search"
+                          type="text"
+                          class="form-control"
+                          name="searchTerm"
+                          placeholder="search"
+                          [(ngModel)]="service.searchTerm"
+                        />
+                      </div>
+                      @if (service.loading$ | async) {
+                      <span class="col col-form-label">Loading...</span>
+                      }
+                    </div>
+
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col" sortable="name">Category Name</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="
+                            let category of categories$ | async;
+                            index as i;
+                            trackBy: trackByCountryId
+                          "
+                        >
+                          <td scope="row">{{ i + 1 }}</td>
+                          <td>
+                            <ngb-highlight
+                              [result]="category.name | titlecase"
+                              [term]="service.searchTerm"
+                            ></ngb-highlight>
+                          </td>
+                          <td>
+                            <a
+                              class="d-inline-block bg-primary link-light lh-1 p-2 rounded"
+                              data-bs-toggle="modal"
+                              data-bs-target="#basicModal2"
+                              (click)="editUser(category)"
+                            >
+                              <i class="bi bi-pencil-square"></i> </a
+                            >&nbsp;&nbsp;&nbsp;
+                            <a
+                              data-bs-toggle="modal"
+                              data-bs-target="#basicModal3"
+                              (click)="selectedCategoryId = category.id"
+                              class="d-inline-block bg-danger link-light lh-1 p-2 rounded"
+                            >
+                              <i class="bi bi-trash"></i>
+                            </a>
+                            <!-- delete modal -->
+                            <div
+                              class="modal fade"
+                              id="basicModal3"
+                              tabindex="-1"
+                            >
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title">
+                                      Are you sure you want to delete this
+                                      category?
+                                    </h5>
+                                    <button
+                                      type="button"
+                                      class="btn-close"
+                                      data-bs-dismiss="modal"
+                                      aria-label="Close"
+                                    ></button>
+                                  </div>
+
+                                  <div class="modal-footer">
+                                    <button
+                                      type="button"
+                                      class="btn btn-secondary"
+                                      data-bs-dismiss="modal"
+                                    >
+                                      No
+                                    </button>
+                                    <button
+                                      type="submit"
+                                      class="btn btn-primary"
+                                      (click)="deleteCategory()"
+                                    >
+                                      Yes
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- delete modal end -->
+                          </td>
+                        </tr>
+                        <tr *ngIf="(categories$ | async)?.length === 0">
+                          <td colspan="4" style="text-align: center">
+                            Category not found
                           </td>
                         </tr>
                       </tbody>

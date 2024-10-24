@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { Category } from '../../../sharedmodule/models/category';
 import { SortableDirective, SortEvent } from '../../../sharedmodule/services/sortable.directive';
-import { CategoryService } from '../../../sharedmodule/services/category.service';
+import { CategoryService } from '../../../sharedmodule/services/category/category.service';
 
 declare var bootstrap: any;
 

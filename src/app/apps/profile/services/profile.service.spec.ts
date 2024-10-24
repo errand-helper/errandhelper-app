@@ -9,7 +9,7 @@ describe('ProfileService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-
+      providers: [ProfileService]
     });
     service = TestBed.inject(ProfileService);
   });
