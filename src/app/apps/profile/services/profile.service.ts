@@ -53,5 +53,11 @@ export class ProfileService {
     });
   }
 
+  getBusinessDetails(id:any){
+    return this.http.get(`${this.baseUrl}business/details/${id}`, {
+      headers: headers,
+    });
+  }
+
 
 }

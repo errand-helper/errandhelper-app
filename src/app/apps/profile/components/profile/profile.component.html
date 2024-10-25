@@ -171,23 +171,22 @@
                     Categories
                   </button>
                 </li>
+                } @if(user_type ==='BUSINESS'){
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="services-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#services-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="services-tab-pane"
+                    aria-selected="false"
+                  >
+                    Services
+                  </button>
+                </li>
                 }
-                @if(user_type ==='BUSINESS'){
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link"
-                      id="services-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#services-tab-pane"
-                      type="button"
-                      role="tab"
-                      aria-controls="services-tab-pane"
-                      aria-selected="false"
-                    >
-                      Services
-                    </button>
-                  </li>
-                  }
               </ul>
               <div class="tab-content pt-4" id="profileTabContent">
                 <div
@@ -284,9 +283,10 @@
                     </div>
 
                     <div *ngIf="profile?.user_type === 'BUSINESS'">
-                      <h5 class="my-2">Services</h5>
+                      <h5 class="my-2">Business Details</h5>
                       <div class="">
-                        <span class="badge text-bg-primary">HTML</span>&nbsp;
+                        Business name: {{business_details?.business_name | titlecase}}
+                        <!-- <span class="badge text-bg-primary">HTML</span>&nbsp;
                         <span class="badge text-bg-primary">SCSS</span>&nbsp;
                         <span class="badge text-bg-primary">Javascript</span
                         >&nbsp;
@@ -294,7 +294,7 @@
                         <span class="badge text-bg-primary">Vue</span>&nbsp;
                         <span class="badge text-bg-primary">Angular</span>&nbsp;
                         <span class="badge text-bg-primary">UI</span>&nbsp;
-                        <span class="badge text-bg-primary">UX</span>
+                        <span class="badge text-bg-primary">UX</span> -->
                       </div>
                     </div>
                   </div>
@@ -684,7 +684,7 @@
                           class="btn btn-primary"
                           data-bs-toggle="modal"
                           data-bs-target="#basicModal2"
-                          (click)="addNewUser()"
+                          (click)="addNewCategory()"
                         >
                           Add category
                         </button>
@@ -696,10 +696,10 @@
                           class="form-control"
                           name="searchTerm"
                           placeholder="search"
-                          [(ngModel)]="service.searchTerm"
+                          [(ngModel)]="_categoryService.searchTerm"
                         />
                       </div>
-                      @if (service.loading$ | async) {
+                      @if (_categoryService.loading$ | async) {
                       <span class="col col-form-label">Loading...</span>
                       }
                     </div>
@@ -724,7 +724,7 @@
                           <td>
                             <ngb-highlight
                               [result]="category.name | titlecase"
-                              [term]="service.searchTerm"
+                              [term]="_categoryService.searchTerm"
                             ></ngb-highlight>
                           </td>
                           <td>
@@ -797,9 +797,9 @@
 
                     <div class="d-flex justify-content-between p-2">
                       <ngb-pagination
-                        [collectionSize]="(total$ | async)!"
-                        [(page)]="service.page"
-                        [pageSize]="service.pageSize"
+                        [collectionSize]="(categoryTotal$ | async)!"
+                        [(page)]="_categoryService.page"
+                        [pageSize]="_categoryService.pageSize"
                       >
                       </ngb-pagination>
 
@@ -807,7 +807,7 @@
                         class="form-select"
                         style="width: auto"
                         name="pageSize"
-                        [(ngModel)]="service.pageSize"
+                        [(ngModel)]="_categoryService.pageSize"
                       >
                         <option [ngValue]="4">4</option>
                         <option [ngValue]="6">6</option>
@@ -826,11 +826,15 @@
                   <!-- Button trigger modal -->
                   <div>
                     <!-- modal 2 -->
-                    <div class="modal fade" id="basicModalService" tabindex="-1">
+                    <div
+                      class="modal fade"
+                      id="basicModalService"
+                      tabindex="-1"
+                    >
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title">{{ modalTitle }}</h5>
+                            <h5 class="modal-title">{{ serviceModalTitle }}</h5>
                             <button
                               type="button"
                               class="btn-close"
@@ -840,11 +844,28 @@
                           </div>
 
                           <div class="modal-body">
-                            <form [formGroup]="categoryForm">
+                            <form [formGroup]="serviceForm">
                               <div class="row gy-3 gy-xxl-4">
                                 <div class="col-md-12">
                                   <label for="" class="form-label"
                                     >Category name</label
+                                  >
+                                  <ng-select
+                                    appearance="outline"
+                                    placeholder="Select category"
+                                    labelForId="heroId"
+                                    formControlName="category"
+                                  >
+                                    @for (make of services; track $index) {
+                                    <ng-option [value]="make">
+                                      {{ make.name }}
+                                    </ng-option>
+                                    }
+                                  </ng-select>
+                                </div>
+                                <div class="col-md-12">
+                                  <label for="" class="form-label"
+                                    >Service name</label
                                   >
                                   <input
                                     type="text"
@@ -867,7 +888,7 @@
                             <button
                               type="submit"
                               class="btn btn-primary"
-                              (click)="submitForm()"
+                              (click)="submitServiceForm()"
                             >
                               Submit
                             </button>
@@ -887,7 +908,7 @@
                           class="btn btn-primary"
                           data-bs-toggle="modal"
                           data-bs-target="#basicModalService"
-                          (click)="addNewUser()"
+                          (click)="addNewService()"
                         >
                           Add service
                         </button>
@@ -899,10 +920,10 @@
                           class="form-control"
                           name="searchTerm"
                           placeholder="search"
-                          [(ngModel)]="service.searchTerm"
+                          [(ngModel)]="_serviceService.searchTerm"
                         />
                       </div>
-                      @if (service.loading$ | async) {
+                      @if (_serviceService.loading$ | async) {
                       <span class="col col-form-label">Loading...</span>
                       }
                     </div>
@@ -912,37 +933,37 @@
                         <tr>
                           <th scope="col">#</th>
                           <th scope="col" sortable="name">Category Name</th>
+                          <th scope="col" sortable="name">Service Name</th>
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr
-                          *ngFor="
-                            let category of categories$ | async;
-                            index as i;
-                            trackBy: trackByCountryId
-                          "
+                          *ngFor="let service of services$ | async; index as i"
                         >
                           <td scope="row">{{ i + 1 }}</td>
+                          <td *ngFor="let x of service.categories">
+                            {{ x.name }}
+                          </td>
                           <td>
                             <ngb-highlight
-                              [result]="category.name | titlecase"
-                              [term]="service.searchTerm"
+                              [result]="service.name | titlecase"
+                              [term]="_serviceService.searchTerm"
                             ></ngb-highlight>
                           </td>
                           <td>
                             <a
                               class="d-inline-block bg-primary link-light lh-1 p-2 rounded"
                               data-bs-toggle="modal"
-                              data-bs-target="#basicModal2"
-                              (click)="editUser(category)"
+                              data-bs-target="#basicModalService"
+                              (click)="editService(service)"
                             >
                               <i class="bi bi-pencil-square"></i> </a
                             >&nbsp;&nbsp;&nbsp;
                             <a
                               data-bs-toggle="modal"
                               data-bs-target="#basicModal3"
-                              (click)="selectedCategoryId = category.id"
+                              (click)="selectedCategoryId = service.id"
                               class="d-inline-block bg-danger link-light lh-1 p-2 rounded"
                             >
                               <i class="bi bi-trash"></i>
@@ -990,9 +1011,9 @@
                             <!-- delete modal end -->
                           </td>
                         </tr>
-                        <tr *ngIf="(categories$ | async)?.length === 0">
+                        <tr *ngIf="(services$ | async)?.length === 0">
                           <td colspan="4" style="text-align: center">
-                            Category not found
+                            Service not found
                           </td>
                         </tr>
                       </tbody>
@@ -1000,9 +1021,9 @@
 
                     <div class="d-flex justify-content-between p-2">
                       <ngb-pagination
-                        [collectionSize]="(total$ | async)!"
-                        [(page)]="service.page"
-                        [pageSize]="service.pageSize"
+                        [collectionSize]="(serviceTotal$ | async)!"
+                        [(page)]="_serviceService.page"
+                        [pageSize]="_serviceService.pageSize"
                       >
                       </ngb-pagination>
 
@@ -1010,7 +1031,7 @@
                         class="form-select"
                         style="width: auto"
                         name="pageSize"
-                        [(ngModel)]="service.pageSize"
+                        [(ngModel)]="_serviceService.pageSize"
                       >
                         <option [ngValue]="4">4</option>
                         <option [ngValue]="6">6</option>

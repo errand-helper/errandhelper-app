@@ -4,8 +4,10 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { Category } from '../../../sharedmodule/models/category';
-import { SortableDirective, SortEvent } from '../../../sharedmodule/services/sortable.directive';
+// import { SortableDirective, SortEvent } from '../../../sharedmodule/services/sortable.directive';
 import { CategoryService } from '../../../sharedmodule/services/category/category.service';
+import { Service } from '../../../sharedmodule/models/service';
+import { ServiceService } from '../../../sharedmodule/services/service/service.service';
 
 declare var bootstrap: any;
 
@@ -18,23 +20,38 @@ declare var bootstrap: any;
 export class ProfileComponent implements OnInit{
 
   modalTitle: string = 'Add New Category';
+  serviceModalTitle: string = 'Add New Service';
 
 
   profile:any;
   updateProfileForm!: FormGroup;
   categoryForm!: FormGroup;
+  serviceForm!: FormGroup;
+
   user_type: any
 
   categories$!: Observable<Category[]>;
-	total$!: Observable<number>;
+  services$!: Observable<Service[]>;
+
+	categoryTotal$!: Observable<number>;
+  serviceTotal$!: Observable<number>;
+
   selectedCategory: any = null;
+  selectedService: any = null;
+
   id:any
-  @ViewChildren(SortableDirective) headers!: QueryList<SortableDirective>;
+  // @ViewChildren(SortableDirective) headers!: QueryList<SortableDirective>;
+  services: any = [];
+
+  business_details:any=[]
 
 
-  constructor(private profileService:ProfileService,private toastr: ToastrService,public service: CategoryService){
-    this.categories$ = service.categories$;
-		this.total$ = service.total$;
+  constructor(private profileService:ProfileService,private toastr: ToastrService,public _categoryService: CategoryService,public _serviceService:ServiceService){
+    this.categories$ = _categoryService.categories$;
+		this.categoryTotal$ = _categoryService.total$;
+
+    this.services$ = _serviceService.services$
+    this.serviceTotal$ = _serviceService.total$
   }
 
   // onSort({ column, direction }: SortEvent) {
@@ -50,6 +67,10 @@ export class ProfileComponent implements OnInit{
 
   ngOnInit(){
     this.getProfile()
+
+    this._categoryService.getCategory().subscribe((res) => {
+      this.services = res;
+    });
 
     this.updateProfileForm = new FormGroup(
       {
@@ -77,14 +98,22 @@ export class ProfileComponent implements OnInit{
         name:new FormControl('',Validators.required)
       }
     )
+
+    this.serviceForm = new FormGroup(
+      {
+        name:new FormControl('',Validators.required),
+        category:new FormControl('',Validators.required)
+
+      }
+    )
   }
 
-  addNewUser() {
+    // category
+  addNewCategory() {
     this.resetForm();
-    this.modalTitle = 'Add New User';
+    this.modalTitle = 'Add New Category';
     this.selectedCategory = null;
   }
-
   resetForm() {
     this.categoryForm.reset({
       name: ''
@@ -105,6 +134,67 @@ export class ProfileComponent implements OnInit{
     this.selectedCategory = category;
   }
 
+  // category
+
+  addNewService() {
+    this.resetServiceForm();
+    this.serviceModalTitle = 'Add New Service';
+    this.selectedService = null;
+  }
+
+  resetServiceForm() {
+    this.serviceForm.reset({
+      name: '',
+      category:''
+    });
+  }
+
+  setEditServiceForm(service: any) {
+    let category: any
+    service?.categories.forEach((element:any) => {
+      category = element.name
+    });
+
+    this.id = service.id;
+    this.serviceForm.patchValue({
+      name: service?.name,
+      category:category
+
+    });
+  }
+
+  editService(service: any) {
+    this.setEditServiceForm(service);
+    this.serviceModalTitle = 'Edit Category';
+    this.selectedService = service;
+  }
+
+  submitServiceForm(){
+    const data = this.serviceForm.value;
+    const payload = {
+      name:this.serviceForm.value.name,
+      category_ids:[this.serviceForm.value.category.id]
+    }
+
+    if(this.selectedService){
+      // alert('0p')
+      console.log(data);
+
+    }else{
+      // alert('po')
+      console.log(payload);
+      this._serviceService.addService(payload).subscribe((res:any)=>{
+        console.log(res);
+
+      })
+
+    }
+  }
+
+
+
+
+
   submitForm() {
     const modalElement = document.getElementById('basicModal2');
     const modalInstance = bootstrap.Modal.getInstance(modalElement);
@@ -113,7 +203,7 @@ export class ProfileComponent implements OnInit{
     if (this.selectedCategory) {
       this.profileService.updateCategory(data,this.id).subscribe(
         (res: any) => {
-          this.categories$ = this.service.categories$
+          this.categories$ = this._categoryService.categories$
           modalInstance.hide();
           this.toastr.success('updated added successfully');
         },
@@ -126,7 +216,7 @@ export class ProfileComponent implements OnInit{
         this.profileService.addCategory(data).subscribe(
           (response: any) => {
             this.categoryForm.reset()
-            this.categories$ = this.service.categories$
+            this.categories$ = this._categoryService.categories$
             modalInstance.hide();
             this.toastr.success('user added successfully');
           },
@@ -144,7 +234,7 @@ export class ProfileComponent implements OnInit{
     const modalInstance = bootstrap.Modal.getInstance(modalElement);
 
     this.profileService.deleteCategory(this.selectedCategoryId).subscribe((res:any)=>{
-      this.categories$ = this.service.categories$
+      this.categories$ = this._categoryService.categories$
       modalInstance.hide();
       this.toastr.success('deleted successfully');
     }, (error: any) => {
@@ -156,7 +246,17 @@ export class ProfileComponent implements OnInit{
     this.profileService.getProfile().subscribe((res:any)=>{
       this.profile = res;
       this.user_type = this.profile['user_type']
+      if(this.user_type ==='BUSINESS'){
+        this.getBusinessDetails(this.profile.user_id)
+      }
       localStorage.setItem('user_type', JSON.stringify(this.user_type));
+    })
+  }
+
+  getBusinessDetails(id:any){
+    this.profileService.getBusinessDetails(id).subscribe((res:any)=>{
+      console.log(res);
+      this.business_details = res
     })
   }
 
@@ -195,7 +295,7 @@ export class ProfileComponent implements OnInit{
 
     this.profileService.addCategory(this.categoryForm.value).subscribe((res:any)=>{
       this.categoryForm.reset()
-      this.categories$ = this.service.categories$
+      this.categories$ = this._categoryService.categories$
       modalInstance.hide();
       this.toastr.success('Category added successfully');
     },(error: any) => {
@@ -209,6 +309,11 @@ export class ProfileComponent implements OnInit{
   trackByCountryId(index: number, category: any): number {
     return category.id;
   }
+
+  // addService(){
+  //   console.log(this.serviceForm.value);
+
+  // }
 
 
 

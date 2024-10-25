@@ -8,6 +8,7 @@ import { FooterComponent } from '../sharedmodule/components/shared/footer/footer
 import { SharedModule } from '../sharedmodule/sharedmodule.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootst
     FormsModule,
     DecimalPipe,
     NgbPaginationModule,
-    NgbTypeaheadModule
+    NgbTypeaheadModule,
+    NgSelectModule
   ]
 })
 export class ProfileModule { }
