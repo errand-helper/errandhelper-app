@@ -166,8 +166,6 @@ export class CategoryService {
   }
 
   getCategory(){
-
-
     return this.http.get<Category[]>(`${this.baseUrl}service/category/`, { headers })
   }
 

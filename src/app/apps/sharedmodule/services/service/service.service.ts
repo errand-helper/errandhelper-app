@@ -116,8 +116,12 @@ export class ServiceService {
 
 
     const {  pageSize, page, searchTerm } = this._state;
+    let bs_id = localStorage.getItem('business_id')
+    // if(bs_id){
 
-    return this.http.get<Service[]>(`${this.baseUrl}service/add-service/`, { headers }).pipe(
+    // }
+
+    return this.http.get<Service[]>(`${this.baseUrl}service/business/${bs_id}`, { headers }).pipe(
       switchMap((data: Service[]) => {
 
         let _data = data;
@@ -138,6 +142,18 @@ export class ServiceService {
 
   addService(data:any){
     return this.http.post(`${this.baseUrl}service/add-service/`, data, {
+      headers: headers,
+    });
+  }
+
+  editService(id:any,data:any){
+    return this.http.put(`${this.baseUrl}service/add-service/${id}/`, data, {
+      headers: headers,
+    });
+  }
+
+  deleteService(id:any){
+    return this.http.delete(`${this.baseUrl}service/add-service/${id}/`, {
       headers: headers,
     });
   }

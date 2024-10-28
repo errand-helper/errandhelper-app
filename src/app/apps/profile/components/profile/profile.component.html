@@ -732,7 +732,7 @@
                               class="d-inline-block bg-primary link-light lh-1 p-2 rounded"
                               data-bs-toggle="modal"
                               data-bs-target="#basicModal2"
-                              (click)="editUser(category)"
+                              (click)="editCategory(category)"
                             >
                               <i class="bi bi-pencil-square"></i> </a
                             >&nbsp;&nbsp;&nbsp;
@@ -856,8 +856,8 @@
                                     labelForId="heroId"
                                     formControlName="category"
                                   >
-                                    @for (make of services; track $index) {
-                                    <ng-option [value]="make">
+                                    @for (make of categories; track $index) {
+                                    <ng-option [value]="make.id">
                                       {{ make.name }}
                                     </ng-option>
                                     }

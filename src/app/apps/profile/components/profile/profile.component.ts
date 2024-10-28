@@ -41,8 +41,8 @@ export class ProfileComponent implements OnInit{
 
   id:any
   // @ViewChildren(SortableDirective) headers!: QueryList<SortableDirective>;
-  services: any = [];
-
+  // services: any = [];
+  categories: any = []
   business_details:any=[]
 
 
@@ -69,7 +69,7 @@ export class ProfileComponent implements OnInit{
     this.getProfile()
 
     this._categoryService.getCategory().subscribe((res) => {
-      this.services = res;
+      this.categories = res;
     });
 
     this.updateProfileForm = new FormGroup(
@@ -128,7 +128,7 @@ export class ProfileComponent implements OnInit{
     });
   }
 
-  editUser(category: any) {
+  editCategory(category: any) {
     this.setEditForm(category);
     this.modalTitle = 'Edit Category';
     this.selectedCategory = category;
@@ -170,21 +170,43 @@ export class ProfileComponent implements OnInit{
   }
 
   submitServiceForm(){
-    const data = this.serviceForm.value;
-    const payload = {
-      name:this.serviceForm.value.name,
-      category_ids:[this.serviceForm.value.category.id]
-    }
+    // const data = this.serviceForm.value;
+    const modalElement = document.getElementById('basicModalService');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+
+
 
     if(this.selectedService){
-      // alert('0p')
-      console.log(data);
+      let category_id;
+      let service_id = this.selectedService.id
+      this.selectedService.categories.forEach((element: any) => {
+        category_id = element.id
+      });
+      const payload = {
+        name:this.serviceForm.value.name,
+        category_ids:[this.serviceForm.value.category]
+      }
+
+      console.log(payload);
+
+      return
+      this._serviceService.editService(service_id,payload).subscribe((res:any)=>{
+        console.log(res);
+
+      })
 
     }else{
-      // alert('po')
+      const payload = {
+        name:this.serviceForm.value.name,
+        category_ids:[this.serviceForm.value.category.id]
+      }
       console.log(payload);
       this._serviceService.addService(payload).subscribe((res:any)=>{
         console.log(res);
+        modalInstance.hide();
+        this.toastr.success('added successfully');
+        this.services$ = this._serviceService.services$
+        this.serviceTotal$ = this._serviceService.total$
 
       })
 
@@ -253,10 +275,14 @@ export class ProfileComponent implements OnInit{
     })
   }
 
+  business_id:any
+
   getBusinessDetails(id:any){
     this.profileService.getBusinessDetails(id).subscribe((res:any)=>{
       console.log(res);
       this.business_details = res
+      this.business_id = this.business_details['id']
+      localStorage.setItem('business_id',this.business_id)
     })
   }
 
