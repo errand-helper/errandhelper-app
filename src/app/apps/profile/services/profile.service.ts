@@ -22,6 +22,11 @@ export class ProfileService {
       headers: headers,
     });
   }
+  getBusiness(){
+    return this.http.get<any[]>(`${this.baseUrl}business/details`, {
+      headers: headers,
+    });
+  }
 
   getProfileImg() {
     return this.http.get(`${this.baseUrl}profile/image`, {

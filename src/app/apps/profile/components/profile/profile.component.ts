@@ -35,38 +35,48 @@ export class ProfileComponent implements OnInit{
 
 	categoryTotal$!: Observable<number>;
   serviceTotal$!: Observable<number>;
+  isloading = false;
 
   selectedCategory: any = null;
   selectedService: any = null;
 
-  id:any
-  // @ViewChildren(SortableDirective) headers!: QueryList<SortableDirective>;
-  // services: any = [];
+  category_id:any
+  service_id:any;
+
   categories: any = []
   business_details:any=[]
+  selectedCategoryId:any
 
 
   constructor(private profileService:ProfileService,private toastr: ToastrService,public _categoryService: CategoryService,public _serviceService:ServiceService){
-    this.categories$ = _categoryService.categories$;
-		this.categoryTotal$ = _categoryService.total$;
 
-    this.services$ = _serviceService.services$
-    this.serviceTotal$ = _serviceService.total$
   }
 
-  // onSort({ column, direction }: SortEvent) {
-	// 	this.headers.forEach((header) => {
-	// 		if (header.sortable !== column) {
-	// 			header.direction = '';
-	// 		}
-	// 	});
+  selectedCar: any;
+  searchTerm: string = '';
+  // cars = [
+  //   { id: 1, name: 'Toyota' },
+  //   { id: 2, name: 'Honda' },
+  //   { id: 3, name: 'Ford' },
+  //   // Add more car objects here
+  // ];
+  // filteredCars = [...this.cars];
 
-	// 	this.service.sortColumn = column;
-	// 	this.service.sortDirection = direction;
-	// }
+
+  // onSearch(searchTerm: string): void {
+  //   this.filteredCars = this.cars.filter(car =>
+  //     car.name.toLowerCase().includes(searchTerm.toLowerCase())
+  //   );
+  // }
+
 
   ngOnInit(){
     this.getProfile()
+    this.categories$ = this._categoryService.categories$;
+		this.categoryTotal$ = this._categoryService.total$;
+
+    this.services$ = this._serviceService.services$
+    this.serviceTotal$ = this._serviceService.total$
 
     this._categoryService.getCategory().subscribe((res) => {
       this.categories = res;
@@ -121,7 +131,7 @@ export class ProfileComponent implements OnInit{
   }
 
   setEditForm(category: any) {
-    this.id = category.id;
+    this.category_id = category.id;
     this.categoryForm.patchValue({
       name: category?.name,
 
@@ -155,7 +165,7 @@ export class ProfileComponent implements OnInit{
       category = element.name
     });
 
-    this.id = service.id;
+    this.service_id = service.id;
     this.serviceForm.patchValue({
       name: service?.name,
       category:category
@@ -170,44 +180,32 @@ export class ProfileComponent implements OnInit{
   }
 
   submitServiceForm(){
-    // const data = this.serviceForm.value;
     const modalElement = document.getElementById('basicModalService');
     const modalInstance = bootstrap.Modal.getInstance(modalElement);
-
-
-
     if(this.selectedService){
-      let category_id;
       let service_id = this.selectedService.id
-      this.selectedService.categories.forEach((element: any) => {
-        category_id = element.id
-      });
       const payload = {
         name:this.serviceForm.value.name,
         category_ids:[this.serviceForm.value.category]
       }
 
-      console.log(payload);
-
-      return
       this._serviceService.editService(service_id,payload).subscribe((res:any)=>{
-        console.log(res);
-
+        this.services$ = this._serviceService.services$
+        this.toastr.success('added successfully');
       })
 
     }else{
       const payload = {
         name:this.serviceForm.value.name,
-        category_ids:[this.serviceForm.value.category.id]
+        category_id:this.serviceForm.value.category
       }
-      console.log(payload);
       this._serviceService.addService(payload).subscribe((res:any)=>{
-        console.log(res);
         modalInstance.hide();
         this.toastr.success('added successfully');
         this.services$ = this._serviceService.services$
-        this.serviceTotal$ = this._serviceService.total$
 
+      },(error: any) => {
+        this.toastr.error('Failed add service');
       })
 
     }
@@ -223,9 +221,8 @@ export class ProfileComponent implements OnInit{
     const data = this.categoryForm.value;
 
     if (this.selectedCategory) {
-      this.profileService.updateCategory(data,this.id).subscribe(
+      this.profileService.updateCategory(data,this.category_id).subscribe(
         (res: any) => {
-          this.categories$ = this._categoryService.categories$
           modalInstance.hide();
           this.toastr.success('updated added successfully');
         },
@@ -238,18 +235,16 @@ export class ProfileComponent implements OnInit{
         this.profileService.addCategory(data).subscribe(
           (response: any) => {
             this.categoryForm.reset()
-            this.categories$ = this._categoryService.categories$
             modalInstance.hide();
             this.toastr.success('user added successfully');
           },
           (error: any) => {
-            this.toastr.error('Failed add user');
+            this.toastr.error('Failed add category');
           }
         );
       }
     }
   }
-  selectedCategoryId:any
 
   deleteCategory(){
     const modalElement = document.getElementById('basicModal3');
@@ -264,25 +259,40 @@ export class ProfileComponent implements OnInit{
     })
   }
 
+  deleteService(){
+    const modalElement = document.getElementById('basicModal4');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    // alert('ok')
+    this._serviceService.deleteService(this.selectedCategoryId).subscribe((res:any)=>{
+      // this.categories$ = this._categoryService.categories$
+      this.services$ = this._serviceService.services$
+      // this.serviceTotal$ = this._serviceService.total$
+      modalInstance.hide();
+      this.toastr.success('deleted successfully');
+    }, (error: any) => {
+      this.toastr.error('An error occurred');
+    })
+  }
+
   getProfile(){
     this.profileService.getProfile().subscribe((res:any)=>{
       this.profile = res;
       this.user_type = this.profile['user_type']
       if(this.user_type ==='BUSINESS'){
-        this.getBusinessDetails(this.profile.user_id)
+        this.getBusinessDetails()
       }
-      localStorage.setItem('user_type', JSON.stringify(this.user_type));
+      // localStorage.setItem('user_type', JSON.stringify(this.user_type));
     })
   }
 
   business_id:any
 
-  getBusinessDetails(id:any){
-    this.profileService.getBusinessDetails(id).subscribe((res:any)=>{
+  getBusinessDetails(){
+    this.profileService.getBusiness().subscribe((res:any)=>{
       console.log(res);
       this.business_details = res
       this.business_id = this.business_details['id']
-      localStorage.setItem('business_id',this.business_id)
+      // localStorage.setItem('business_id',this.business_id)
     })
   }
 
