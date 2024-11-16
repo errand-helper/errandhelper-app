@@ -47,6 +47,9 @@ export class ProfileComponent implements OnInit{
   business_details:any=[]
   selectedCategoryId:any
 
+  business_id:any
+
+
 
   constructor(private profileService:ProfileService,private toastr: ToastrService,public _categoryService: CategoryService,public _serviceService:ServiceService){
 
@@ -72,11 +75,19 @@ export class ProfileComponent implements OnInit{
 
   ngOnInit(){
     this.getProfile()
-    this.categories$ = this._categoryService.categories$;
-		this.categoryTotal$ = this._categoryService.total$;
+    this.loadCategories();
+    // this.categories$ = this._categoryService.categories$;
+		// this.categoryTotal$ = this._categoryService.total$;
 
     this.services$ = this._serviceService.services$
     this.serviceTotal$ = this._serviceService.total$
+
+  //   this.categoryTotal$.subscribe(total => {
+  //     console.log('Total:', total);
+  // });
+
+  // alert('Total:')
+
 
     this._categoryService.getCategory().subscribe((res) => {
       this.categories = res;
@@ -144,13 +155,85 @@ export class ProfileComponent implements OnInit{
     this.selectedCategory = category;
   }
 
-  // category
+  // addCategory(){
+  //   const modalElement = document.getElementById('basicModal2');
+  //   const modalInstance = bootstrap.Modal.getInstance(modalElement);
 
-  addNewService() {
-    this.resetServiceForm();
-    this.serviceModalTitle = 'Add New Service';
-    this.selectedService = null;
+  //   this.profileService.addCategory(this.categoryForm.value).subscribe((res:any)=>{
+  //     this.categoryForm.reset()
+  //     this.ngOnInit()
+  //     // this.categories$ = this._categoryService.categories$
+  //     modalInstance.hide();
+  //     this.toastr.success('Category added successfully');
+  //   },(error: any) => {
+  //     console.log(error);
+  //     this.toastr.error('An error occurred, please try again');
+  //   })
+
+
+  // }
+
+   // Fetch updated categories
+   loadCategories() {
+    this.categories$ = this._categoryService.categories$;
+    this.categoryTotal$ = this._categoryService.total$;
+    // alert('pop')
   }
+
+  submitCategoryForm() {
+    const modalElement = document.getElementById('basicModal2');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    const data = this.categoryForm.value;
+
+    if (this.selectedCategory) {
+      this.profileService.updateCategory(data,this.category_id).subscribe(
+        (res: any) => {
+          this._categoryService._search$.next();
+          modalInstance.hide();
+          this.toastr.success('updated added successfully');
+        },
+        (error: any) => {
+          this.toastr.error('Failed to update user details');
+        }
+      );
+    } else {
+      if (this.categoryForm.valid) {
+        this.profileService.addCategory(data).subscribe(
+          (response: any) => {
+            this.categoryForm.reset()
+            this._categoryService._search$.next();
+            modalInstance.hide();
+            this.toastr.success('Category added successfully');
+          },
+          (error: any) => {
+            this.toastr.error('Failed add category');
+          }
+        );
+      }
+    }
+  }
+
+  deleteCategory(){
+    const modalElement = document.getElementById('basicModal3');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+
+    this.profileService.deleteCategory(this.selectedCategoryId).subscribe((res:any)=>{
+      this._categoryService._search$.next();
+      modalInstance.hide();
+      this.toastr.success('deleted successfully');
+    }, (error: any) => {
+      this.toastr.error('An error occurred');
+    })
+  }
+
+
+  // category end
+
+  // addNewService() {
+  //   this.resetServiceForm();
+  //   this.serviceModalTitle = 'Add New Service';
+  //   this.selectedService = null;
+  // }
 
   resetServiceForm() {
     this.serviceForm.reset({
@@ -212,53 +295,6 @@ export class ProfileComponent implements OnInit{
   }
 
 
-
-
-
-  submitForm() {
-    const modalElement = document.getElementById('basicModal2');
-    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-    const data = this.categoryForm.value;
-
-    if (this.selectedCategory) {
-      this.profileService.updateCategory(data,this.category_id).subscribe(
-        (res: any) => {
-          modalInstance.hide();
-          this.toastr.success('updated added successfully');
-        },
-        (error: any) => {
-          this.toastr.error('Failed to update user details');
-        }
-      );
-    } else {
-      if (this.categoryForm.valid) {
-        this.profileService.addCategory(data).subscribe(
-          (response: any) => {
-            this.categoryForm.reset()
-            modalInstance.hide();
-            this.toastr.success('user added successfully');
-          },
-          (error: any) => {
-            this.toastr.error('Failed add category');
-          }
-        );
-      }
-    }
-  }
-
-  deleteCategory(){
-    const modalElement = document.getElementById('basicModal3');
-    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-
-    this.profileService.deleteCategory(this.selectedCategoryId).subscribe((res:any)=>{
-      this.categories$ = this._categoryService.categories$
-      modalInstance.hide();
-      this.toastr.success('deleted successfully');
-    }, (error: any) => {
-      this.toastr.error('An error occurred');
-    })
-  }
-
   deleteService(){
     const modalElement = document.getElementById('basicModal4');
     const modalInstance = bootstrap.Modal.getInstance(modalElement);
@@ -285,7 +321,6 @@ export class ProfileComponent implements OnInit{
     })
   }
 
-  business_id:any
 
   getBusinessDetails(){
     this.profileService.getBusiness().subscribe((res:any)=>{
@@ -299,20 +334,20 @@ export class ProfileComponent implements OnInit{
   updateProfile(){
 
     let data = {
-      bio:this.updateProfileForm.value.bio,
-      phone_number: this.updateProfileForm.value.phone_number,
+      bio:this.updateProfileForm.value.bio ? this.updateProfileForm.value.bio : this.profile['bio'],
+      phone_number: this.updateProfileForm.value.phone_number ? this.updateProfileForm.value.phone_number :this.profile['phone_number'],
       location: {
-        location: this.updateProfileForm.value.location,
-        address: this.updateProfileForm.value.address,
-        town:this.updateProfileForm.value.town,
-        city: this.updateProfileForm.value.city,
+        location: this.updateProfileForm.value.location ? this.updateProfileForm.value.location : this.profile['location']['location'],
+        address: this.updateProfileForm.value.address ? this.updateProfileForm.value.address : this.profile['location']['address'],
+        town:this.updateProfileForm.value.town ? this.updateProfileForm.value.town : this.profile['location']['town'],
+        city: this.updateProfileForm.value.city ? this.updateProfileForm.value.city : this.profile['location']['city'],
     },
     social_media: {
-        facebook: this.updateProfileForm.value.facebook,
-        twitter: this.updateProfileForm.value.twitter,
-        instagram:this.updateProfileForm.value.instagram,
-        linkedin:this.updateProfileForm.value.linkedin,
-        website:this.updateProfileForm.value.website,
+        facebook: this.updateProfileForm.value.facebook ? this.updateProfileForm.value.facebook : this.profile['social_media']['facebook'],
+        twitter: this.updateProfileForm.value.twitter ? this.updateProfileForm.value.twitter : this.profile['social_media']['twitter'],
+        instagram:this.updateProfileForm.value.instagram ? this.updateProfileForm.value.instagram : this.profile['social_media']['instagram'],
+        linkedin:this.updateProfileForm.value.linkedin ? this.updateProfileForm.value.linkedin : this.profile['social_media']['linkedin'],
+        website:this.updateProfileForm.value.website ? this.updateProfileForm.value.website : this.profile['social_media']['website'],
     }
     }
     console.log(data);
@@ -325,22 +360,6 @@ export class ProfileComponent implements OnInit{
 
   }
 
-  addCategory(){
-    const modalElement = document.getElementById('basicModal2');
-    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-
-    this.profileService.addCategory(this.categoryForm.value).subscribe((res:any)=>{
-      this.categoryForm.reset()
-      this.categories$ = this._categoryService.categories$
-      modalInstance.hide();
-      this.toastr.success('Category added successfully');
-    },(error: any) => {
-      console.log(error);
-      this.toastr.error('An error occurred, please try again');
-    })
-
-
-  }
 
   trackByCountryId(index: number, category: any): number {
     return category.id;

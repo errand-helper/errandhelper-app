@@ -54,7 +54,7 @@ function matches(category: Category, term: string, pipe: PipeTransform) {
 export class CategoryService {
 
   private _loading$ = new BehaviorSubject<boolean>(true);
-  private _search$ = new Subject<void>();
+  public _search$ = new Subject<void>();
   private _categories$ = new BehaviorSubject<Category[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 

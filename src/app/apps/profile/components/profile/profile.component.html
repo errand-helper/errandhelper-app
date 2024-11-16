@@ -171,7 +171,8 @@
                     Categories
                   </button>
                 </li>
-                } @if(user_type ==='BUSINESS'){
+                }
+                <!-- @if(user_type ==='BUSINESS'){
                 <li class="nav-item" role="presentation">
                   <button
                     class="nav-link"
@@ -186,7 +187,7 @@
                     Services
                   </button>
                 </li>
-                }
+                } -->
               </ul>
               <div class="tab-content pt-4" id="profileTabContent">
                 <div
@@ -201,6 +202,7 @@
                     {{ profile?.bio ? profile?.bio : "Not Available" }}
                   </p>
                   <div class="row g-0">
+                    @if(profile?.user_type==='BUSINESS'){
                     <div
                       class="col-5 col-md-3 bg-light border-bottom border-white border-3"
                     >
@@ -217,6 +219,7 @@
                         }}
                       </div>
                     </div>
+                  <!-- } -->
                     <div
                       class="col-5 col-md-3 bg-light border-bottom border-white border-3"
                     >
@@ -233,6 +236,7 @@
                         }}
                       </div>
                     </div>
+                    <!-- @if(profile?.user_type==='BUSINESS'){ -->
                     <div
                       class="col-5 col-md-3 bg-light border-bottom border-white border-3"
                     >
@@ -281,8 +285,7 @@
                         }}
                       </div>
                     </div>
-
-                    <div *ngIf="profile?.user_type === 'BUSINESS'">
+                    <div>
                       <h5 class="my-2">Business Details</h5>
                       <div class="">
                         Business name: {{business_details?.business_name | titlecase}}
@@ -297,6 +300,7 @@
                         <span class="badge text-bg-primary">UX</span> -->
                       </div>
                     </div>
+                  }
                   </div>
                 </div>
                 <div
@@ -342,7 +346,7 @@
                         </div>
                       </div>
                     </div>
-
+                    @if(profile?.user_type==='BUSINESS'){
                     <div class="col-12 col-md-6">
                       <label for="inputPhone" class="form-label">Phone</label>
                       <input
@@ -479,6 +483,7 @@
                         formControlName="website"
                       />
                     </div>
+                  }
                     <div class="col-12">
                       <label for="inputAbout" class="form-label">About</label>
                       <textarea
@@ -664,7 +669,7 @@
                             <button
                               type="submit"
                               class="btn btn-primary"
-                              (click)="submitForm()"
+                              (click)="submitCategoryForm()"
                             >
                               Submit
                             </button>
@@ -900,7 +905,7 @@
                   </div>
 
                   <!--  -->
-                  <form class="row">
+                  <!-- <form class="row">
                     <div class="mb-3 row d-flex justify-content-between">
                       <div class="col-md-6">
                         <button
@@ -968,7 +973,6 @@
                             >
                               <i class="bi bi-trash"></i>
                             </a>
-                            <!-- delete modal3 -->
                             <div
                               class="modal fade"
                               id="basicModal4"
@@ -1008,8 +1012,6 @@
                                 </div>
                               </div>
                             </div>
-                            <!-- delete modal3 end -->
-
                           </td>
                         </tr>
                         <tr *ngIf="(services$ | async)?.length === 0">
@@ -1038,7 +1040,7 @@
                         <option [ngValue]="6">6</option>
                       </select>
                     </div>
-                  </form>
+                  </form> -->
                   <!--  -->
                 </div>
               </div>
