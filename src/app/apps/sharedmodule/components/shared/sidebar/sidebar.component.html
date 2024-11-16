@@ -4,11 +4,30 @@
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    <div class="side-bar-links p-2" style="background-color: blueviolet;">
-      Services
-    </div>
-    <div class="side-bar-links my-2 p-2"  style="background-color: violet;">
-      Category
-    </div>
+    <ul class="m-0 p-0 list-unstyled">
+      <li class="side-bar-links" style="width: 100%; margin-bottom: 1rem;">
+        <a routerLink="/profile"
+           class="p-2 d-block text-decoration-none fw-bold"
+           style="width: 100%;color: #485056;" routerLinkActive="active">
+          Profile
+        </a>
+      </li>
+      <li class="side-bar-links" style="width: 100%; margin-bottom: 1rem;">
+        <a routerLink="/business"
+           class="p-2 d-block text-decoration-none fw-bold"
+           style="width: 100%;color: #485056;" routerLinkActive="active">
+          Businesses
+        </a>
+      </li>
+      <li class="side-bar-links" style="width: 100%; margin-bottom: 1rem;">
+        <a routerLink="/orders"
+           class="p-2 d-block text-decoration-none fw-bold"
+           style="width: 100%;color: #485056;" routerLinkActive="active">
+          Orders
+        </a>
+      </li>
+    </ul>
+
+
   </div>
 </aside>
