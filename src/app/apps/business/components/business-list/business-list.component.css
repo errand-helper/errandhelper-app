@@ -17,3 +17,9 @@
 .property-item .border-end {
   border-right: 1px dashed rgba(0, 185, 142, .3) !important;
 }
+a{
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
