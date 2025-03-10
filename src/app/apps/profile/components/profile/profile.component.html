@@ -3,100 +3,86 @@
 <!-- Aside -->
 <app-sidebar></app-sidebar>
 
-
 <!-- Main -->
 <div id="main-demo" class="">
   <!-- Profile 1 - Bootstrap Brain Component -->
   <section class="bg-light py-3 py-md-5 py-xl-8">
-
     <div class="container mt-5 pt-3">
       <div class="row gy-4 gy-lg-0">
         <div class="col-12 col-lg-4 col-xl-3">
           <div class="row gy-4">
             <div class="col-12">
               <div class="card widget-card border-light shadow-sm">
-                <div class="card-header text-bg-primary">Welcome, {{profile?.first_name}}</div>
+                <div class="card-header text-bg-primary">
+                  Welcome, {{ profile?.first_name }}
+                </div>
                 <div class="card-body">
                   <div class="text-center my-3">
-                    <img src="{{profile?.image}}" alt="" style="width: 80px;height: 80px;border-radius: 50%;">
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                      <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                    </svg> -->
+                    <img
+                      src="{{ profile?.image }}"
+                      alt=""
+                      style="width: 80px; height: 80px; border-radius: 50%"
+                    />
                   </div>
-                  <h5 class="text-center mb-1">{{profile?.first_name}} {{profile?.last_name}}</h5>
-                  <p class="text-center text-secondary mb-4">{{profile?.email}}</p>
+                  <h5 class="text-center mb-1">
+                    {{ profile?.first_name }} {{ profile?.last_name }}
+                  </h5>
+                  <p class="text-center text-secondary mb-4">
+                    {{ profile?.email }}
+                  </p>
                   <ul class="list-group list-group-flush mb-4">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <li
+                      class="list-group-item d-flex justify-content-between align-items-center"
+                    >
                       <h6 class="m-0">Orders</h6>
                       <span>7,854</span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <li
+                      class="list-group-item d-flex justify-content-between align-items-center"
+                    >
                       <h6 class="m-0">Reviews</h6>
                       <span>5,987</span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center"></li>
-                    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                      <h6 class="m-0">Friends</h6>
-                      <span>4,620</span>
-                    </li> -->
+                    <li
+                      class="list-group-item d-flex justify-content-between align-items-center"
+                    ></li>
                   </ul>
-                  <!-- <div class="d-grid m-0">
-                    <button class="btn btn-outline-primary" type="button">Follow</button>
-                  </div> -->
                 </div>
               </div>
             </div>
             <div class="col-12" *ngIf="profile?.user_type === 'BUSINESS'">
               <div class="card widget-card border-light shadow-sm">
-                <div class="card-header text-bg-primary mb-2">Social Accounts</div>
+                <div class="card-header text-bg-primary mb-2">
+                  Social Accounts
+                </div>
                 <div class="card-body">
-                  <a href="#!" class="d-inline-block bg-dark link-light lh-1 p-2 rounded">
-                    <i class="bi bi-youtube"></i>
-                  </a>&nbsp;&nbsp;
-                  <a href="#!" class="d-inline-block bg-dark link-light lh-1 p-2 rounded">
-                    <i class="bi bi-twitter-x"></i>
-                  </a>&nbsp;&nbsp;
-                  <a href="#!" class="d-inline-block bg-dark link-light lh-1 p-2 rounded">
-                    <i class="bi bi-facebook"></i>
-                  </a>&nbsp;&nbsp;
-                  <a href="#!" class="d-inline-block bg-dark link-light lh-1 p-2 rounded">
+                  <a
+                    href="#!"
+                    class="d-inline-block bg-dark link-light lh-1 p-2 rounded"
+                  >
+                    <i class="bi bi-youtube"></i> </a
+                  >&nbsp;&nbsp;
+                  <a
+                    href="#!"
+                    class="d-inline-block bg-dark link-light lh-1 p-2 rounded"
+                  >
+                    <i class="bi bi-twitter-x"></i> </a
+                  >&nbsp;&nbsp;
+                  <a
+                    href="#!"
+                    class="d-inline-block bg-dark link-light lh-1 p-2 rounded"
+                  >
+                    <i class="bi bi-facebook"></i> </a
+                  >&nbsp;&nbsp;
+                  <a
+                    href="#!"
+                    class="d-inline-block bg-dark link-light lh-1 p-2 rounded"
+                  >
                     <i class="bi bi-linkedin"></i>
                   </a>
                 </div>
               </div>
             </div>
-            <!-- <div class="col-12">
-              <div class="card widget-card border-light shadow-sm">
-                <div class="card-header text-bg-primary">About Me</div>
-                <div class="card-body">
-                  <ul class="list-group list-group-flush mb-0">
-                    <li class="list-group-item">
-                      <h6 class="mb-1">
-                        <span class="bii bi-mortarboard-fill me-2"></span>
-                        Education
-                      </h6>
-                      <span>M.S Computer Science</span>
-                    </li>
-                    <li class="list-group-item">
-                      <h6 class="mb-1">
-                        <span class="bii bi-geo-alt-fill me-2"></span>
-                        Location
-                      </h6>
-                      <span>Mountain View, California</span>
-                    </li>
-                    <li class="list-group-item">
-                      <h6 class="mb-1">
-                        <span class="bii bi-building-fill-gear me-2"></span>
-                        Company
-                      </h6>
-                      <span>GitHub Inc</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>-->
-
           </div>
         </div>
         <div class="col-12 col-lg-8 col-xl-9">
@@ -104,193 +90,462 @@
             <div class="card-body p-4">
               <ul class="nav nav-tabs" id="profileTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="overview-tab" data-bs-toggle="tab"
-                    data-bs-target="#overview-tab-pane" type="button" role="tab" aria-controls="overview-tab-pane"
-                    aria-selected="true">Overview</button>
+                  <button
+                    class="nav-link active"
+                    id="overview-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#overview-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="overview-tab-pane"
+                    aria-selected="true"
+                  >
+                    Overview
+                  </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
-                    type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
+                  <button
+                    class="nav-link"
+                    id="profile-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#profile-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="profile-tab-pane"
+                    aria-selected="false"
+                  >
+                    Update Profile
+                  </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="email-tab" data-bs-toggle="tab" data-bs-target="#email-tab-pane"
-                    type="button" role="tab" aria-controls="email-tab-pane" aria-selected="false">Emails</button>
+                  <button
+                    class="nav-link"
+                    id="email-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#email-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="email-tab-pane"
+                    aria-selected="false"
+                  >
+                    Emails
+                  </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password-tab-pane"
-                    type="button" role="tab" aria-controls="password-tab-pane" aria-selected="false">Password</button>
+                  <button
+                    class="nav-link"
+                    id="password-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#password-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="password-tab-pane"
+                    aria-selected="false"
+                  >
+                    Password
+                  </button>
                 </li>
+                @if(user_type ==='ADMIN'){
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="password-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#categories-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="password-tab-pane"
+                    aria-selected="false"
+                  >
+                    Categories
+                  </button>
+                </li>
+                }
+                <!-- @if(user_type ==='BUSINESS'){
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    id="services-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#services-tab-pane"
+                    type="button"
+                    role="tab"
+                    aria-controls="services-tab-pane"
+                    aria-selected="false"
+                  >
+                    Services
+                  </button>
+                </li>
+                } -->
               </ul>
               <div class="tab-content pt-4" id="profileTabContent">
-                <div class="tab-pane fade show active" id="overview-tab-pane" role="tabpanel"
-                  aria-labelledby="overview-tab" tabindex="0">
+                <div
+                  class="tab-pane fade show active"
+                  id="overview-tab-pane"
+                  role="tabpanel"
+                  aria-labelledby="overview-tab"
+                  tabindex="0"
+                >
                   <h5 class="mb-3">About</h5>
-                  <p class="mb-3">{{profile?.bio}}</p>
+                  <p class="mb-3">
+                    {{ profile?.bio ? profile?.bio : "Not Available" }}
+                  </p>
                   <div class="row g-0">
-                    <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+                    @if(profile?.user_type==='BUSINESS'){
+                    <div
+                      class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                    >
                       <div class="p-2">Phone</div>
                     </div>
-                    <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                      <div class="p-2">{{profile?.phone_number}}</div>
+                    <div
+                      class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                    >
+                      <div class="p-2">
+                        {{
+                          profile?.phone_number
+                            ? profile?.phone_number
+                            : "Not Available"
+                        }}
+                      </div>
                     </div>
-                    <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+                  <!-- } -->
+                    <div
+                      class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                    >
                       <div class="p-2">Address</div>
                     </div>
-                    <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                      <div class="p-2">{{profile?.location?.address | titlecase}}</div>
+                    <div
+                      class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                    >
+                      <div class="p-2">
+                        {{
+                          profile?.location?.address
+                            ? profile?.location?.address
+                            : ("Not Available" | titlecase)
+                        }}
+                      </div>
                     </div>
-                    <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+                    <!-- @if(profile?.user_type==='BUSINESS'){ -->
+                    <div
+                      class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                    >
                       <div class="p-2">Location</div>
                     </div>
-                    <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                      <div class="p-2">{{profile?.location?.location | titlecase}}</div>
+                    <div
+                      class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                    >
+                      <div class="p-2">
+                        {{
+                          profile?.location?.location
+                            ? profile?.location?.location
+                            : ("Not Available" | titlecase)
+                        }}
+                      </div>
                     </div>
-                    <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+                    <div
+                      class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                    >
                       <div class="p-2">Town</div>
                     </div>
-                    <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                      <div class="p-2">{{profile?.location?.town | titlecase}}</div>
+                    <div
+                      class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                    >
+                      <div class="p-2">
+                        {{
+                          profile?.location?.town
+                            ? profile?.location?.town
+                            : ("Not Available" | titlecase)
+                        }}
+                      </div>
                     </div>
-                    <div class="col-5 col-md-3 bg-light border-bottom border-white border-3">
+                    <div
+                      class="col-5 col-md-3 bg-light border-bottom border-white border-3"
+                    >
                       <div class="p-2">City</div>
                     </div>
-                    <div class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                      <div class="p-2">{{profile?.location?.city | titlecase}}</div>
+                    <div
+                      class="col-7 col-md-9 bg-light border-start border-bottom border-white border-3"
+                    >
+                      <div class="p-2">
+                        {{
+                          profile?.location?.city
+                            ? profile?.location?.city
+                            : ("Not Available" | titlecase)
+                        }}
+                      </div>
                     </div>
-
-                    <div  *ngIf="profile?.user_type === 'BUSINESS'">
-                      <h5 class="my-2">Services</h5>
+                    <div>
+                      <h5 class="my-2">Business Details</h5>
                       <div class="">
-                        <span class="badge text-bg-primary">HTML</span>&nbsp;
+                        Business name: {{business_details?.business_name | titlecase}}
+                        <!-- <span class="badge text-bg-primary">HTML</span>&nbsp;
                         <span class="badge text-bg-primary">SCSS</span>&nbsp;
-                        <span class="badge text-bg-primary">Javascript</span>&nbsp;
+                        <span class="badge text-bg-primary">Javascript</span
+                        >&nbsp;
                         <span class="badge text-bg-primary">React</span>&nbsp;
                         <span class="badge text-bg-primary">Vue</span>&nbsp;
                         <span class="badge text-bg-primary">Angular</span>&nbsp;
                         <span class="badge text-bg-primary">UI</span>&nbsp;
-                        <span class="badge text-bg-primary">UX</span>
+                        <span class="badge text-bg-primary">UX</span> -->
                       </div>
                     </div>
-
+                  }
                   </div>
                 </div>
-                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab"
-                  tabindex="0">
-                  <form action="#!" class="row gy-3 gy-xxl-4" [formGroup]="updateProfileForm"
-                    (ngSubmit)="updateProfile()">
+                <div
+                  class="tab-pane fade"
+                  id="profile-tab-pane"
+                  role="tabpanel"
+                  aria-labelledby="profile-tab"
+                  tabindex="0"
+                >
+                  <form
+                    class="row gy-3 gy-xxl-4"
+                    [formGroup]="updateProfileForm"
+                    (ngSubmit)="updateProfile()"
+                  >
                     <div class="col-12">
                       <div class="row gy-2">
                         <!-- <label class="col-12 form-label m-0">Profile Image</label> -->
                         <div class="col-12">
-                          <img src="{{profile?.image}}" class="img-fluid" alt=""
-                            style="width: 80px;height: 80px;border-radius: 50%;">
+                          <img
+                            src="{{ profile?.image }}"
+                            class="img-fluid"
+                            alt=""
+                            style="
+                              width: 80px;
+                              height: 80px;
+                              border-radius: 50%;
+                            "
+                          />
                         </div>
                         <div class="col-12">
-                          <a href="#!" class="d-inline-block bg-primary link-light lh-1 p-2 rounded">
-                            <i class="bi bi-upload"></i>
-                          </a>&nbsp;
-                          <a href="#!" class="d-inline-block bg-danger link-light lh-1 p-2 rounded">
+                          <a
+                            href="#!"
+                            class="d-inline-block bg-primary link-light lh-1 p-2 rounded"
+                          >
+                            <i class="bi bi-upload"></i> </a
+                          >&nbsp;
+                          <a
+                            href="#!"
+                            class="d-inline-block bg-danger link-light lh-1 p-2 rounded"
+                          >
                             <i class="bi bi-trash"></i>
                           </a>
                         </div>
                       </div>
                     </div>
-
+                    @if(profile?.user_type==='BUSINESS'){
                     <div class="col-12 col-md-6">
                       <label for="inputPhone" class="form-label">Phone</label>
-                      <input type="tel" class="form-control"
-                        placeholder="{{profile?.phone_number ? profile?.phone_number : '25486798745'}}"
-                        formControlName="phone_number">
+                      <input
+                        type="tel"
+                        class="form-control"
+                        placeholder="{{
+                          profile?.phone_number ? profile?.phone_number : ''
+                        }}"
+                        formControlName="phone_number"
+                      />
                     </div>
                     <div class="col-12 col-md-6">
-                      <label for="inputEmail" class="form-label">Location</label>
-                      <input type="email" class="form-control"
-                        placeholder="{{profile?.location?.location ? profile?.location?.location : 'leo@example.com'}}"
-                        formControlName="location">
+                      <label for="inputEmail" class="form-label"
+                        >Location</label
+                      >
+                      <input
+                        type="email"
+                        class="form-control"
+                        placeholder="{{
+                          profile?.location?.location
+                            ? profile?.location?.location
+                            : ''
+                        }}"
+                        formControlName="location"
+                      />
                     </div>
                     <div class="col-12 col-md-6">
-                      <label for="inputAddress" class="form-label">Address</label>
-                      <input type="text" class="form-control"
-                        placeholder="{{profile?.location?.address ? profile?.location?.address : 'Mountain View, California'}}"
-                        formControlName="address">
+                      <label for="inputAddress" class="form-label"
+                        >Address</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="{{
+                          profile?.location?.address
+                            ? profile?.location?.address
+                            : ''
+                        }}"
+                        formControlName="address"
+                      />
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="inputCountry" class="form-label">Town</label>
-                      <input type="text" class="form-control"
-                        placeholder="{{profile?.location?.town ? profile?.location?.town : 'https://www.youtube.com/EthanLeo'}}"
-                        formControlName="town">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="{{
+                          profile?.location?.town ? profile?.location?.town : ''
+                        }}"
+                        formControlName="town"
+                      />
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="inputCountry" class="form-label">City</label>
-                      <input type="text" class="form-control"
-                        placeholder="{{profile?.location?.city ? profile?.location?.city : 'https://www.youtube.com/EthanLeo'}}"
-                        formControlName="city">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="{{
+                          profile?.location?.city ? profile?.location?.city : ''
+                        }}"
+                        formControlName="city"
+                      />
                     </div>
                     <div class="col-12 col-md-6">
-                      <label for="inputYouTube" class="form-label">Facebook</label>
-                      <input type="text" class="form-control"
-                        placeholder="{{profile?.social_media?.facebook ? profile?.social_media?.facebook : 'https://www.youtube.com/EthanLeo'}}"
-                        formControlName="facebook">
+                      <label for="inputYouTube" class="form-label"
+                        >Facebook</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="{{
+                          profile?.social_media?.facebook
+                            ? profile?.social_media?.facebook
+                            : ''
+                        }}"
+                        formControlName="facebook"
+                      />
                     </div>
                     <div class="col-12 col-md-6">
                       <label for="inputX" class="form-label">X</label>
-                      <input type="text" class="form-control"
-                        placeholder="{{profile?.social_media?.twitter ? profile?.social_media?.twitter : 'https://twitter.com/EthanLeo'}}"
-                        formControlName="twitter">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="{{
+                          profile?.social_media?.twitter
+                            ? profile?.social_media?.twitter
+                            : ''
+                        }}"
+                        formControlName="twitter"
+                      />
                     </div>
                     <div class="col-12 col-md-6">
-                      <label for="inputFacebook" class="form-label">Instagram</label>
-                      <input type="text" class="form-control"
-                        placeholder="{{profile?.social_media?.instagram ? profile?.social_media?.instagram : 'https://www.facebook.com/EthanLeo'}}"
-                        formControlName="instagram">
+                      <label for="inputFacebook" class="form-label"
+                        >Instagram</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="{{
+                          profile?.social_media?.instagram
+                            ? profile?.social_media?.instagram
+                            : ''
+                        }}"
+                        formControlName="instagram"
+                      />
                     </div>
                     <div class="col-12 col-md-6">
-                      <label for="inputLinkedIn" class="form-label">LinkedIn</label>
-                      <input type="text" class="form-control"
-                        placeholder="{{profile?.social_media?.linkedin ? profile?.social_media?.linkedin : 'https://www.linkedin.com/EthanLeo'}}"
-                        formControlName="linkedin">
+                      <label for="inputLinkedIn" class="form-label"
+                        >LinkedIn</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="{{
+                          profile?.social_media?.linkedin
+                            ? profile?.social_media?.linkedin
+                            : ''
+                        }}"
+                        formControlName="linkedin"
+                      />
                     </div>
                     <div class="col-12 col-md-6">
-                      <label for="inputLinkedIn" class="form-label">Website</label>
-                      <input type="text" class="form-control"
-                        placeholder="{{profile?.social_media?.website ? profile?.social_media?.website : 'https://www.linkedin.com/EthanLeo'}}"
-                        formControlName="website">
+                      <label for="inputLinkedIn" class="form-label"
+                        >Website</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="{{
+                          profile?.social_media?.website
+                            ? profile?.social_media?.website
+                            : ''
+                        }}"
+                        formControlName="website"
+                      />
                     </div>
+                  }
                     <div class="col-12">
                       <label for="inputAbout" class="form-label">About</label>
-                      <textarea class="form-control" rows="5" cols="8" formControlName="bio"></textarea>
+                      <textarea
+                        class="form-control"
+                        rows="5"
+                        cols="8"
+                        formControlName="bio"
+                        placeholder="{{ profile?.bio ? profile?.bio : '' }}"
+                      ></textarea>
                     </div>
                     <div class="col-12">
-                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                      <button type="submit" class="btn btn-primary">
+                        Save Changes
+                      </button>
                     </div>
                   </form>
                 </div>
-                <div class="tab-pane fade" id="email-tab-pane" role="tabpanel" aria-labelledby="email-tab" tabindex="0">
-                  <form action="#!">
+                <div
+                  class="tab-pane fade"
+                  id="email-tab-pane"
+                  role="tabpanel"
+                  aria-labelledby="email-tab"
+                  tabindex="0"
+                >
+                  <form>
                     <fieldset class="row gy-3 gy-md-0">
-                      <legend class="col-form-label col-12 col-md-3 col-xl-2">Email Alerts</legend>
+                      <legend class="col-form-label col-12 col-md-3 col-xl-2">
+                        Email Alerts
+                      </legend>
                       <div class="col-12 col-md-9 col-xl-10">
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="emailChange">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="emailChange"
+                          />
                           <label class="form-check-label" for="emailChange">
                             Email Changed
                           </label>
                         </div>
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="passwordChange">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="passwordChange"
+                          />
                           <label class="form-check-label" for="passwordChange">
                             Password Changed
                           </label>
                         </div>
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="weeklyNewsletter">
-                          <label class="form-check-label" for="weeklyNewsletter">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="weeklyNewsletter"
+                          />
+                          <label
+                            class="form-check-label"
+                            for="weeklyNewsletter"
+                          >
                             Weekly Newsletter
                           </label>
                         </div>
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="productPromotions">
-                          <label class="form-check-label" for="productPromotions">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="productPromotions"
+                          />
+                          <label
+                            class="form-check-label"
+                            for="productPromotions"
+                          >
                             Product Promotions
                           </label>
                         </div>
@@ -298,32 +553,484 @@
                     </fieldset>
                     <div class="row">
                       <div class="col-12">
-                        <button type="submit" class="btn btn-primary mt-4">Save Changes</button>
+                        <button type="submit" class="btn btn-primary mt-4">
+                          Save Changes
+                        </button>
                       </div>
                     </div>
                   </form>
                 </div>
-                <div class="tab-pane fade" id="password-tab-pane" role="tabpanel" aria-labelledby="password-tab"
-                  tabindex="0">
-                  <form action="#!">
+                <div
+                  class="tab-pane fade"
+                  id="password-tab-pane"
+                  role="tabpanel"
+                  aria-labelledby="password-tab"
+                  tabindex="0"
+                >
+                  <form>
                     <div class="row gy-3 gy-xxl-4">
                       <div class="col-12">
-                        <label for="currentPassword" class="form-label">Current Password</label>
-                        <input type="password" class="form-control" id="currentPassword">
+                        <label for="currentPassword" class="form-label"
+                          >Current Password</label
+                        >
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="currentPassword"
+                        />
                       </div>
                       <div class="col-12">
-                        <label for="newPassword" class="form-label">New Password</label>
-                        <input type="password" class="form-control" id="newPassword">
+                        <label for="newPassword" class="form-label"
+                          >New Password</label
+                        >
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="newPassword"
+                        />
                       </div>
                       <div class="col-12">
-                        <label for="confirmPassword" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirmPassword">
+                        <label for="confirmPassword" class="form-label"
+                          >Confirm Password</label
+                        >
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="confirmPassword"
+                        />
                       </div>
                       <div class="col-12">
-                        <button type="submit" class="btn btn-primary">Change Password</button>
+                        <button type="submit" class="btn btn-primary">
+                          Change Password
+                        </button>
                       </div>
                     </div>
                   </form>
+                </div>
+                <div
+                  class="tab-pane fade"
+                  id="categories-tab-pane"
+                  role="tabpanel"
+                  aria-labelledby="categories-tab"
+                  tabindex="0"
+                >
+                  <!-- Button trigger modal -->
+                  <div>
+                    <!-- modal 2 -->
+                    <div class="modal fade" id="basicModal2" tabindex="-1">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">{{ modalTitle }}</h5>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+
+                          <div class="modal-body">
+                            <form [formGroup]="categoryForm">
+                              <div class="row gy-3 gy-xxl-4">
+                                <div class="col-md-12">
+                                  <label for="" class="form-label"
+                                    >Category name</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    formControlName="name"
+                                  />
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-secondary"
+                              data-bs-dismiss="modal"
+                            >
+                              Close
+                            </button>
+                            <button
+                              type="submit"
+                              class="btn btn-primary"
+                              (click)="submitCategoryForm()"
+                            >
+                              Submit
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- modal 2 end -->
+                  </div>
+
+                  <!--  -->
+                  <form class="row">
+                    <div class="mb-3 row d-flex justify-content-between">
+                      <div class="col-md-6">
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-bs-toggle="modal"
+                          data-bs-target="#basicModal2"
+                          (click)="addNewCategory()"
+                        >
+                          Add category
+                        </button>
+                      </div>
+                      <div class="col-md-6 row">
+                        <input
+                          id="table-complete-search"
+                          type="text"
+                          class="form-control"
+                          name="searchTerm"
+                          placeholder="search"
+                          [(ngModel)]="_categoryService.searchTerm"
+                        />
+                      </div>
+                      @if (_categoryService.loading$ | async) {
+                      <span class="col col-form-label">Loading...</span>
+                      }
+                    </div>
+
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col" sortable="name">Category Name</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="
+                            let category of categories$ | async;
+                            index as i;
+                            trackBy: trackByCountryId
+                          "
+                        >
+                          <td scope="row">{{ i + 1 }}</td>
+                          <td>
+                            <ngb-highlight
+                              [result]="category.name | titlecase"
+                              [term]="_categoryService.searchTerm"
+                            ></ngb-highlight>
+                          </td>
+                          <td>
+                            <a
+                              class="d-inline-block bg-primary link-light lh-1 p-2 rounded"
+                              data-bs-toggle="modal"
+                              data-bs-target="#basicModal2"
+                              (click)="editCategory(category)"
+                            >
+                              <i class="bi bi-pencil-square"></i> </a
+                            >&nbsp;&nbsp;&nbsp;
+                            <a
+                              data-bs-toggle="modal"
+                              data-bs-target="#basicModal3"
+                              (click)="selectedCategoryId = category.id"
+                              class="d-inline-block bg-danger link-light lh-1 p-2 rounded"
+                            >
+                              <i class="bi bi-trash"></i>
+                            </a>
+                            <!-- delete modal -->
+                            <div
+                              class="modal fade"
+                              id="basicModal3"
+                              tabindex="-1"
+                            >
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title">
+                                      Are you sure you want to delete this
+                                      category?
+                                    </h5>
+                                    <button
+                                      type="button"
+                                      class="btn-close"
+                                      data-bs-dismiss="modal"
+                                      aria-label="Close"
+                                    ></button>
+                                  </div>
+
+                                  <div class="modal-footer">
+                                    <button
+                                      type="button"
+                                      class="btn btn-secondary"
+                                      data-bs-dismiss="modal"
+                                    >
+                                      No
+                                    </button>
+                                    <button
+                                      type="submit"
+                                      class="btn btn-primary"
+                                      (click)="deleteCategory()"
+                                    >
+                                      Yes
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- delete modal end -->
+                          </td>
+                        </tr>
+                        <tr *ngIf="(categories$ | async)?.length === 0">
+                          <td colspan="4" style="text-align: center">
+                            No countries found
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                      <ngb-pagination
+                        [collectionSize]="(categoryTotal$ | async)!"
+                        [(page)]="_categoryService.page"
+                        [pageSize]="_categoryService.pageSize"
+                      >
+                      </ngb-pagination>
+
+                      <select
+                        class="form-select"
+                        style="width: auto"
+                        name="pageSize"
+                        [(ngModel)]="_categoryService.pageSize"
+                      >
+                        <option [ngValue]="4">4</option>
+                        <option [ngValue]="6">6</option>
+                      </select>
+                    </div>
+                  </form>
+                  <!--  -->
+                </div>
+                <div
+                  class="tab-pane fade"
+                  id="services-tab-pane"
+                  role="tabpanel"
+                  aria-labelledby="services-tab"
+                  tabindex="0"
+                >
+                  <!-- Button trigger modal -->
+                  <div>
+                    <!-- modal 2 -->
+                    <div
+                      class="modal fade"
+                      id="basicModalService"
+                      tabindex="-1"
+                    >
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">{{ serviceModalTitle }}</h5>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+
+                          <div class="modal-body">
+                            <form [formGroup]="serviceForm">
+                              <div class="row gy-3 gy-xxl-4">
+                                <div class="col-md-12">
+                                  <label for="" class="form-label"
+                                    >Category name</label
+                                  >
+                                  <ng-select
+                                    appearance="outline"
+                                    placeholder="Select category"
+                                    labelForId="heroId"
+                                    formControlName="category"
+                                  >
+                                    @for (make of categories; track $index) {
+                                    <ng-option [value]="make.id">
+                                      {{ make.name }}
+                                    </ng-option>
+                                    }
+                                  </ng-select>
+                                </div>
+                                <div class="col-md-12">
+                                  <label for="" class="form-label"
+                                    >Service name</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    formControlName="name"
+                                  />
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-secondary"
+                              data-bs-dismiss="modal"
+                            >
+                              Close
+                            </button>
+                            <button
+                              type="submit"
+                              class="btn btn-primary"
+                              (click)="submitServiceForm()"
+                            >
+                              Submit
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- modal 2 end -->
+                  </div>
+
+                  <!--  -->
+                  <!-- <form class="row">
+                    <div class="mb-3 row d-flex justify-content-between">
+                      <div class="col-md-6">
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-bs-toggle="modal"
+                          data-bs-target="#basicModalService"
+                          (click)="addNewService()"
+                        >
+                          Add service
+                        </button>
+                      </div>
+                      <div class="col-md-6 row">
+                        <input
+                          id="table-complete-search"
+                          type="text"
+                          class="form-control"
+                          name="searchTerm"
+                          placeholder="search"
+                          [(ngModel)]="_serviceService.searchTerm"
+                        />
+                      </div>
+                      @if (_serviceService.loading$ | async) {
+                      <span class="col col-form-label">Loading...</span>
+                      }
+                    </div>
+
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col" sortable="name">Category Name</th>
+                          <th scope="col" sortable="name">Service Name</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="let service of services$ | async; index as i"
+                        >
+                          <td scope="row">{{ i + 1 }}</td>
+                          <td>
+                            {{ service.category.name }}
+                          </td>
+                          <td>
+                            <ngb-highlight
+                              [result]="service.name | titlecase"
+                              [term]="_serviceService.searchTerm"
+                            ></ngb-highlight>
+                          </td>
+                          <td>
+                            <a
+                              class="d-inline-block bg-primary link-light lh-1 p-2 rounded"
+                              data-bs-toggle="modal"
+                              data-bs-target="#basicModalService"
+                              (click)="editService(service)"
+                            >
+                              <i class="bi bi-pencil-square"></i> </a
+                            >&nbsp;&nbsp;&nbsp;
+                            <a
+                              data-bs-toggle="modal"
+                              data-bs-target="#basicModal4"
+                              (click)="selectedCategoryId = service.id"
+                              class="d-inline-block bg-danger link-light lh-1 p-2 rounded"
+                            >
+                              <i class="bi bi-trash"></i>
+                            </a>
+                            <div
+                              class="modal fade"
+                              id="basicModal4"
+                              tabindex="-1"
+                            >
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title">
+                                      Are you sure you want to delete this
+                                      service?
+                                    </h5>
+                                    <button
+                                      type="button"
+                                      class="btn-close"
+                                      data-bs-dismiss="modal"
+                                      aria-label="Close"
+                                    ></button>
+                                  </div>
+
+                                  <div class="modal-footer">
+                                    <button
+                                      type="button"
+                                      class="btn btn-secondary"
+                                      data-bs-dismiss="modal"
+                                    >
+                                      No
+                                    </button>
+                                    <button
+                                      type="submit"
+                                      class="btn btn-primary"
+                                      (click)="deleteService()"
+                                    >
+                                      Yes
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr *ngIf="(services$ | async)?.length === 0">
+                          <td colspan="4" style="text-align: center">
+                            Service not found
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between p-2">
+                      <ngb-pagination
+                        [collectionSize]="(serviceTotal$ | async)!"
+                        [(page)]="_serviceService.page"
+                        [pageSize]="_serviceService.pageSize"
+                      >
+                      </ngb-pagination>
+
+                      <select
+                        class="form-select"
+                        style="width: auto"
+                        name="pageSize"
+                        [(ngModel)]="_serviceService.pageSize"
+                      >
+                        <option [ngValue]="4">4</option>
+                        <option [ngValue]="6">6</option>
+                      </select>
+                    </div>
+                  </form> -->
+                  <!--  -->
                 </div>
               </div>
             </div>
@@ -331,9 +1038,10 @@
         </div>
       </div>
     </div>
-
   </section>
-
 </div>
+
+
+
 
 <app-footer></app-footer>

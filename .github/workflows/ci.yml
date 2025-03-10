@@ -1,41 +1,25 @@
-name: CI
+name: Build and Publish image to Docker Hub
 
 on:
-    push:
-      branches: [ "main" ]
-jobs:
-  build:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
+jobs:
+  publish_images:
     runs-on: ubuntu-latest
-    # defaults:
-    #   run:
-    #     working-directory: ./
-    strategy:
-          matrix:
-            node-version: [18.x]
 
     steps:
-      - uses: actions/checkout@v4
-      # - name: Install dependencies
-      #   run: sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libnotify-dev \
-      #       libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test -- --no-watch --browsers=ChromeHeadless
+    - name: checkout
+      uses: actions/checkout@v4
 
+    - name: Set version number
+      run: echo "VERSION=v1.${{ github.run_number }}" >> $GITHUB_ENV
 
-    # steps:
-    #     - uses: actions/checkout@v4
-    #     - name: Use Node.js ${{ matrix.node-version }}
-    #       uses: actions/setup-node@v4
-    #       with:
-    #         node-version: ${{ matrix.node-version }}
-    #         cache: 'npm'
-    #     - run: npm ci
-    #     - run: npm run build --if-present
-    #     - run: npm test
+    - name: Build the Docker image
+      run: docker build -t "${{secrets.IMAGE_NAME}}":latest .
+    - name: push image to docker hub
+      run: |
+        echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+        docker push "${{secrets.IMAGE_NAME}}":latest

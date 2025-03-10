@@ -22,6 +22,11 @@ export class ProfileService {
       headers: headers,
     });
   }
+  getBusiness(){
+    return this.http.get<any[]>(`${this.baseUrl}business/details`, {
+      headers: headers,
+    });
+  }
 
   getProfileImg() {
     return this.http.get(`${this.baseUrl}profile/image`, {
@@ -31,6 +36,30 @@ export class ProfileService {
 
   updateProfile(data:any){
     return this.http.put(`${this.baseUrl}profile/`, data, {
+      headers: headers,
+    });
+  }
+
+  addCategory(data:any){
+    return this.http.post(`${this.baseUrl}service/category/`, data, {
+      headers: headers,
+    });
+  }
+
+  updateCategory(data:any,id:any){
+    return this.http.put(`${this.baseUrl}service/category/${id}/`, data, {
+      headers: headers,
+    });
+  }
+
+  deleteCategory(id:any){
+    return this.http.delete(`${this.baseUrl}service/category/${id}/`, {
+      headers: headers,
+    });
+  }
+
+  getBusinessDetails(id:any){
+    return this.http.get(`${this.baseUrl}business/details/${id}`, {
       headers: headers,
     });
   }
