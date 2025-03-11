@@ -8,6 +8,5 @@ npm-debug.log
 **/LICENSE
 **/CHANGELOG.md
 **/yarn.lock
-**/package-lock.json
 **/tsconfig.json
 **/tsconfig.build.json
