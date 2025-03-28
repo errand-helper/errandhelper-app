@@ -51,31 +51,35 @@
               </div>
             </div>
             <div class="col-12" *ngIf="profile?.user_type === 'BUSINESS'">
-              <div class="card widget-card border-light shadow-sm">
+              <div class="card widget-card border-light shadow-sm" *ngIf="profile?.social_media">
                 <div class="card-header text-bg-primary mb-2">
                   Social Accounts
                 </div>
                 <div class="card-body">
                   <a
-                    href="#!"
+                    href="{{ profile?.social_media?.instagram }}"
+                    target="_blank"
                     class="d-inline-block bg-dark link-light lh-1 p-2 rounded"
                   >
-                    <i class="bi bi-youtube"></i> </a
+                    <i class="bi bi-instagram"></i> </a
                   >&nbsp;&nbsp;
                   <a
-                    href="#!"
+                     href="{{ profile?.social_media?.twitter }}"
+                    target="_blank"
                     class="d-inline-block bg-dark link-light lh-1 p-2 rounded"
                   >
                     <i class="bi bi-twitter-x"></i> </a
                   >&nbsp;&nbsp;
                   <a
-                    href="#!"
+                     href="{{ profile?.social_media?.facebook }}"
+                    target="_blank"
                     class="d-inline-block bg-dark link-light lh-1 p-2 rounded"
                   >
                     <i class="bi bi-facebook"></i> </a
                   >&nbsp;&nbsp;
                   <a
-                    href="#!"
+                     href="{{ profile?.social_media?.linkedin }}"
+                    target="_blank"
                     class="d-inline-block bg-dark link-light lh-1 p-2 rounded"
                   >
                     <i class="bi bi-linkedin"></i>
@@ -302,7 +306,7 @@
                   <form
                     class="row gy-3 gy-xxl-4"
                     [formGroup]="updateProfileForm"
-                    (ngSubmit)="updateProfile()"
+
                   >
                     <div class="col-12">
                       <div class="row gy-2">
@@ -484,9 +488,16 @@
                       ></textarea>
                     </div>
                     <div class="col-12">
-                      <button type="submit" class="btn btn-primary">
-                        Save Changes
-                      </button>
+                      @if(profile?.user_type==='BUSINESS'){
+                        <button type="submit" class="btn btn-primary" (click)="updateProfile()">
+                          Save Changes
+                        </button>
+                      }
+                      @if(profile?.user_type==='CUSTOMER'){
+                        <button type="submit" class="btn btn-primary" (click)="updateProfile()">
+                          Save Changes
+                        </button>
+                      }
                     </div>
                   </form>
                 </div>

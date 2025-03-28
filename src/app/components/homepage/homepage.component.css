@@ -3,6 +3,23 @@
   height: 35rem;
 }
 
+.cover-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  /* background-color: #fff; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  z-index: 9999;
+  /* margin-left:auto; */
+  /* margin-right: auto; */
+  /* padding: 1rem; */
+}
+
 @media only screen and (max-width: 600px) {
 
   .hero-img{

@@ -51,7 +51,11 @@ export class ProfileComponent implements OnInit{
 
 
 
-  constructor(private profileService:ProfileService,private toastr: ToastrService,public _categoryService: CategoryService,public _serviceService:ServiceService){
+  constructor(
+    private profileService:ProfileService,
+    private toastr: ToastrService,
+    public _categoryService: CategoryService,
+    public _serviceService:ServiceService){
 
   }
 
@@ -75,12 +79,12 @@ export class ProfileComponent implements OnInit{
 
   ngOnInit(){
     this.getProfile()
-    this.loadCategories();
+
     // this.categories$ = this._categoryService.categories$;
 		// this.categoryTotal$ = this._categoryService.total$;
 
-    this.services$ = this._serviceService.services$
-    this.serviceTotal$ = this._serviceService.total$
+    // this.services$ = this._serviceService.services$
+    // this.serviceTotal$ = this._serviceService.total$
 
   //   this.categoryTotal$.subscribe(total => {
   //     console.log('Total:', total);
@@ -178,6 +182,8 @@ export class ProfileComponent implements OnInit{
     this.categories$ = this._categoryService.categories$;
     this.categoryTotal$ = this._categoryService.total$;
     // alert('pop')
+    this.services$ = this._serviceService.services$
+    this.serviceTotal$ = this._serviceService.total$
   }
 
   submitCategoryForm() {
@@ -316,7 +322,10 @@ export class ProfileComponent implements OnInit{
       this.user_type = this.profile['user_type']
       if(this.user_type ==='BUSINESS'){
         this.getBusinessDetails()
+        this.loadCategories();
+
       }
+
       // localStorage.setItem('user_type', JSON.stringify(this.user_type));
     })
   }
@@ -350,6 +359,8 @@ export class ProfileComponent implements OnInit{
         website:this.updateProfileForm.value.website ? this.updateProfileForm.value.website : this.profile['social_media']['website'],
     }
     }
+
+    // alert('op')
     console.log(data);
     this.profileService.updateProfile(data).subscribe((res:any)=>{
       console.log(res);
