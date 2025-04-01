@@ -8,6 +8,7 @@ import { Category } from '../../../sharedmodule/models/category';
 import { CategoryService } from '../../../sharedmodule/services/category/category.service';
 import { Service } from '../../../sharedmodule/models/service';
 import { ServiceService } from '../../../sharedmodule/services/service/service.service';
+import { ActivatedRoute } from '@angular/router';
 
 declare var bootstrap: any;
 
@@ -48,14 +49,17 @@ export class ProfileComponent implements OnInit{
   selectedCategoryId:any
 
   business_id:any
-
+  // userType!:any;
 
 
   constructor(
     private profileService:ProfileService,
     private toastr: ToastrService,
     public _categoryService: CategoryService,
-    public _serviceService:ServiceService){
+    public _serviceService:ServiceService,
+    private route: ActivatedRoute
+  ){
+    this.user_type = this.route.snapshot.paramMap.get('user_type');
 
   }
 
@@ -78,7 +82,14 @@ export class ProfileComponent implements OnInit{
 
 
   ngOnInit(){
-    this.getProfile()
+
+    if(this.user_type==='customer'){
+      this.getUserProfile()
+    }else if(this.user_type==='business'){
+      this.getBusinessProfile()
+      this.loadCategories();
+
+    }
 
     // this.categories$ = this._categoryService.categories$;
 		// this.categoryTotal$ = this._categoryService.total$;
@@ -316,17 +327,30 @@ export class ProfileComponent implements OnInit{
     })
   }
 
-  getProfile(){
-    this.profileService.getProfile().subscribe((res:any)=>{
+  getUserProfile(){
+    this.profileService.geUserProfile().subscribe((res:any)=>{
       this.profile = res;
-      this.user_type = this.profile['user_type']
-      if(this.user_type ==='BUSINESS'){
-        this.getBusinessDetails()
-        this.loadCategories();
+      console.log(res);
+      // this.user_type = this.profile['user_type']
+      // if(this.user_type ==='BUSINESS'){
+      //   this.getBusinessDetails()
+      //   this.loadCategories();
 
-      }
+      // }
+    })
+  }
 
-      // localStorage.setItem('user_type', JSON.stringify(this.user_type));
+  getBusinessProfile(){
+    this.profileService.getBusinessProfile().subscribe((res:any)=>{
+      this.profile = res;
+      console.log('getBusinessProfile',res);
+      this.getBusinessDetails()
+      // this.user_type = this.profile['user_type']
+      // if(this.user_type ==='BUSINESS'){
+      //   this.getBusinessDetails()
+      //   this.loadCategories();
+
+      // }
     })
   }
 
@@ -361,10 +385,12 @@ export class ProfileComponent implements OnInit{
     }
 
     // alert('op')
-    console.log(data);
-    this.profileService.updateProfile(data).subscribe((res:any)=>{
+    const method = this.user_type === 'business' ? "updateBusinessProfile" : "updateUserProfile";
+    // console.log(data);
+    this.profileService[method](data).subscribe((res:any)=>{
       console.log(res);
-      this.getProfile()
+      this.user_type === 'business' ? this.getBusinessProfile : this.getUserProfile()
+
       this.toastr.success(`Updated successfully`);
 
     })

@@ -6,7 +6,7 @@ import { HomepageComponent } from './components/homepage/homepage.component';
 
 const routes: Routes = [
   { path: 'authentication', loadChildren: () => import('./apps/auth/auth.module').then(m => m.AuthModule) },
-  { path: 'profile', loadChildren: () => import('./apps/profile/profile.module').then(m => m.ProfileModule),canActivate: [authGuard] },
+  { path: 'profile/:user_type', loadChildren: () => import('./apps/profile/profile.module').then(m => m.ProfileModule),canActivate: [authGuard] },
   { path: 'business', loadChildren: () => import('./apps/business/business.module').then(m => m.BusinessModule),canActivate: [authGuard] },
   {path:'',component:HomepageComponent}
 ];
