@@ -14,12 +14,12 @@
             <div class="col-12">
               <div class="card widget-card border-light shadow-sm">
                 <div class="card-header text-bg-primary">
-                  Welcome, {{ profile?.first_name }}
+                  Welcome, {{ profile?.first_name ? profile?.first_name : business_details?.business_name}}
                 </div>
                 <div class="card-body">
                   <div class="text-center my-3">
                     <img
-                      src="{{ profile?.image }}"
+                      src="{{ profile?.image ? profile?.image : image }}"
                       alt=""
                       style="width: 80px; height: 80px; border-radius: 50%"
                     />
@@ -313,7 +313,7 @@
                         <!-- <label class="col-12 form-label m-0">Profile Image</label> -->
                         <div class="col-12">
                           <img
-                            src="{{ profile?.image }}"
+                            src="{{ profile?.image ? profile?.image : image }}"
                             class="img-fluid"
                             alt=""
                             style="
@@ -488,16 +488,16 @@
                       ></textarea>
                     </div>
                     <div class="col-12">
-                      <!-- @if(profile?.user_type==='BUSINESS'){
+                      @if(profile?.id){
+                        <button type="submit" class="btn btn-primary" (click)="createProfile()">
+                          Save
+                        </button>
+                      }
+                      @else{
                         <button type="submit" class="btn btn-primary" (click)="updateProfile()">
                           Save Changes
                         </button>
-                      } -->
-                      <!-- @if(profile?.user_type==='CUSTOMER'){ -->
-                        <button type="submit" class="btn btn-primary" (click)="updateProfile()">
-                          Save Changes
-                        </button>
-                      <!-- } -->
+                      }
                     </div>
                   </form>
                 </div>
