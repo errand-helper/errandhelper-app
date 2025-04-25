@@ -17,8 +17,14 @@ export class ProfileService {
 
   constructor(private http: HttpClient) { }
 
-  getProfile() {
+  geUserProfile() {
     return this.http.get<any[]>(`${this.baseUrl}profile/`, {
+      headers: headers,
+    });
+  }
+
+  getBusinessProfile(){
+    return this.http.get<any[]>(`${this.baseUrl}business_profile/`, {
       headers: headers,
     });
   }
@@ -34,8 +40,13 @@ export class ProfileService {
     });
   }
 
-  updateProfile(data:any){
+  updateUserProfile(data:any){
     return this.http.put(`${this.baseUrl}profile/`, data, {
+      headers: headers,
+    });
+  }
+  updateBusinessProfile(data:any){
+    return this.http.put(`${this.baseUrl}business_profile/update/`, data, {
       headers: headers,
     });
   }
