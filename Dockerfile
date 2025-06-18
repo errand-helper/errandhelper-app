@@ -1,9 +1,10 @@
 # Stage 1: Build the Angular application
 FROM node:18-slim AS build
 WORKDIR /app
-COPY package*.json ./
-# RUN npm ci
-RUN npm i
+# COPY package*.json ./
+COPY package.json package-lock.json ./
+
+RUN npm ci
 
 RUN npm install -g @angular/cli
 COPY . .

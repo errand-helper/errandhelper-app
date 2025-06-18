@@ -6,7 +6,7 @@
   <div class="offcanvas-body">
     <ul class="m-0 p-0 list-unstyled">
       <li class="side-bar-links" style="width: 100%; margin-bottom: 1rem;">
-        <a routerLink="/profile"
+        <a [routerLink]="['/profile', user_type]"
            class="p-2 d-block text-decoration-none fw-bold"
            style="width: 100%;color: #485056;" routerLinkActive="active">
           Profile

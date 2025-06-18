@@ -8,6 +8,7 @@ import { Category } from '../../../sharedmodule/models/category';
 import { CategoryService } from '../../../sharedmodule/services/category/category.service';
 import { Service } from '../../../sharedmodule/models/service';
 import { ServiceService } from '../../../sharedmodule/services/service/service.service';
+import { ActivatedRoute } from '@angular/router';
 
 declare var bootstrap: any;
 
@@ -48,10 +49,18 @@ export class ProfileComponent implements OnInit{
   selectedCategoryId:any
 
   business_id:any
+  // userType!:any;
+  image: any
 
 
-
-  constructor(private profileService:ProfileService,private toastr: ToastrService,public _categoryService: CategoryService,public _serviceService:ServiceService){
+  constructor(
+    private profileService:ProfileService,
+    private toastr: ToastrService,
+    public _categoryService: CategoryService,
+    public _serviceService:ServiceService,
+    private route: ActivatedRoute
+  ){
+    this.user_type = this.route.snapshot.paramMap.get('user_type');
 
   }
 
@@ -74,13 +83,20 @@ export class ProfileComponent implements OnInit{
 
 
   ngOnInit(){
-    this.getProfile()
-    this.loadCategories();
+
+    if(this.user_type==='customer'){
+      this.getUserProfile()
+    }else if(this.user_type==='business'){
+      this.getBusinessProfile()
+      this.loadCategories();
+
+    }
+
     // this.categories$ = this._categoryService.categories$;
 		// this.categoryTotal$ = this._categoryService.total$;
 
-    this.services$ = this._serviceService.services$
-    this.serviceTotal$ = this._serviceService.total$
+    // this.services$ = this._serviceService.services$
+    // this.serviceTotal$ = this._serviceService.total$
 
   //   this.categoryTotal$.subscribe(total => {
   //     console.log('Total:', total);
@@ -178,6 +194,8 @@ export class ProfileComponent implements OnInit{
     this.categories$ = this._categoryService.categories$;
     this.categoryTotal$ = this._categoryService.total$;
     // alert('pop')
+    this.services$ = this._serviceService.services$
+    this.serviceTotal$ = this._serviceService.total$
   }
 
   submitCategoryForm() {
@@ -310,14 +328,33 @@ export class ProfileComponent implements OnInit{
     })
   }
 
-  getProfile(){
-    this.profileService.getProfile().subscribe((res:any)=>{
+  getUserProfile(){
+    this.profileService.geUserProfile().subscribe((res:any)=>{
       this.profile = res;
-      this.user_type = this.profile['user_type']
-      if(this.user_type ==='BUSINESS'){
-        this.getBusinessDetails()
-      }
-      // localStorage.setItem('user_type', JSON.stringify(this.user_type));
+      console.log(res);
+      // this.user_type = this.profile['user_type']
+      // if(this.user_type ==='BUSINESS'){
+      //   this.getBusinessDetails()
+      //   this.loadCategories();
+
+      // }
+    })
+  }
+
+  getBusinessProfile(){
+    this.profileService.getBusinessProfile().subscribe((res:any)=>{
+      this.profile = res;
+      console.log('getBusinessProfile',res);
+      this.getProfileImg()
+      this.getBusinessDetails()
+    })
+  }
+
+  
+  getProfileImg(){
+    this.profileService.getProfileImg().subscribe((res:any)=>{
+      console.log(res);
+      this.image = res.image
     })
   }
 
@@ -331,29 +368,40 @@ export class ProfileComponent implements OnInit{
     })
   }
 
-  updateProfile(){
+  createProfile(){
+    alert('po')
+  }
 
-    let data = {
-      bio:this.updateProfileForm.value.bio ? this.updateProfileForm.value.bio : this.profile['bio'],
-      phone_number: this.updateProfileForm.value.phone_number ? this.updateProfileForm.value.phone_number :this.profile['phone_number'],
-      location: {
-        location: this.updateProfileForm.value.location ? this.updateProfileForm.value.location : this.profile['location']['location'],
-        address: this.updateProfileForm.value.address ? this.updateProfileForm.value.address : this.profile['location']['address'],
-        town:this.updateProfileForm.value.town ? this.updateProfileForm.value.town : this.profile['location']['town'],
-        city: this.updateProfileForm.value.city ? this.updateProfileForm.value.city : this.profile['location']['city'],
-    },
-    social_media: {
-        facebook: this.updateProfileForm.value.facebook ? this.updateProfileForm.value.facebook : this.profile['social_media']['facebook'],
-        twitter: this.updateProfileForm.value.twitter ? this.updateProfileForm.value.twitter : this.profile['social_media']['twitter'],
-        instagram:this.updateProfileForm.value.instagram ? this.updateProfileForm.value.instagram : this.profile['social_media']['instagram'],
-        linkedin:this.updateProfileForm.value.linkedin ? this.updateProfileForm.value.linkedin : this.profile['social_media']['linkedin'],
-        website:this.updateProfileForm.value.website ? this.updateProfileForm.value.website : this.profile['social_media']['website'],
+  updateProfile(){
+    let data = {}
+    if(this.profile.user_type==='CUSTOMER'){
+      data = {
+        bio:this.updateProfileForm.value.bio ? this.updateProfileForm.value.bio : this.profile['bio'],
+      }
+    }else{
+      data = {
+        business_id:this.business_details.id,
+        bio:this.updateProfileForm.value.bio ? this.updateProfileForm.value.bio : this.profile['bio'],
+        phone_number: this.updateProfileForm.value.phone_number ? this.updateProfileForm.value.phone_number :this.profile['phone_number'],
+        location: {
+          location: this.updateProfileForm.value.location ? this.updateProfileForm.value.location : this.profile['location']['location'],
+          address: this.updateProfileForm.value.address ? this.updateProfileForm.value.address : this.profile['location']['address'],
+          town:this.updateProfileForm.value.town ? this.updateProfileForm.value.town : this.profile['location']['town'],
+          city: this.updateProfileForm.value.city ? this.updateProfileForm.value.city : this.profile['location']['city'],
+      },
+      social_media: {
+          facebook: this.updateProfileForm.value.facebook ? this.updateProfileForm.value.facebook : this.profile['social_media']['facebook'],
+          twitter: this.updateProfileForm.value.twitter ? this.updateProfileForm.value.twitter : this.profile['social_media']['twitter'],
+          instagram:this.updateProfileForm.value.instagram ? this.updateProfileForm.value.instagram : this.profile['social_media']['instagram'],
+          linkedin:this.updateProfileForm.value.linkedin ? this.updateProfileForm.value.linkedin : this.profile['social_media']['linkedin'],
+          website:this.updateProfileForm.value.website ? this.updateProfileForm.value.website : this.profile['social_media']['website'],
+      }
+      }
     }
-    }
-    console.log(data);
-    this.profileService.updateProfile(data).subscribe((res:any)=>{
-      console.log(res);
-      this.getProfile()
+
+    const method = this.user_type === 'business' ? "updateBusinessProfile" : "updateUserProfile";
+    this.profileService[method](data).subscribe((res:any)=>{
+      this.user_type === 'business' ? this.getBusinessProfile : this.getUserProfile()
       this.toastr.success(`Updated successfully`);
 
     })

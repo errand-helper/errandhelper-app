@@ -37,14 +37,14 @@ export class RegisterComponent implements OnInit {
       registration_number: ['', Validators.required],
       location: ['', Validators.required],
       address: ['', [Validators.required]],
-      phone: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(9),
-          Validators.pattern(/^\d{9}$/),
-        ],
-      ],
+      // phone: [
+      //   '',
+      //   [
+      //     Validators.required,
+      //     Validators.minLength(9),
+      //     Validators.pattern(/^\d{9}$/),
+      //   ],
+      // ],
       city: ['', Validators.required],
       town: ['', [Validators.required]],
       facebook: ['', Validators.required],
@@ -121,7 +121,7 @@ export class RegisterComponent implements OnInit {
       data = {
         first_name: this.registerForm.value.first_name,
         last_name: this.registerForm.value.last_name,
-        phone: this.registerForm.value.phone,
+        id_number: this.registerForm.value.id_number,
         email: this.registerForm.value.email,
         password: this.registerForm.value.password,
         confirm_password: this.registerForm.value.confirm_password,
@@ -143,7 +143,7 @@ export class RegisterComponent implements OnInit {
       data = {
         first_name: this.registerForm.value.first_name,
         last_name: this.registerForm.value.last_name,
-        phone: this.registerForm.value.phone,
+        id_number: this.registerForm.value.id_number,
         email: this.registerForm.value.email,
         business_name: this.registerForm.value.business_name,
         // activation_fee: this.registerForm.value.activation_fee,
