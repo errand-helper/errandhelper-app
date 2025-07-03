@@ -10,14 +10,12 @@ import { HomepageComponent } from './components/homepage/homepage.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DecimalPipe } from '@angular/common';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { SignupComponent } from './apps/auth/signup/signup.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    SignupComponent,
 
   ],
   imports: [
