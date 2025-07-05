@@ -1,7 +1,55 @@
-/* .ng-invalid.ng-touched .form-control {
-  border-color: #dc3545;
+.card {
+  --bs-card-border-width: none;
+  box-shadow: 0 4px 24px rgba(1, 37, 125, 0.08) !important;
 }
-*/
-.ng-invalid.ng-touched .invalid-feedback {
-  display: block;
+
+
+.navbar-brand {
+  text-align: center;
+  background-color: #113385;
+  width: 100%;
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+  padding: .6rem 0;
 }
+
+.navbar-brand a{
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-decoration: none;
+  color: var(--primary-cyan) !important;
+}
+.card-body {
+  padding: 0 !important;
+}
+
+label{
+  color: #113385;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+
+.form-control:focus {
+  border-color: #178582 !important;
+  outline: none;
+  outline: 0;
+  box-shadow:none;
+}
+
+.create-btn{
+  border-color: var(--primary-cyan);
+  font-weight: 600;
+  background-color: var(--primary-blue);
+  color: var(--primary-cyan);
+}
+
+
+
+
+
+
+
+
+
+
