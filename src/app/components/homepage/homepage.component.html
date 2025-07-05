@@ -1,76 +1,398 @@
-<!-- Hero 1 - Bootstrap Brain Component -->
-<!-- <section class="bsb-hero-1 px-3 bsb-overlay bsb-hover-pull py-5" style="background-image: url('https://images.unsplash.com/photo-1728019352830-eab1242cc806?q=80&w=2865&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
-  <div class="container py-5">
-    <div class="row justify-content-md-center">
-      <div class="col-12 col-md-11 col-lg-9 col-xl-7 col-xxl-6 text-center text-white">
-        <h2 class="display-3 fw-bold mb-3">Art of Design</h2>
-        <p class="lead mb-5">Powerful, extensible, and feature-packed frontend toolkit. Build and customize with Sass, utilize prebuilt grid system and components, and bring projects to life with powerful JavaScript plugins.</p>
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-          <button type="button" class="btn bsb-btn-xl btn-light gap-3">Explore Now</button>
-          <button type="button" class="btn bsb-btn-xl btn-outline-light" routerLink="/authentication/register">Sign up</button>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-running me-2"></i>ErrandHub
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#features">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#how-it-works">How It Works</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#benefits">Benefits</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#contact">Contact</a>
+        </li>
+        <li class="nav-item ms-3">
+          <a class="btn btn-outline-custom" routerLink="/authentication/register">Sign Up</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
+<!-- Hero Section -->
+<section class="hero-section pb-4">
+  <div class="hero-animation">
+    <i class="fas fa-tasks floating-icon" style="font-size: 3rem"></i>
+    <i class="fas fa-handshake floating-icon" style="font-size: 2.5rem"></i>
+    <i class="fas fa-shield-alt floating-icon" style="font-size: 2rem"></i>
+    <i class="fas fa-credit-card floating-icon" style="font-size: 2.8rem"></i>
+  </div>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="hero-content">
+          <h1 class="display-4 fw-bold mb-4">
+            Your Trusted Errand Service Platform
+          </h1>
+          <p class="lead mb-4">
+            Connect with reliable errand service providers. Chat, agree on
+            costs, create contracts, and pay securely with milestone options.
+            All in one secure platform.
+          </p>
+          <div class="hero-buttons">
+            <a href="#signup" class="btn btn-primary-custom btn-lg me-3 mb-3"
+              >Get Started Today</a
+            >
+            <a href="#features" class="btn btn-outline-custom btn-lg mb-3"
+              >Learn More</a
+            >
+          </div>
+          <div class="hero-stats mt-5">
+            <div class="row text-center">
+              <div class="col-4">
+                <div class="stats-counter">500+</div>
+                <small>Service Providers</small>
+              </div>
+              <div class="col-4">
+                <div class="stats-counter">2K+</div>
+                <small>Happy Clients</small>
+              </div>
+              <div class="col-4">
+                <div class="stats-counter">98%</div>
+                <small>Success Rate</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 d-none d-sm-block">
+        <div class="hero-image text-center">
+          <i
+            class="fas fa-mobile-alt"
+            style="font-size: 15rem; opacity: 0.8; color: var(--primary-cyan)"
+          ></i>
         </div>
       </div>
     </div>
   </div>
-</section> -->
+</section>
 
-
-
-
-<!-- <section class="py-3 py-lg-5 py-xl-8">
-  <div class="container overflow-hidden">
-    <div class="row gy-5 gy-lg-0 align-items-lg-center justify-content-lg-between">
-      <div class="col-12 col-lg-6 order-1 order-lg-0">
-        <h2 class="display-3 fw-bold mb-3">Find A Perfect ErrandHelper</h2>
-        <p class="fs-4 mb-5">We work in a customized way by devising and handling entirely online projects with long-term partnerships.</p>
-        <div class="d-grid gap-2 d-sm-flex">
-          <button type="button" class="btn btn-primary bsb-btn-2xl rounded-pill">Explore Now</button>
-          <button type="button" class="btn btn-outline-primary bsb-btn-2xl rounded-pill" routerLink="/authentication/register">Sign up</button>
-        </div>
-      </div>
-      <div class="col-12 col-lg-5 text-center">
-        <div class="position-relative">
-          <div class="bsb-circle border border-4 border-warning position-absolute top-50 start-10 translate-middle z-1"></div>
-          <div class="bsb-circle bg-primary position-absolute top-50 start-50 translate-middle" style="--bsb-cs: 460px;"></div>
-          <div class="bsb-circle border border-4 border-warning position-absolute top-10 end-0 z-1" style="--bsb-cs: 100px;"></div>
-          <img class="img-fluid position-relative z-2 hero-img" loading="lazy" src="https://images.unsplash.com/photo-1728019352830-eab1242cc806?q=80&w=2865&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
-
-
-<div class="container-fluid cover-page p-0">
-  <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
-    <div class="col-md-6 p-4 mt-lg-5">
-      <h2 class="display-4 animated fadeIn mb-4 ">
-        Find A <span class="text-primary">Perfect ErrandHelper</span> To Run
-        Your Errands
-      </h2>
-      <p class="animated fadeIn mb-4 pb-2 lead">
-        Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no.
-        Kasd rebum ipsum et diam justo clita et kasd rebum sea elitr.
+<!-- Features Section -->
+<section id="features" class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-subtitle mb-2">Platform Features</div>
+      <h2 class="section-title display-5">Everything You Need in One Place</h2>
+      <p class="lead text-muted">
+        Streamlined errand services with security and transparency at the core
       </p>
-      <div class="d-grid gap-2 d-sm-flex">
-        <button type="button" class="btn btn-primary bsb-btn-2xl rounded-pill">Explore Now</button>
-        <button type="button" class="btn btn-outline-primary bsb-btn-2xl rounded-pill" routerLink="/authentication/register">Sign up</button>
-      </div>
-      <!-- <a href="" class="btn btn-primary py-3 px-5 me-3 animated fadeIn"
-        >Get Started</a
-      > -->
     </div>
-    <div class="col-md-6 animated fadeIn">
-      <div class="owl-carousel header-carousel">
-        <div class="owl-carousel-item">
-          <img
-            class="img-fluid rounded h-50"
-            src="https://images.unsplash.com/photo-1728019352830-eab1242cc806?q=80&w=2865&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt=""
-          />
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card text-center">
+          <div class="feature-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <h4 class="mb-3">Direct Communication</h4>
+          <p class="text-muted">
+            Chat directly with service providers to discuss your specific errand
+            needs and requirements in real-time.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card text-center">
+          <div class="feature-icon">
+            <i class="fas fa-calculator"></i>
+          </div>
+          <h4 class="mb-3">Transparent Pricing</h4>
+          <p class="text-muted">
+            Negotiate and agree on fair transaction costs upfront with no hidden
+            fees or surprises.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card text-center">
+          <div class="feature-icon">
+            <i class="fas fa-file-contract"></i>
+          </div>
+          <h4 class="mb-3">Smart Contracts</h4>
+          <p class="text-muted">
+            Create detailed work contracts that outline all activities, costs,
+            and terms with digital signatures.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card text-center">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h4 class="mb-3">Milestone Payments</h4>
+          <p class="text-muted">
+            Pay for tasks in stages to ensure quality and progress tracking
+            throughout the errand completion.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card text-center">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h4 class="mb-3">Secure Escrow</h4>
+          <p class="text-muted">
+            Your payments are safely held in our system until tasks are
+            completed to your satisfaction.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-card text-center">
+          <div class="feature-icon">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <h4 class="mb-3">Verified Providers</h4>
+          <p class="text-muted">
+            All service providers are vetted and verified to ensure reliable and
+            professional errand services.
+          </p>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="how-it-works py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-subtitle mb-2">Simple Process</div>
+      <h2 class="section-title display-5">How ErrandHub Works</h2>
+      <p class="lead text-muted">
+        Get your errands done in just a few simple steps
+      </p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="text-center">
+          <div class="step-number">1</div>
+          <h5 class="mb-3">Post Your Errand</h5>
+          <p class="text-muted">
+            Describe what you need done and connect with qualified service
+            providers in your area.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="text-center">
+          <div class="step-number">2</div>
+          <h5 class="mb-3">Chat & Negotiate</h5>
+          <p class="text-muted">
+            Discuss details, timeline, and pricing with providers to find the
+            perfect match for your needs.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="text-center">
+          <div class="step-number">3</div>
+          <h5 class="mb-3">Sign Contract</h5>
+          <p class="text-muted">
+            Create and sign a digital contract that protects both parties and
+            outlines all terms.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="text-center">
+          <div class="step-number">4</div>
+          <h5 class="mb-3">Secure Payment</h5>
+          <p class="text-muted">
+            Pay securely through our escrow system. Funds are released when
+            you're satisfied.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Benefits Section -->
+<section id="benefits" class="py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="section-subtitle mb-2">Why Choose ErrandHub</div>
+        <h2 class="section-title display-5 mb-4">Built for Trust & Security</h2>
+        <div class="row g-4">
+          <div class="col-12">
+            <div class="d-flex">
+              <div
+                class="feature-icon me-3"
+                style="width: 50px; height: 50px; font-size: 1.2rem"
+              >
+                <i class="fas fa-lock"></i>
+              </div>
+              <div>
+                <h5>Bank-Level Security</h5>
+                <p class="text-muted">
+                  Your data and payments are protected with enterprise-grade
+                  encryption.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="d-flex">
+              <div
+                class="feature-icon me-3"
+                style="width: 50px; height: 50px; font-size: 1.2rem"
+              >
+                <i class="fas fa-clock"></i>
+              </div>
+              <div>
+                <h5>24/7 Support</h5>
+                <p class="text-muted">
+                  Our customer support team is always ready to help with any
+                  questions.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="d-flex">
+              <div
+                class="feature-icon me-3"
+                style="width: 50px; height: 50px; font-size: 1.2rem"
+              >
+                <i class="fas fa-medal"></i>
+              </div>
+              <div>
+                <h5>Quality Guarantee</h5>
+                <p class="text-muted">
+                  We ensure all service providers meet our high standards for
+                  reliability.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="text-center">
+          <i
+            class="fas fa-shield-check"
+            style="font-size: 12rem; color: var(--primary-gold); opacity: 0.8"
+          ></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section py-5">
+  <div class="container">
+    <div class="text-center">
+      <h2 class="display-5 mb-4">Ready to Get Started?</h2>
+      <p class="lead mb-4">
+        Join thousands of satisfied customers who trust ErrandHub with their
+        errands
+      </p>
+      <div class="cta-buttons">
+        <a href="#signup" class="btn btn-primary-custom btn-lg me-3 mb-3"
+          >Start as a Client</a
+        >
+        <a href="#provider-signup" class="btn btn-outline-custom btn-lg mb-3"
+          >Become a Provider</a
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer-custom py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 mb-4">
+        <h5 class="mb-3"><i class="fas fa-running me-2"></i>ErrandHub</h5>
+        <p class="text-light">
+          Your trusted platform for secure and reliable errand services.
+          Connecting clients with verified providers since 2024.
+        </p>
+        <div class="social-links">
+          <a href="#" class="me-3"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="me-3"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="mb-3">Platform</h6>
+        <ul class="list-unstyled">
+          <li><a href="#">For Clients</a></li>
+          <li><a href="#">For Providers</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Features</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="mb-3">Support</h6>
+        <ul class="list-unstyled">
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Safety</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="mb-3">Company</h6>
+        <ul class="list-unstyled">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h6 class="mb-3">Legal</h6>
+        <ul class="list-unstyled">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="my-4" />
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <p class="mb-0">&copy; 2024 ErrandHub. All rights reserved.</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <p class="mb-0">
+          Made with <i class="fas fa-heart text-danger"></i> for better errand
+          services
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
