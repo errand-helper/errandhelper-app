@@ -18,7 +18,6 @@ jobs:
       run: |
         echo "GIT_COMMIT_SHA=${{ github.sha }}" >> $GITHUB_ENV
         echo "VERSION=v1.${{ github.run_number }}" >> $GITHUB_ENV
-      # run: echo "VERSION=v1.${{ github.run_number }}" >> $GITHUB_ENV
 
     - name: Build the Docker image
       run: docker build -t "${{secrets.IMAGE_NAME}}":latest -t ${{ secrets.IMAGE_NAME }}:${GIT_COMMIT_SHA} .
