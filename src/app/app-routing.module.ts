@@ -2,7 +2,7 @@ import { BusinessModule } from './apps/business/business.module';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
-import { HomepageComponent } from './components/homepage/homepage.component';
+import { HomepageComponent } from './apps/components/homepage/homepage.component';
 
 const routes: Routes = [
   { path: 'authentication', loadChildren: () => import('./apps/auth/auth.module').then(m => m.AuthModule) },

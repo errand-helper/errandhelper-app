@@ -1,6 +1,6 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProfileService } from './../../services/profile.service';
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { Category } from '../../../sharedmodule/models/category';
@@ -19,6 +19,28 @@ declare var bootstrap: any;
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit{
+
+
+  sidebarActive = false;
+
+toggleSidebar() {
+  this.sidebarActive = !this.sidebarActive;
+}
+
+@HostListener('document:click', ['$event'])
+onDocumentClick(event: MouseEvent) {
+  const sidebar = this.elRef.nativeElement.querySelector('#sidebar');
+  const toggle = this.elRef.nativeElement.querySelector('.mobile-toggle');
+
+  if (window.innerWidth <= 768 && 
+      !sidebar.contains(event.target) &&
+      !toggle.contains(event.target)) {
+    this.sidebarActive = false;
+  }
+}
+
+// constructor() {}
+
 
   modalTitle: string = 'Add New Category';
   serviceModalTitle: string = 'Add New Service';
@@ -58,7 +80,8 @@ export class ProfileComponent implements OnInit{
     private toastr: ToastrService,
     public _categoryService: CategoryService,
     public _serviceService:ServiceService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private elRef: ElementRef
   ){
     this.user_type = this.route.snapshot.paramMap.get('user_type');
 
