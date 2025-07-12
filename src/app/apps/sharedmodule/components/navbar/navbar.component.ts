@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProfileService } from '../../../../profile/services/profile.service';
+// import { ProfileService } from '../../../../profile/services/profile.service';
 import { Router } from '@angular/router';
+import { ProfileService } from '../../../profile/services/profile.service';
+import { SideBarService } from '../../services/side-bar.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,7 +13,12 @@ export class NavbarComponent implements OnInit {
 
   profileImg:any;
 
-  constructor(private profileService:ProfileService,private router:Router){}
+  constructor(private profileService:ProfileService,private router:Router,private sidebarService: SideBarService){}
+
+
+  toggleSidebar() {
+    this.sidebarService.toggleSidebar();
+  }
 
 
   ngOnInit(): void {

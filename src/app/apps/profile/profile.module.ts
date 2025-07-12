@@ -4,7 +4,7 @@ import { CommonModule, DecimalPipe } from '@angular/common';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AppModule } from '../../app.module';
-import { FooterComponent } from '../sharedmodule/components/shared/footer/footer.component';
+import { FooterComponent } from '../sharedmodule/components/footer/footer.component';
 import { SharedModule } from '../sharedmodule/sharedmodule.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';

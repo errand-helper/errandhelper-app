@@ -1,82 +1,52 @@
 <app-sidebar></app-sidebar>
-
+ 
 <!-- Main Content -->
 <div class="main-content">
-    <!-- Page Header -->
-    <div class="d-flex align-items-center mb-4">
-        <button class="mobile-toggle me-3" (click)="toggleSidebar()">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div>
-            <h1 class="h3 mb-0">My Profile</h1>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="dashboard.html" class="text-decoration-none">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Profile</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-
-    <!-- Profile Header Section -->
-    <div class="profile-header">
-        <div class="profile-avatar-section">
-            <div class="profile-avatar">
-                <span>JD</span>
-                <div class="avatar-upload">
-                    <i class="fas fa-camera"></i>
-                    <input type="file" accept="image/*" style="display: none;" id="avatarInput">
-                </div>
-            </div>
-            <div>
-                <h2 class="mb-1">John Doe</h2>
-                <p class="text-muted mb-2">john.doe&#64;email.com</p>
-                <div class="d-flex gap-2 align-items-center">
-                    <span class="verification-badge">
-                        <i class="fas fa-check-circle"></i>
-                        Verified Customer
-                    </span>
-                    <small class="text-muted">Member since Nov 2023</small>
-                </div>
-            </div>
-        </div>
-    </div>
+   <app-navbar></app-navbar>
 
     <!-- Account Stats -->
     <div class="row mb-4">
         <div class="col-md-3 col-sm-6 mb-3">
             <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-check-circle"></i>
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-value">8</div>
                 </div>
-                <div class="stat-value">32</div>
                 <div class="stat-label">Completed Errands</div>
             </div>
         </div>
         <div class="col-md-3 col-sm-6 mb-3">
             <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-star"></i>
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-value">4.8</div>
                 </div>
-                <div class="stat-value">4.8</div>
                 <div class="stat-label">Average Rating</div>
             </div>
         </div>
         <div class="col-md-3 col-sm-6 mb-3">
             <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-dollar-sign"></i>
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="stat-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-value">$2,845</div>
                 </div>
-                <div class="stat-value">$2,845</div>
                 <div class="stat-label">Total Spent</div>
             </div>
         </div>
         <div class="col-md-3 col-sm-6 mb-3">
             <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-users"></i>
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value">12</div>
                 </div>
-                <div class="stat-value">12</div>
                 <div class="stat-label">Service Providers</div>
             </div>
         </div>
