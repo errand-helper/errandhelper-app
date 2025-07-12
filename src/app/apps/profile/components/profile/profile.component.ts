@@ -20,14 +20,10 @@ declare var bootstrap: any;
 })
 export class ProfileComponent implements OnInit{
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    // throw new Error('Method not implemented.');
   }
 
-  constructor(private sidebarService: SideBarService) {}
-
-  toggleSidebar() {
-    this.sidebarService.toggleSidebar();
-  }
+  
 }
 
 

@@ -29,20 +29,7 @@
             font-weight: 600;
         }
 
-        /* Stats Cards */
-        .stat-card {
-            background-color: var(--primary-white);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
-            height: 100%;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
+       
 
 
         /* Section Cards */

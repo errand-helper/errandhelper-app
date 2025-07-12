@@ -1,9 +1,13 @@
 import { AfterViewInit, Component, ElementRef, Renderer2 } from '@angular/core';
+import { SharedModule } from '../../sharedmodule/sharedmodule.module';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.css']
+  styleUrls: ['./homepage.component.css'],
+  standalone: true,
+  imports: [SharedModule,RouterModule]
 })
 export class HomepageComponent implements AfterViewInit {
 
