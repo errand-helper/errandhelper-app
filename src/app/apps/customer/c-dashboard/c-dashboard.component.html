@@ -1,0 +1,363 @@
+ <!-- Sidebar -->
+ <app-sidebar></app-sidebar>
+ <!-- <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <a href="index.html" class="sidebar-brand">
+            <i class="fas fa-running me-2"></i>ErrandHub
+        </a>
+    </div>
+    <ul class="nav nav-pills flex-column sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link active" href="dashboard.html">
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-tasks"></i>
+                My Errands
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-comments"></i>
+                Messages
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-credit-card"></i>
+                Payments
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-file-contract"></i>
+                Contracts
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-user-circle"></i>
+                Profile
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-cog"></i>
+                Settings
+            </a>
+        </li>
+        <li class="nav-item mt-4">
+            <a class="nav-link" href="index.html">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </a>
+        </li>
+    </ul>
+</nav> -->
+
+<!-- Main Content -->
+<div class="main-content">
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div>
+            <button class="mobile-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="h3 mb-0">Customer Dashboard</h1>
+            <p class="text-muted mb-0">Welcome back, John!</p>
+        </div>
+        <div class="user-info">
+            <div class="text-end">
+                <small class="text-muted">Customer Account</small>
+                <div class="fw-semibold">John Doe</div>
+            </div>
+            <div class="user-avatar">JD</div>
+        </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div class="stat-value">8</div>
+                <div class="stat-label">Active Errands</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon gold">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-value">3</div>
+                <div class="stat-label">Pending Payments</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-value">24</div>
+                <div class="stat-label">Completed Errands</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon red">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="stat-value">5</div>
+                <div class="stat-label">Unread Messages</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Content -->
+    <div class="row">
+        <!-- Left Column -->
+        <div class="col-lg-8">
+            <!-- Active Errands -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Active Errands</h2>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="errands-list">
+                    <div class="errand-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-1">Grocery Shopping</h5>
+                                <p class="text-muted mb-2">Quick Errands Co. - Started 2 hours ago</p>
+                                <span class="errand-status status-active">In Progress</span>
+                            </div>
+                            <div class="text-end">
+                                <div class="fw-bold">$45.00</div>
+                                <small class="text-muted">Fixed Price</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="errand-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-1">Document Pickup & Delivery</h5>
+                                <p class="text-muted mb-2">Express Services - Started yesterday</p>
+                                <span class="errand-status status-pending">Awaiting Pickup</span>
+                            </div>
+                            <div class="text-end">
+                                <div class="fw-bold">$25.00</div>
+                                <small class="text-muted">Fixed Price</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="errand-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-1">Home Cleaning Service</h5>
+                                <p class="text-muted mb-2">CleanPro Services - Scheduled for tomorrow</p>
+                                <span class="errand-status status-pending">Scheduled</span>
+                            </div>
+                            <div class="text-end">
+                                <div class="fw-bold">$120.00</div>
+                                <small class="text-muted">Milestone Payment</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Milestones -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Upcoming Milestones</h2>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="milestones-list">
+                    <div class="milestone-item">
+                        <div class="milestone-header">
+                            <div>
+                                <h6 class="mb-1">Office Relocation Assistance</h6>
+                                <small class="text-muted">Next milestone: Packing Complete</small>
+                            </div>
+                            <div class="text-end">
+                                <div class="fw-bold">$200.00</div>
+                                <small class="text-muted">Due in 2 days</small>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    <div class="milestone-item">
+                        <div class="milestone-header">
+                            <div>
+                                <h6 class="mb-1">Weekly Grocery Delivery</h6>
+                                <small class="text-muted">Next milestone: Week 3 Delivery</small>
+                            </div>
+                            <div class="text-end">
+                                <div class="fw-bold">$75.00</div>
+                                <small class="text-muted">Due in 5 days</small>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 40%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Transactions</h2>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="transactions-list">
+                    <div class="transaction-item">
+                        <div>
+                            <div class="fw-semibold">Payment to Quick Errands Co.</div>
+                            <small class="text-muted">Grocery Shopping - 2 hours ago</small>
+                        </div>
+                        <div class="amount-negative">-$45.00</div>
+                    </div>
+                    <div class="transaction-item">
+                        <div>
+                            <div class="fw-semibold">Refund from Express Services</div>
+                            <small class="text-muted">Cancelled errand - Yesterday</small>
+                        </div>
+                        <div class="amount-positive">+$30.00</div>
+                    </div>
+                    <div class="transaction-item">
+                        <div>
+                            <div class="fw-semibold">Payment to CleanPro Services</div>
+                            <small class="text-muted">Monthly cleaning - 3 days ago</small>
+                        </div>
+                        <div class="amount-negative">-$120.00</div>
+                    </div>
+                    <div class="transaction-item">
+                        <div>
+                            <div class="fw-semibold">Milestone payment to MoversPlus</div>
+                            <small class="text-muted">Office relocation - 5 days ago</small>
+                        </div>
+                        <div class="amount-negative">-$300.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-lg-4">
+            <!-- Pending Payments -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Pending Payments</h2>
+                    <a href="#" class="view-all">Pay All</a>
+                </div>
+                <div class="pending-payments">
+                    <div class="errand-item">
+                        <h6 class="mb-1">Document Delivery</h6>
+                        <p class="text-muted mb-2">Express Services</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-danger">$25.00</span>
+                            <button class="btn btn-sm btn-primary">Pay Now</button>
+                        </div>
+                    </div>
+                    <div class="errand-item">
+                        <h6 class="mb-1">Pet Sitting Service</h6>
+                        <p class="text-muted mb-2">PetCare Pros</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-danger">$50.00</span>
+                            <button class="btn btn-sm btn-primary">Pay Now</button>
+                        </div>
+                    </div>
+                    <div class="errand-item">
+                        <h6 class="mb-1">Laundry Pickup</h6>
+                        <p class="text-muted mb-2">WashIt Services</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-danger">$35.00</span>
+                            <button class="btn btn-sm btn-primary">Pay Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Messages</h2>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="messages-list">
+                    <div class="message-item message-unread">
+                        <div class="message-avatar">QE</div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h6 class="mb-1">Quick Errands Co.</h6>
+                                <small class="text-muted">2m ago</small>
+                            </div>
+                            <p class="text-muted mb-0 text-truncate">I've picked up your groceries and...</p>
+                        </div>
+                        <div class="message-indicator"></div>
+                    </div>
+                    <div class="message-item message-unread">
+                        <div class="message-avatar">ES</div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h6 class="mb-1">Express Services</h6>
+                                <small class="text-muted">1h ago</small>
+                            </div>
+                            <p class="text-muted mb-0 text-truncate">Your documents are ready for pickup...</p>
+                        </div>
+                        <div class="message-indicator"></div>
+                    </div>
+                    <div class="message-item">
+                        <div class="message-avatar">CP</div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h6 class="mb-1">CleanPro Services</h6>
+                                <small class="text-muted">3h ago</small>
+                            </div>
+                            <p class="text-muted mb-0 text-truncate">Confirming tomorrow's appointment...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Notifications -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">System Notifications</h2>
+                    <a href="#" class="view-all">Clear All</a>
+                </div>
+                <div class="notifications-list">
+                    <div class="notification-item">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <h6 class="mb-0">Contract Signed</h6>
+                            <span class="notification-time">5m ago</span>
+                        </div>
+                        <p class="mb-0 small">Your contract with Quick Errands Co. has been signed and confirmed.</p>
+                    </div>
+                    <div class="notification-item">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <h6 class="mb-0">Payment Reminder</h6>
+                            <span class="notification-time">2h ago</span>
+                        </div>
+                        <p class="mb-0 small">You have 3 pending payments totaling $110.00</p>
+                    </div>
+                    <div class="notification-item">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <h6 class="mb-0">New Provider Match</h6>
+                            <span class="notification-time">1d ago</span>
+                        </div>
+                        <p class="mb-0 small">5 new service providers match your recent search criteria.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
