@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: 'authentication', loadChildren: () => import('./apps/auth/auth.module').then(m => m.AuthModule) },
   { path: 'profile/:user_type', loadChildren: () => import('./apps/profile/profile.module').then(m => m.ProfileModule),canActivate: [authGuard] },
   { path: 'business', loadChildren: () => import('./apps/business/business.module').then(m => m.BusinessModule),canActivate: [authGuard] },
+  { path: 'customer', loadChildren: () => import('./apps/customer/customer.module').then(m => m.CustomerModule),canActivate: [authGuard] },
   {path:'',component:HomepageComponent}
 ];
 

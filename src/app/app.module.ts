@@ -10,14 +10,12 @@ import { HomepageComponent } from './apps/components/homepage/homepage.component
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DecimalPipe } from '@angular/common';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { CDashboardComponent } from './apps/customer/c-dashboard/c-dashboard.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    CDashboardComponent,
 
   ],
   imports: [
