@@ -28,8 +28,13 @@ export class LoginComponent {
    this.authService.loginUser(data).subscribe((res:any)=>{
     console.log(res);
     localStorage.setItem('access_token', res.access);
+    localStorage.setItem('user_type', res.user_type);
     this.toastr.success('Login successful');
-    this.route.navigate(['/profile']);
+    if(res.user_type === 'BUSINESS'){ 
+      this.route.navigate(['/business']);
+    }else{
+        this.route.navigate(['/client']);
+    }
     },(error)=>{
       console.log(error);
       this.toastr.error('An error occurred, please try again')

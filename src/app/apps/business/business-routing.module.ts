@@ -5,9 +5,9 @@ import { BusinessDetailComponent } from './components/business-detail/business-d
 import { BDashboardComponent } from './components/b-dashboard/b-dashboard.component';
 
 const routes: Routes = [
-  { path: '', component:BusinessListComponent },
+  { path: 'list', component:BusinessListComponent },
   { path: ':id/detail', component:BusinessDetailComponent },
-  { path: 'dashboard', component:BDashboardComponent },
+  { path: '', component:BDashboardComponent },
 
 
 ];
