@@ -29,7 +29,7 @@ export class LoginComponent {
     console.log(res);
     localStorage.setItem('access_token', res.access);
     this.toastr.success('Login successful');
-    this.route.navigate(['/profile',res.user_type.toLowerCase()]);
+    this.route.navigate(['/profile']);
     },(error)=>{
       console.log(error);
       this.toastr.error('An error occurred, please try again')

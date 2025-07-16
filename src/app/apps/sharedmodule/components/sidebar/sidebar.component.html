@@ -7,49 +7,49 @@
     </div>
     <ul class="nav nav-pills flex-column sidebar-nav">
         <li class="nav-item">
-            <a class="nav-link" routerLink="/customer/dashboard">
+            <a class="nav-link" routerLink="/customer" routerLinkActive="active">
                 <i class="fas fa-tachometer-alt"></i>
                 Dashboard
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" routerLink="/errands" routerLinkActive="active">
                 <i class="fas fa-tasks"></i>
                 My Errands
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" routerLink="/messages" routerLinkActive="active">
                 <i class="fas fa-comments"></i>
                 Messages
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" routerLink="/payments" routerLinkActive="active">
                 <i class="fas fa-credit-card"></i>
                 Payments
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" routerLink="/contracts" routerLinkActive="active">
                 <i class="fas fa-file-contract"></i>
                 Contracts
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="profile.html">
+            <a class="nav-link" [routerLink]="['/profile']" routerLinkActive="active">
                 <i class="fas fa-user-circle"></i>
                 Profile
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" routerLink="/settings" routerLinkActive="active">
                 <i class="fas fa-cog"></i>
                 Settings
             </a>
         </li>
         <li class="nav-item mt-4">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" routerLink="/logout" routerLinkActive="active">
                 <i class="fas fa-sign-out-alt"></i>
                 Logout
             </a>
