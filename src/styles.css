@@ -9,6 +9,10 @@
   --border-color: #e0e0e0;
   --light-gray: #f8f9fa;
   scroll-behavior: smooth;
+
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
 }
 
 body {

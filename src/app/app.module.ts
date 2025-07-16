@@ -10,13 +10,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DecimalPipe } from '@angular/common';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { MessagesComponent } from './apps/components/messages/messages.component';
+// import { MessagesComponent } from './apps/components/messages/messages.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    MessagesComponent,
+    // MessagesComponent,
     // HomepageComponent,
 
   ],

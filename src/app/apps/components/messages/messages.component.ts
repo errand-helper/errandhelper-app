@@ -1,7 +1,11 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../sharedmodule/sharedmodule.module';
 
 @Component({
   selector: 'app-messages',
+  standalone: true,
+  imports: [SharedModule, CommonModule],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.css'
 })

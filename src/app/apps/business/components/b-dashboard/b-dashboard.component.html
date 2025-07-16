@@ -1,105 +1,11 @@
-<!-- Sidebar -->
-<nav class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-        <a href="index.html" class="sidebar-brand">
-            <i class="fas fa-running me-2"></i>ErrandHub
-        </a>
-        <div class="provider-badge">
-            <i class="fas fa-briefcase me-1"></i>Business Account
-        </div>
-    </div>
-    <ul class="nav nav-pills flex-column sidebar-nav">
-        <li class="nav-item">
-            <a class="nav-link active" href="business-dashboard.html">
-                <i class="fas fa-tachometer-alt"></i>
-                Dashboard
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-briefcase"></i>
-                Active Jobs
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-bell"></i>
-                Job Requests
-                <span class="badge bg-danger ms-auto">3</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="messages.html">
-                <i class="fas fa-comments"></i>
-                Messages
-                <span class="badge bg-danger ms-auto">5</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-users"></i>
-                My Clients
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-wallet"></i>
-                Earnings
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-calendar-alt"></i>
-                Schedule
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-star"></i>
-                Reviews
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-user-circle"></i>
-                Profile
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-cog"></i>
-                Settings
-            </a>
-        </li>
-        <li class="nav-item mt-4">
-            <a class="nav-link" href="index.html">
-                <i class="fas fa-sign-out-alt"></i>
-                Logout
-            </a>
-        </li>
-    </ul>
-</nav>
+<app-sidebar></app-sidebar>
+
+<!-- Aside -->
 
 
 <!-- Main Content -->
 <div class="main-content">
-    <!-- Header -->
-    <div class="dashboard-header">
-        <div>
-            <button class="mobile-toggle" onclick="toggleSidebar()">
-                <i class="fas fa-bars"></i>
-            </button>
-            <h1 class="h3 mb-0">Business Dashboard</h1>
-            <p class="text-muted mb-0">Welcome back, Quick Errands Co.!</p>
-        </div>
-        <div class="business-info">
-            <div class="text-end">
-                <small class="text-muted">Business Provider</small>
-                <div class="fw-semibold">Quick Errands Co.</div>
-            </div>
-            <div class="business-avatar">QE</div>
-        </div>
-    </div>
+    <app-navbar></app-navbar>
 
     <!-- Earnings Overview -->
     <div class="row mb-4">

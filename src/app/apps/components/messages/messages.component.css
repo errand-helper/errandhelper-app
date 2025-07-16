@@ -92,10 +92,7 @@
             flex-direction: column;
         }
 
-        .conversations-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
+
 
         .search-box {
             position: relative;

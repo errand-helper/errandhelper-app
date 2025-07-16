@@ -1,62 +1,6 @@
  <!-- Sidebar -->
- <nav class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-        <a href="index.html" class="sidebar-brand">
-            <i class="fas fa-running me-2"></i>ErrandHub
-        </a>
-    </div>
-    <ul class="nav nav-pills flex-column sidebar-nav">
-        <li class="nav-item">
-            <a class="nav-link" href="dashboard.html">
-                <i class="fas fa-tachometer-alt"></i>
-                Dashboard
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-tasks"></i>
-                My Errands
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="messages.html">
-                <i class="fas fa-comments"></i>
-                Messages
-                <span class="badge bg-danger ms-auto">5</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-credit-card"></i>
-                Payments
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-file-contract"></i>
-                Contracts
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="profile.html">
-                <i class="fas fa-user-circle"></i>
-                Profile
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-cog"></i>
-                Settings
-            </a>
-        </li>
-        <li class="nav-item mt-4">
-            <a class="nav-link" href="index.html">
-                <i class="fas fa-sign-out-alt"></i>
-                Logout
-            </a>
-        </li>
-    </ul>
-</nav>
+ <app-sidebar></app-sidebar>
+
 
 
 
@@ -65,16 +9,8 @@
     <div class="messages-container">
         <!-- Conversations List -->
         <div class="conversations-list" id="conversationsList" #conversationsList>
-            <div class="conversations-header">
-                <button class="mobile-toggle mb-3" (click)="toggleSidebar()">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <h4 class="mb-3">Messages</h4>
-                <div class="search-box">
-                    <input type="text" placeholder="Search conversations..." (input)="onSearchChange($event)">
-                    <i class="fas fa-search"></i>
-                </div>
-            </div>
+            <app-navbar></app-navbar>
+
             <div class="conversations-body">
                 <!-- Active Conversation -->
                 <div class="conversation-item active" (click)="selectConversation($event, 'John Doe')">
@@ -166,10 +102,7 @@
                 <button class="mobile-back me-3" (click)="showConversations()">
                     <i class="fas fa-arrow-left"></i>
                 </button>
-                <div class="conversation-avatar">
-                    QE
-                    <span class="online-indicator"></span>
-                </div>
+                
                 <div class="chat-header-info">
                     <div class="chat-header-name">Quick Errands Co.</div>
                     <div class="chat-header-status status-active">
