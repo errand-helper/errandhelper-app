@@ -1,0 +1,322 @@
+ <!-- Sidebar -->
+ <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <a href="index.html" class="sidebar-brand">
+            <i class="fas fa-running me-2"></i>ErrandHub
+        </a>
+    </div>
+    <ul class="nav nav-pills flex-column sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="dashboard.html">
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-tasks"></i>
+                My Errands
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="messages.html">
+                <i class="fas fa-comments"></i>
+                Messages
+                <span class="badge bg-danger ms-auto">5</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-credit-card"></i>
+                Payments
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-file-contract"></i>
+                Contracts
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="profile.html">
+                <i class="fas fa-user-circle"></i>
+                Profile
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-cog"></i>
+                Settings
+            </a>
+        </li>
+        <li class="nav-item mt-4">
+            <a class="nav-link" href="index.html">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </a>
+        </li>
+    </ul>
+</nav>
+
+
+
+<!-- Main Content -->
+<div class="main-content">
+    <div class="messages-container">
+        <!-- Conversations List -->
+        <div class="conversations-list" id="conversationsList" #conversationsList>
+            <div class="conversations-header">
+                <button class="mobile-toggle mb-3" (click)="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h4 class="mb-3">Messages</h4>
+                <div class="search-box">
+                    <input type="text" placeholder="Search conversations..." (input)="onSearchChange($event)">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            <div class="conversations-body">
+                <!-- Active Conversation -->
+                <div class="conversation-item active" (click)="selectConversation($event, 'John Doe')">
+                    <div class="conversation-avatar">
+                        QE
+                        <span class="online-indicator"></span>
+                    </div>
+                    <div class="conversation-info">
+                        <div class="conversation-name">
+                            Quick Errands Co.
+                            <span class="conversation-time">2m ago</span>
+                        </div>
+                        <div class="conversation-last-message">
+                            I've picked up your groceries and I'm on my way
+                        </div>
+                    </div>
+                    <span class="unread-count">2</span>
+                </div>
+
+                <!-- Other Conversations -->
+                <div class="conversation-item" (click)="selectConversation($event, 'John Doe')">
+                    <div class="conversation-avatar">
+                        ES
+                        <span class="online-indicator"></span>
+                    </div>
+                    <div class="conversation-info">
+                        <div class="conversation-name">
+                            Express Services
+                            <span class="conversation-time">1h ago</span>
+                        </div>
+                        <div class="conversation-last-message">
+                            Your documents are ready for pickup
+                        </div>
+                    </div>
+                    <span class="unread-count">1</span>
+                </div>
+
+                <div class="conversation-item" (click)="selectConversation($event, 'John Doe')">
+                    <div class="conversation-avatar">
+                        CP
+                    </div>
+                    <div class="conversation-info">
+                        <div class="conversation-name">
+                            CleanPro Services
+                            <span class="conversation-time">3h ago</span>
+                        </div>
+                        <div class="conversation-last-message">
+                            Confirming tomorrow's appointment at 2 PM
+                        </div>
+                    </div>
+                </div>
+
+                <div class="conversation-item" (click)="selectConversation($event, 'John Doe')">
+                    <div class="conversation-avatar">
+                        MP
+                    </div>
+                    <div class="conversation-info">
+                        <div class="conversation-name">
+                            MoversPlus
+                            <span class="conversation-time">Yesterday</span>
+                        </div>
+                        <div class="conversation-last-message">
+                            Thank you for your business!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="conversation-item" (click)="selectConversation($event, 'John Doe')">
+                    <div class="conversation-avatar">
+                        PP
+                    </div>
+                    <div class="conversation-info">
+                        <div class="conversation-name">
+                            PetCare Pros
+                            <span class="conversation-time">2 days ago</span>
+                        </div>
+                        <div class="conversation-last-message">
+                            Your pet had a great day!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-area">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <button class="mobile-back me-3" (click)="showConversations()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="conversation-avatar">
+                    QE
+                    <span class="online-indicator"></span>
+                </div>
+                <div class="chat-header-info">
+                    <div class="chat-header-name">Quick Errands Co.</div>
+                    <div class="chat-header-status status-active">
+                        <i class="fas fa-circle"></i> Active now
+                    </div>
+                </div>
+                <div class="chat-header-actions">
+                    <button title="Voice Call">
+                        <i class="fas fa-phone"></i>
+                    </button>
+                    <button title="Video Call">
+                        <i class="fas fa-video"></i>
+                    </button>
+                    <button title="More Options">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Messages Area -->
+            <div class="messages-area" id="messagesArea" #messagesArea>
+                <!-- System Message -->
+                <div class="system-message">
+                    Contract #ER-2024-0145 signed and active
+                </div>
+
+                <!-- Received Message -->
+                <div class="message-group received">
+                    <div class="message-avatar">QE</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            Hi! I'm ready to start your grocery shopping errand. Just to confirm, you need items from the list you provided?
+                        </div>
+                        <div class="message-time">10:30 AM</div>
+                    </div>
+                </div>
+
+                <!-- Sent Message -->
+                <div class="message-group sent">
+                    <div class="message-avatar">JD</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            Yes, that's correct! The list I sent has everything I need.
+                        </div>
+                        <div class="message-time">10:32 AM</div>
+                    </div>
+                </div>
+
+                <!-- Sent Message -->
+                <div class="message-group sent">
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            Please make sure to get the organic options where available
+                        </div>
+                        <div class="message-time">10:33 AM</div>
+                    </div>
+                </div>
+
+                <!-- Received Message -->
+                <div class="message-group received">
+                    <div class="message-avatar">QE</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            Absolutely! I'll prioritize organic options. I'm at the store now.
+                        </div>
+                        <div class="message-time">10:45 AM</div>
+                    </div>
+                </div>
+
+                <!-- Received Message with Image -->
+                <div class="message-group received">
+                    <div class="message-avatar">QE</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            Quick question - they're out of the brand of milk you requested. Would this alternative work?
+                        </div>
+                        <div class="message-bubble" style="padding: 5px;">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='14'%3EProduct Image%3C/text%3E%3C/svg%3E" alt="Product" style="width: 200px; border-radius: 10px;">
+                        </div>
+                        <div class="message-time">11:15 AM</div>
+                    </div>
+                </div>
+
+                <!-- Sent Message -->
+                <div class="message-group sent">
+                    <div class="message-avatar">JD</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            Yes, that looks perfect! Thank you for checking.
+                        </div>
+                        <div class="message-time">11:18 AM</div>
+                    </div>
+                </div>
+
+                <!-- Recent Messages -->
+                <div class="message-group received">
+                    <div class="message-avatar">QE</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            Great! I've finished shopping and I'm heading to checkout now.
+                        </div>
+                        <div class="message-time">11:45 AM</div>
+                    </div>
+                </div>
+
+                <div class="message-group received">
+                    <div class="message-avatar">QE</div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            I've picked up your groceries and I'm on my way
+                        </div>
+                        <div class="message-time">11:58 AM</div>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="message-group received" id="typingIndicator" #typingIndicator style="display: none;">
+                    <div class="message-avatar">QE</div>
+                    <div class="message-content">
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message Input Area -->
+            <div class="message-input-area" #messageInput>
+                <div class="message-input-container">
+                    <div class="message-actions">
+                        <button title="Attach File">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <button title="Send Image">
+                            <i class="fas fa-image"></i>
+                        </button>
+                    </div>
+                    <div class="message-input-wrapper">
+                        <textarea class="message-input" placeholder="Type a message..." rows="1"></textarea>
+                    </div>
+                    <button class="send-button" (click)="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
