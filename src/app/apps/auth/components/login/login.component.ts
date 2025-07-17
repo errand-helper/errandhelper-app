@@ -26,7 +26,6 @@ export class LoginComponent {
       return
     }
    this.authService.loginUser(data).subscribe((res:any)=>{
-    console.log(res);
     localStorage.setItem('access_token', res.access);
     localStorage.setItem('user_type', res.user_type);
     this.toastr.success('Login successful');
@@ -36,9 +35,7 @@ export class LoginComponent {
         this.route.navigate(['/client']);
     }
     },(error)=>{
-      console.log(error);
       this.toastr.error('An error occurred, please try again')
-      // this.toastr.error(error.error);
     })
 
   }

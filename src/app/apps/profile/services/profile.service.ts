@@ -41,15 +41,15 @@ export class ProfileService {
   }
 
   updateUserProfile(data:any){
-    return this.http.put(`${this.baseUrl}profile/`, data, {
+    return this.http.patch(`${this.baseUrl}profile/`, data, {
       headers: headers,
     });
   }
-  updateBusinessProfile(data:any){
-    return this.http.put(`${this.baseUrl}business_profile/update/`, data, {
-      headers: headers,
-    });
-  }
+  // updateBusinessProfile(data:any){
+  //   return this.http.put(`${this.baseUrl}business_profile/update/`, data, {
+  //     headers: headers,
+  //   });
+  // }
 
   addCategory(data:any){
     return this.http.post(`${this.baseUrl}service/category/`, data, {

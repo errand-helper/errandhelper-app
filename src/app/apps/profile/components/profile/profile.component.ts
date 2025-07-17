@@ -19,11 +19,55 @@ declare var bootstrap: any;
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit{
-  ngOnInit(): void {
-    // throw new Error('Method not implemented.');
+
+  user_type: string | null;
+  profile: any;
+  updateProfileForm!: FormGroup;
+
+  update_profile: boolean = false;
+
+  constructor(private profileService: ProfileService, private toastr: ToastrService){
+    this.user_type = localStorage.getItem('user_type');
   }
 
-  
+  ngOnInit(): void {
+
+    this.getUserProfile()
+    this.updateProfileForm = new FormGroup({
+      phone_number: new FormControl('', Validators.required),
+      bio: new FormControl('', Validators.required),
+    })
+  }
+
+  getUserProfile(){
+    this.profileService.geUserProfile().subscribe((res:any)=>{
+      this.profile = res;
+    })
+  }
+
+  showForm(){
+    this.update_profile = !this.update_profile;
+  }
+
+  updateProfile(){
+    console.log(this.updateProfileForm.value);
+    const data = {
+      phone_number: this.updateProfileForm.value.phone_number ? this.updateProfileForm.value.phone_number : this.profile?.phone_number,
+      bio: this.updateProfileForm.value.bio ? this.updateProfileForm.value.bio : this.profile?.bio,
+    }
+    if(this.updateProfileForm.value.phone_number || this.updateProfileForm.value.bio){
+      this.profileService.updateUserProfile(data).subscribe((res:any)=>{
+        this.updateProfileForm.reset();
+        this.update_profile = !this.update_profile;
+        this.getUserProfile();
+        this.toastr.success('Profile updated successfully');
+        },(error:any)=>{
+          this.toastr.error('Failed to update profile');
+        })
+    }else{
+      this.update_profile = !this.update_profile;
+    }
+  }
 }
 
 
