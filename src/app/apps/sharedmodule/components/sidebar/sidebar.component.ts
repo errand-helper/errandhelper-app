@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { SideBarService } from '../../services/side-bar.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,15 +11,21 @@ import { SideBarService } from '../../services/side-bar.service';
 export class SidebarComponent {
 
   sidebarActive = false;
+  user_type: string | null;
 
   constructor(
     private elRef: ElementRef,
-    private sidebarService: SideBarService
+    private sidebarService: SideBarService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.sidebarService.sidebarActive$.subscribe(state => {
       this.sidebarActive = state;
     });
+
+    this.user_type = localStorage.getItem('user_type');
   }
+  
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -35,6 +42,11 @@ export class SidebarComponent {
       this.sidebarService.closeSidebar();
     }
   }
+
+  logout(){
+    localStorage.removeItem('access_token');
+    this.router.navigate(['/homepage']);
+  }
 }
 
 
@@ -44,23 +56,4 @@ export class SidebarComponent {
 
 
 
-
-
-
-  // user_type: string | null;
-
-  // constructor(
-  //   private route: ActivatedRoute
-  // ){
-  //   this.user_type = this.route.snapshot.paramMap.get('user_type');
-  //   // this.isBusinessRoute()
-  // }
-
-  // isBusinessRoute(): boolean {
-  //   let isBusiness = false;
-  //   this.route.url.subscribe(urlSegments => {
-  //     isBusiness = urlSegments.some(segment => segment.path.includes('business'));
-  //   });
-  //   return this.user_type === 'business';
-  // }
 

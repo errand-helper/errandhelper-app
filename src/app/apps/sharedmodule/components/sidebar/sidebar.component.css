@@ -1,5 +1,10 @@
-/* .active{
-  background-color: #F0F3F5;
+.provider-badge {
+  background-color: var(--primary-gold);
+  color: var(--primary-white);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 10px;
+  display: inline-block;
 }
-
- */

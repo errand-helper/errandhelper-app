@@ -1,55 +1,98 @@
    <!-- Sidebar -->
    <nav class="sidebar" id="sidebar" [class.active]="sidebarActive">
     <div class="sidebar-header">
-        <a href="index.html" class="sidebar-brand">
+        <a routerLink="/homepage" class="sidebar-brand">
             <i class="fas fa-running me-2"></i>ErrandHub
         </a>
+        <div class="provider-badge">
+            <i class="fas fa-briefcase me-1"></i>{{user_type | titlecase}} Account
+        </div>
     </div>
     <ul class="nav nav-pills flex-column sidebar-nav">
         <li class="nav-item">
-            <a class="nav-link" routerLink="/customer/dashboard">
+            <a class="nav-link" routerLink="{{user_type === 'BUSINESS' ? '/business' : '/client'}}" routerLinkActive="active">
                 <i class="fas fa-tachometer-alt"></i>
                 Dashboard
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" routerLink="/errands" routerLinkActive="active">
                 <i class="fas fa-tasks"></i>
                 My Errands
+                <span class="badge bg-danger ms-auto">3</span>
+            </a>
+        </li>
+        <!-- <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-briefcase"></i>
+                Active Jobs
+            </a>
+        </li> -->
+        <!-- <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-bell"></i>
+                Job Requests
+                <span class="badge bg-danger ms-auto">3</span>
+            </a>
+        </li> -->
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/messages" routerLinkActive="active">
+                <i class="fas fa-comments"></i>
+                Messages
+                <span class="badge bg-danger ms-auto">5</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">
+                <i class="fas fa-users"></i>
+                My Clients
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-calendar-alt"></i>
+                Schedule
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-star"></i>
+                Reviews
+            </a>
+        </li>
+
+        <!-- <li class="nav-item">
+            <a class="nav-link" routerLink="/messages" routerLinkActive="active">
                 <i class="fas fa-comments"></i>
                 Messages
             </a>
-        </li>
+        </li> -->
         <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-credit-card"></i>
+            <a class="nav-link" routerLink="/payments" routerLinkActive="active">
+                <i class="fas fa-wallet"></i>
                 Payments
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" routerLink="/contracts" routerLinkActive="active">
                 <i class="fas fa-file-contract"></i>
                 Contracts
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="profile.html">
+            <a class="nav-link" [routerLink]="['/profile']" routerLinkActive="active">
                 <i class="fas fa-user-circle"></i>
                 Profile
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" routerLink="/settings" routerLinkActive="active">
                 <i class="fas fa-cog"></i>
                 Settings
             </a>
         </li>
         <li class="nav-item mt-4">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" (click)="logout()">
                 <i class="fas fa-sign-out-alt"></i>
                 Logout
             </a>
@@ -70,36 +113,3 @@
 
 
 
-<!-- <aside class="bsb-sidebar-1 offcanvas offcanvas-start" tabindex="-1" id="bsbSidebar1" aria-labelledby="bsbSidebarLabel1">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="bsbSidebarLabel1">errandhelper</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <ul class="m-0 p-0 list-unstyled">
-      <li class="side-bar-links" style="width: 100%; margin-bottom: 1rem;">
-        <a [routerLink]="['/profile', user_type]"
-           class="p-2 d-block text-decoration-none fw-bold"
-           style="width: 100%;color: #485056;" routerLinkActive="active">
-          Profile
-        </a>
-      </li>
-      <li class="side-bar-links" style="width: 100%; margin-bottom: 1rem;">
-        <a routerLink="/business"
-           class="p-2 d-block text-decoration-none fw-bold"
-           style="width: 100%;color: #485056;" routerLinkActive="active">
-          Businesses
-        </a>
-      </li>
-      <li class="side-bar-links" style="width: 100%; margin-bottom: 1rem;">
-        <a routerLink="/orders"
-           class="p-2 d-block text-decoration-none fw-bold"
-           style="width: 100%;color: #485056;" routerLinkActive="active">
-          Orders
-        </a>
-      </li>
-    </ul>
-
-
-  </div>
-</aside> -->

@@ -171,7 +171,7 @@ export class RegisterComponent implements OnInit {
         console.log(res);
         this.registerForm.reset();
         this.toastr.success(`${message} successfully registered`);
-        this.route.navigate(['/authentication/login']);
+        this.route.navigate(['/login']);
       },
       (error: any) => {
         console.log(error);
