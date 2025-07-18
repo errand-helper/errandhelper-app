@@ -1,81 +1,3 @@
-        /* :root {
-            --primary-blue: #01257D;
-            --primary-cyan: #00FFFF;
-            --primary-white: #FFFFFF;
-            --primary-gold: #BFA181;
-            --light-gray: #f8f9fa;
-            --border-color: #e0e0e0;
-            --success-color: #28a745;
-            --warning-color: #ffc107;
-            --danger-color: #dc3545;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light-gray);
-            min-height: 100vh;
-        } */
-
-        /* Sidebar Styles */
-        .sidebar {
-            background-color: var(--primary-blue);
-            min-height: 100vh;
-            color: var(--primary-white);
-            transition: all 0.3s ease;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 100;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .sidebar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-cyan);
-            text-decoration: none;
-        }
-
-       
-
-        .sidebar-nav {
-            padding: 20px 0;
-        }
-
-        .sidebar-nav .nav-link {
-            color: var(--primary-white);
-            padding: 15px 20px;
-            transition: all 0.3s ease;
-            border-left: 4px solid transparent;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .sidebar-nav .nav-link:hover {
-            background-color: rgba(0, 255, 255, 0.1);
-            border-left-color: var(--primary-cyan);
-            color: var(--primary-cyan);
-        }
-
-        .sidebar-nav .nav-link.active {
-            background-color: rgba(0, 255, 255, 0.2);
-            border-left-color: var(--primary-cyan);
-            color: var(--primary-cyan);
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-            min-height: 100vh;
-        }
 
         /* Header */
         .dashboard-header {
@@ -432,32 +354,10 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.active {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .mobile-toggle {
-                display: block !important;
-            }
-
+           
             .earnings-period {
                 flex-direction: column;
                 gap: 10px;
             }
         }
 
-        .mobile-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--primary-blue);
-        }
