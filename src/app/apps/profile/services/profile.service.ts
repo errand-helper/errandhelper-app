@@ -45,6 +45,12 @@ export class ProfileService {
       headers: headers,
     });
   }
+
+  updateUserPassword(data:any){
+    return this.http.post(`${this.baseUrl}change-password/`, data, {
+      headers: headers,
+    });
+  }
   // updateBusinessProfile(data:any){
   //   return this.http.put(`${this.baseUrl}business_profile/update/`, data, {
   //     headers: headers,

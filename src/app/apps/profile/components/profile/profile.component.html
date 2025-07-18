@@ -148,25 +148,25 @@
                 </div>
 
                 <h5 class="mb-3">Change Password</h5>
-                <form>
+                <form [formGroup]="updatePasswordForm">
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <label for="currentPassword" class="form-label">Current Password</label>
-                            <input type="password" class="form-control" id="currentPassword">
+                            <input formControlName="current_password" type="password" class="form-control" id="currentPassword">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="newPassword" class="form-label">New Password</label>
-                            <input type="password" class="form-control" id="newPassword">
+                            <input formControlName="new_password" type="password" class="form-control" id="newPassword">
                             <small class="text-muted">Minimum 8 characters with numbers and symbols</small>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                            <input type="password" class="form-control" id="confirmPassword">
+                            <input formControlName="confirm_password" type="password" class="form-control" id="confirmPassword">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary-custom mb-4">Update Password</button>
+                    <button (click)="updatePassword()" type="submit" class="btn btn-primary-custom mb-4">Update Password</button>
                 </form>
 
                 <hr class="my-4">

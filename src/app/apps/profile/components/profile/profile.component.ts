@@ -23,6 +23,7 @@ export class ProfileComponent implements OnInit{
   user_type: string | null;
   profile: any;
   updateProfileForm!: FormGroup;
+  updatePasswordForm!: FormGroup;
 
   update_profile: boolean = false;
 
@@ -37,6 +38,12 @@ export class ProfileComponent implements OnInit{
       phone_number: new FormControl('', Validators.required),
       bio: new FormControl('', Validators.required),
     })
+    
+    this.updatePasswordForm = new FormGroup({
+      current_password: new FormControl('', Validators.required),
+      new_password: new FormControl('', Validators.required),
+      confirm_password: new FormControl('', Validators.required),
+    })
   }
 
   getUserProfile(){
@@ -50,7 +57,7 @@ export class ProfileComponent implements OnInit{
   }
 
   updateProfile(){
-    console.log(this.updateProfileForm.value);
+    // console.log(this.updateProfileForm.value);
     const data = {
       phone_number: this.updateProfileForm.value.phone_number ? this.updateProfileForm.value.phone_number : this.profile?.phone_number,
       bio: this.updateProfileForm.value.bio ? this.updateProfileForm.value.bio : this.profile?.bio,
@@ -67,6 +74,26 @@ export class ProfileComponent implements OnInit{
     }else{
       this.update_profile = !this.update_profile;
     }
+  }
+
+
+  updatePassword(){
+    const data = {
+      old_password: this.updatePasswordForm.value.current_password,
+      new_password: this.updatePasswordForm.value.new_password,
+      confirm_password: this.updatePasswordForm.value.confirm_password,
+    }
+
+    console.log('updatePassword',data);
+
+    this.profileService.updateUserPassword(data).subscribe((res:any)=>{
+      this.toastr.success('Password updated successfully'); 
+    },(error:any)=>{
+
+      console.log('error',error);
+      
+      this.toastr.error('Failed to update password');
+    })
   }
 }
 
