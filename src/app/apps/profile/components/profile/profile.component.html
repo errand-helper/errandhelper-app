@@ -86,25 +86,28 @@
             <!-- Personal Information Tab -->
             <div class="tab-pane fade show active" id="personal" role="tabpanel">
                 <form [formGroup]="updateProfileForm">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="firstName" class="form-label">First Name</label>
-                                <p [ngClass]="{ 'text-muted': true }">{{profile?.first_name || 'N/A'}}</p>
+                    @if (user_type === 'CUSTOMER') {
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label">First Name</label>
+                                    <p [ngClass]="{ 'text-muted': true }">{{profile?.first_name || 'N/A'}}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                    <p [ngClass]="{ 'text-muted': true }">{{profile?.last_name || 'N/A'}}</p>
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="lastName" class="form-label">Last Name</label>
-                                <p [ngClass]="{ 'text-muted': true }">{{profile?.last_name || 'N/A'}}</p>
-                        </div>
-                    </div>
+                    }
+                    
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Email Address</label>
                                 <p [ngClass]="{ 'text-muted': true }">{{profile?.email || 'N/A'}}</p>
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <!-- <div class="col-md-6 mb-3">
                             <label for="idNumber" class="form-label">ID Number</label>
                                 <p [ngClass]="{ 'text-muted': true }">{{profile?.id_number || 'N/A'}}</p>
-                        </div>
+                        </div> -->
                         
                     </div>
                     <div class="row">

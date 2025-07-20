@@ -1,0 +1,17 @@
+{
+    "entryPoints": [
+        "./src/app/apps/components/messages/messages.component.ts",
+        "./src/app/apps/components/messages/services/chat.service.ts",
+        "./src/app/apps/components/messages/services/websocket.service.ts",
+        "./src/app/apps/components/messages/models/chat.models.ts"
+    ],
+    "out": "./docs/",
+    "name": "ErrandHelper Frontend Chat System",
+    "readme": "./README.md",
+    "includeVersion": true,
+    "excludeExternals": true,
+    "excludePrivate": false,
+    "excludeProtected": false,
+    "theme": "default",
+    "tsconfig": "./tsconfig.json"
+}
