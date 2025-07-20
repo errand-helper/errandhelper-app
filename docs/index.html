@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ErrandHelper Frontend Chat System Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        h3 { color: #5d6d7e; }
+        .overview { background: #e8f4fd; padding: 20px; border-radius: 6px; margin: 20px 0; }
+        .component { background: #f8f9fa; padding: 15px; border-left: 4px solid #3498db; margin: 15px 0; }
+        .feature { background: #e8f5e8; padding: 15px; border-radius: 6px; margin: 10px 0; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: 'Monaco', monospace; }
+        pre { background: #f8f8f8; padding: 15px; border-radius: 6px; overflow-x: auto; }
+        .api-endpoint { background: #fff3cd; padding: 10px; border-radius: 4px; margin: 5px 0; }
+        ul { padding-left: 20px; }
+        .toc { background: #f1f3f4; padding: 20px; border-radius: 6px; margin-bottom: 30px; }
+        .toc ul { list-style-type: none; padding-left: 15px; }
+        .toc a { text-decoration: none; color: #3498db; }
+        .toc a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ErrandHelper Frontend Chat System Documentation</h1>
+        
+        <div class="overview">
+            <h2>🚀 Overview</h2>
+            <p>The ErrandHelper frontend chat system is built using <strong>Angular</strong> and provides real-time messaging capabilities through WebSocket connections. It integrates seamlessly with the Django backend to deliver a complete chat experience.</p>
+        </div>
+
+        <div class="toc">
+            <h3>📋 Table of Contents</h3>
+            <ul>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#components">Components</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#api-integration">API Integration</a></li>
+                <li><a href="#setup">Setup & Configuration</a></li>
+                <li><a href="#testing">Testing</a></li>
+            </ul>
+        </div>
+
+        <h2 id="architecture">🏗️ Architecture</h2>
+        <div class="overview">
+            <p>The chat system follows Angular's component-based architecture with clear separation of concerns:</p>
+            <ul>
+                <li><strong>Components</strong>: UI components for chat interface</li>
+                <li><strong>Services</strong>: Business logic and API communication</li>
+                <li><strong>Models</strong>: TypeScript interfaces and data structures</li>
+                <li><strong>WebSocket</strong>: Real-time communication layer</li>
+            </ul>
+        </div>
+
+        <h2 id="components">🧩 Components</h2>
+
+        <div class="component">
+            <h3>MessagesComponent</h3>
+            <p><strong>Location:</strong> <code>src/app/apps/components/messages/messages.component.ts</code></p>
+            <p><strong>Purpose:</strong> Main chat interface component that handles the chat UI, message display, and user interactions.</p>
+            
+            <h4>Key Features:</h4>
+            <ul>
+                <li>Message list display with scroll management</li>
+                <li>Message input and sending functionality</li>
+                <li>Real-time message updates via WebSocket</li>
+                <li>User typing indicators</li>
+                <li>Message status indicators (sent, delivered, read)</li>
+                <li>File attachment support</li>
+                <li>Emoji picker integration</li>
+            </ul>
+
+            <h4>Key Methods:</h4>
+            <ul>
+                <li><code>sendMessage()</code> - Sends a new message</li>
+                <li><code>loadMessageHistory()</code> - Loads previous messages</li>
+                <li><code>handleWebSocketMessage()</code> - Processes incoming WebSocket messages</li>
+                <li><code>scrollToBottom()</code> - Auto-scrolls to latest message</li>
+            </ul>
+        </div>
+
+        <h2 id="services">⚙️ Services</h2>
+
+        <div class="component">
+            <h3>ChatService</h3>
+            <p><strong>Location:</strong> <code>src/app/apps/components/messages/services/chat.service.ts</code></p>
+            <p><strong>Purpose:</strong> Handles HTTP API communication with the Django backend for chat operations.</p>
+            
+            <h4>Key Methods:</h4>
+            <ul>
+                <li><code>getChatRooms()</code> - Retrieves available chat rooms</li>
+                <li><code>getMessages(roomId)</code> - Gets message history for a room</li>
+                <li><code>sendMessage(message)</code> - Sends message via HTTP API</li>
+                <li><code>createChatRoom()</code> - Creates a new chat room</li>
+                <li><code>joinChatRoom(roomId)</code> - Joins an existing chat room</li>
+                <li><code>uploadFile(file)</code> - Handles file uploads</li>
+            </ul>
+        </div>
+
+        <div class="component">
+            <h3>WebSocketService</h3>
+            <p><strong>Location:</strong> <code>src/app/apps/components/messages/services/websocket.service.ts</code></p>
+            <p><strong>Purpose:</strong> Manages WebSocket connections for real-time messaging.</p>
+            
+            <h4>Key Features:</h4>
+            <ul>
+                <li>Automatic connection establishment</li>
+                <li>Connection retry logic with exponential backoff</li>
+                <li>Message queuing when offline</li>
+                <li>Heartbeat mechanism for connection monitoring</li>
+                <li>Event-based message handling</li>
+            </ul>
+
+            <h4>Key Methods:</h4>
+            <ul>
+                <li><code>connect()</code> - Establishes WebSocket connection</li>
+                <li><code>disconnect()</code> - Closes WebSocket connection</li>
+                <li><code>sendMessage(message)</code> - Sends message via WebSocket</li>
+                <li><code>subscribe(eventType)</code> - Subscribes to specific message types</li>
+                <li><code>reconnect()</code> - Handles automatic reconnection</li>
+            </ul>
+        </div>
+
+        <h2 id="features">✨ Features</h2>
+
+        <div class="feature">
+            <h3>🔄 Real-time Messaging</h3>
+            <ul>
+                <li>WebSocket connection for instant message delivery</li>
+                <li>Automatic reconnection on connection loss</li>
+                <li>Message status indicators (sent, delivered, read)</li>
+                <li>Typing indicators when users are composing messages</li>
+                <li>Message delivery confirmations</li>
+            </ul>
+        </div>
+
+        <div class="feature">
+            <h3>💬 Chat Management</h3>
+            <ul>
+                <li>Create and join chat rooms</li>
+                <li>View message history with pagination</li>
+                <li>User presence indicators (online/offline status)</li>
+                <li>File sharing capabilities (images, documents)</li>
+                <li>Message search and filtering</li>
+                <li>Chat room member management</li>
+            </ul>
+        </div>
+
+        <div class="feature">
+            <h3>🎨 User Experience</h3>
+            <ul>
+                <li>Responsive design for mobile and desktop</li>
+                <li>Dark/light theme support</li>
+                <li>Emoji picker and reactions</li>
+                <li>Message formatting (bold, italic, links)</li>
+                <li>Push notifications for new messages</li>
+                <li>Sound notifications</li>
+                <li>Keyboard shortcuts for quick actions</li>
+            </ul>
+        </div>
+
+        <h2 id="api-integration">🔌 API Integration</h2>
+
+        <div class="overview">
+            <p>The frontend communicates with the Django backend through multiple channels:</p>
+        </div>
+
+        <div class="api-endpoint">
+            <h3>REST API Endpoints</h3>
+            <ul>
+                <li><code>GET /api/chat/rooms/</code> - List chat rooms</li>
+                <li><code>POST /api/chat/rooms/</code> - Create new chat room</li>
+                <li><code>GET /api/chat/messages/{room_id}/</code> - Get messages for room</li>
+                <li><code>POST /api/chat/messages/</code> - Send new message</li>
+                <li><code>POST /api/chat/upload/</code> - Upload file attachments</li>
+            </ul>
+        </div>
+
+        <div class="api-endpoint">
+            <h3>WebSocket Events</h3>
+            <ul>
+                <li><code>message.new</code> - New message received</li>
+                <li><code>message.delivered</code> - Message delivery confirmation</li>
+                <li><code>message.read</code> - Message read receipt</li>
+                <li><code>user.typing</code> - User typing indicator</li>
+                <li><code>user.joined</code> - User joined chat room</li>
+                <li><code>user.left</code> - User left chat room</li>
+            </ul>
+        </div>
+
+        <div class="api-endpoint">
+            <h3>Authentication</h3>
+            <ul>
+                <li>JWT token-based authentication</li>
+                <li>Automatic token refresh</li>
+                <li>Secure WebSocket connection with auth headers</li>
+                <li>Role-based access control</li>
+            </ul>
+        </div>
+
+        <h2 id="setup">⚡ Setup & Configuration</h2>
+
+        <div class="component">
+            <h3>Installation Steps</h3>
+            <pre><code>1. Install dependencies: npm install
+2. Configure environment variables:
+   - API_BASE_URL: Backend API endpoint
+   - WEBSOCKET_URL: WebSocket server URL
+   - JWT_SECRET: JWT token secret
+
+3. Update environment files:
+   - src/environments/environment.ts
+   - src/environments/environment.prod.ts
+
+4. Run development server: ng serve</code></pre>
+        </div>
+
+        <div class="component">
+            <h3>Configuration Files</h3>
+            <ul>
+                <li><code>src/environments/environment.ts</code> - Development environment</li>
+                <li><code>src/environments/environment.prod.ts</code> - Production environment</li>
+                <li><code>angular.json</code> - Angular CLI configuration</li>
+                <li><code>tsconfig.json</code> - TypeScript configuration</li>
+            </ul>
+        </div>
+
+        <h2 id="testing">🧪 Testing</h2>
+
+        <div class="component">
+            <h3>Testing Strategy</h3>
+            <ul>
+                <li><strong>Unit Tests:</strong> <code>ng test</code> - Component and service testing</li>
+                <li><strong>E2E Tests:</strong> <code>ng e2e</code> - End-to-end workflow testing</li>
+                <li><strong>Integration Tests:</strong> WebSocket and API integration testing</li>
+                <li><strong>Manual Testing:</strong> Cross-browser and device testing</li>
+            </ul>
+        </div>
+
+        <div class="component">
+            <h3>Test Coverage</h3>
+            <ul>
+                <li>Component rendering and user interactions</li>
+                <li>Service API calls and data handling</li>
+                <li>WebSocket connection and message handling</li>
+                <li>Error handling and edge cases</li>
+                <li>Authentication and authorization flows</li>
+            </ul>
+        </div>
+
+        <div class="overview">
+            <h2>🔗 Related Documentation</h2>
+            <p>For complete system documentation, also review:</p>
+            <ul>
+                <li><strong>Backend Documentation:</strong> Django REST API and WebSocket implementation</li>
+                <li><strong>Database Schema:</strong> Chat models and relationships</li>
+                <li><strong>Deployment Guide:</strong> Production setup and configuration</li>
+                <li><strong>API Reference:</strong> Detailed endpoint documentation</li>
+            </ul>
+        </div>
+
+        <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; color: #666;">
+            <p>ErrandHelper Frontend Chat System Documentation - Generated with ❤️</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -33,7 +33,12 @@ export class ProfileComponent implements OnInit{
 
   ngOnInit(): void {
 
-    this.getUserProfile()
+    if(this.user_type === 'CUSTOMER'){
+      this.getUserProfile()
+    }else if(this.user_type === 'BUSINESS'){
+      this.getBusinessProfile()
+    }
+
     this.updateProfileForm = new FormGroup({
       phone_number: new FormControl('', Validators.required),
       bio: new FormControl('', Validators.required),
@@ -48,6 +53,12 @@ export class ProfileComponent implements OnInit{
 
   getUserProfile(){
     this.profileService.geUserProfile().subscribe((res:any)=>{
+      this.profile = res;
+    })
+  }
+
+  getBusinessProfile(){
+    this.profileService.getBusinessProfile().subscribe((res:any)=>{
       this.profile = res;
     })
   }

@@ -12,85 +12,79 @@
             <app-navbar></app-navbar>
 
             <div class="conversations-body">
-                <!-- Active Conversation -->
-                <div class="conversation-item active" (click)="selectConversation($event, 'John Doe')">
-                    <div class="conversation-avatar">
-                        QE
-                        <span class="online-indicator"></span>
+                <!-- Loading State -->
+                <div *ngIf="isLoading" class="loading-state">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
                     </div>
-                    <div class="conversation-info">
-                        <div class="conversation-name">
-                            Quick Errands Co.
-                            <span class="conversation-time">2m ago</span>
-                        </div>
-                        <div class="conversation-last-message">
-                            I've picked up your groceries and I'm on my way
-                        </div>
-                    </div>
-                    <span class="unread-count">2</span>
+                    <p>Loading conversations...</p>
                 </div>
 
-                <!-- Other Conversations -->
-                <div class="conversation-item" (click)="selectConversation($event, 'John Doe')">
-                    <div class="conversation-avatar">
-                        ES
-                        <span class="online-indicator"></span>
-                    </div>
-                    <div class="conversation-info">
-                        <div class="conversation-name">
-                            Express Services
-                            <span class="conversation-time">1h ago</span>
-                        </div>
-                        <div class="conversation-last-message">
-                            Your documents are ready for pickup
-                        </div>
-                    </div>
-                    <span class="unread-count">1</span>
-                </div>
+                <!-- No Conversations -->
+                <div *ngIf="!isLoading && chatRooms.length === 0" class="no-conversations">
+                    <i class="fas fa-comments fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No conversations yet</p>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="startNewConversation()">
+                        Start New Chat
+                    </button>
 
-                <div class="conversation-item" (click)="selectConversation($event, 'John Doe')">
-                    <div class="conversation-avatar">
-                        CP
-                    </div>
-                    <div class="conversation-info">
-                        <div class="conversation-name">
-                            CleanPro Services
-                            <span class="conversation-time">3h ago</span>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Select Business to Chat With</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                @for (item of business_list; track $index) {
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" [value]="item.user_id" [id]="'business_' + $index">
+                                        <label class="form-check-label" [for]="'business_' + $index">
+                                            {{item?.business_name}}
+                                        </label>
+                                    </div>
+                                }
+                                @if (business_list.length === 0) {
+                                    <p class="text-muted">No businesses available to chat with.</p>
+                                }
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" (click)="createNewConversation()" data-bs-dismiss="modal">Start Conversation</button>
+                            </div>
                         </div>
-                        <div class="conversation-last-message">
-                            Confirming tomorrow's appointment at 2 PM
                         </div>
                     </div>
                 </div>
 
-                <div class="conversation-item" (click)="selectConversation($event, 'John Doe')">
+                <!-- Chat Rooms List -->
+                <div *ngFor="let room of chatRooms" 
+                     class="conversation-item" 
+                     [class.active]="selectedRoom?.id === room.id"
+                     (click)="selectRoom(room)">
                     <div class="conversation-avatar">
-                        MP
+                        {{ getInitials(getRoomDisplayUser(room)) }}
+                        <span class="online-indicator" *ngIf="isUserOnline(getRoomDisplayUser(room))"></span>
                     </div>
                     <div class="conversation-info">
                         <div class="conversation-name">
-                            MoversPlus
-                            <span class="conversation-time">Yesterday</span>
+                            {{ getRoomDisplayName(room) }}
+                            <span class="conversation-time" *ngIf="room.last_message">
+                                {{ formatTime(room.last_message.created_at) }}
+                            </span>
                         </div>
-                        <div class="conversation-last-message">
-                            Thank you for your business!
+                        <div class="conversation-last-message" *ngIf="room.last_message">
+                            <span *ngIf="room.last_message.sender.id === currentUserId">You: </span>
+                            {{ room.last_message.content }}
                         </div>
-                    </div>
-                </div>
-
-                <div class="conversation-item" (click)="selectConversation($event, 'John Doe')">
-                    <div class="conversation-avatar">
-                        PP
-                    </div>
-                    <div class="conversation-info">
-                        <div class="conversation-name">
-                            PetCare Pros
-                            <span class="conversation-time">2 days ago</span>
-                        </div>
-                        <div class="conversation-last-message">
-                            Your pet had a great day!
+                        <div class="conversation-last-message text-muted" *ngIf="!room.last_message">
+                            No messages yet
                         </div>
                     </div>
+                    <span class="unread-count" *ngIf="room.unread_count > 0">
+                        {{ room.unread_count }}
+                    </span>
                 </div>
             </div>
         </div>
@@ -98,15 +92,17 @@
         <!-- Chat Area -->
         <div class="chat-area">
             <!-- Chat Header -->
-            <div class="chat-header">
+            <div class="chat-header" *ngIf="selectedRoom">
                 <button class="mobile-back me-3" (click)="showConversations()">
                     <i class="fas fa-arrow-left"></i>
                 </button>
                 
                 <div class="chat-header-info">
-                    <div class="chat-header-name">Quick Errands Co.</div>
-                    <div class="chat-header-status status-active">
-                        <i class="fas fa-circle"></i> Active now
+                    <div class="chat-header-name">{{ getRoomDisplayName(selectedRoom) }}</div>
+                    <div class="chat-header-status" [class.status-active]="isConnected">
+                        <i class="fas fa-circle"></i> 
+                        <span *ngIf="isConnected">Connected</span>
+                        <span *ngIf="!isConnected">Connecting...</span>
                     </div>
                 </div>
                 <div class="chat-header-actions">
@@ -121,106 +117,113 @@
                     </button>
                 </div>
             </div>
+            
+            <!-- No Room Selected -->
+            <div class="chat-header" *ngIf="!selectedRoom">
+                <div class="chat-header-info w-100 text-center">
+                    <div class="chat-header-name text-muted">Select a conversation to start messaging</div>
+                </div>
+            </div>
 
             <!-- Messages Area -->
             <div class="messages-area" id="messagesArea" #messagesArea>
-                <!-- System Message -->
-                <div class="system-message">
-                    Contract #ER-2024-0145 signed and active
-                </div>
-
-                <!-- Received Message -->
-                <div class="message-group received">
-                    <div class="message-avatar">QE</div>
-                    <div class="message-content">
-                        <div class="message-bubble">
-                            Hi! I'm ready to start your grocery shopping errand. Just to confirm, you need items from the list you provided?
-                        </div>
-                        <div class="message-time">10:30 AM</div>
+                <!-- No Room Selected -->
+                <div *ngIf="!selectedRoom" class="no-room-selected">
+                    <div class="text-center text-muted mt-5">
+                        <i class="fas fa-comments fa-4x mb-3"></i>
+                        <h4>Welcome to Chat</h4>
+                        <p>Select a conversation from the sidebar to start messaging</p>
                     </div>
                 </div>
 
-                <!-- Sent Message -->
-                <div class="message-group sent">
-                    <div class="message-avatar">JD</div>
-                    <div class="message-content">
-                        <div class="message-bubble">
-                            Yes, that's correct! The list I sent has everything I need.
+                <!-- Messages Loading -->
+                <div *ngIf="selectedRoom && isLoading" class="messages-loading">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading messages...</span>
                         </div>
-                        <div class="message-time">10:32 AM</div>
+                        <p class="mt-2">Loading messages...</p>
                     </div>
                 </div>
 
-                <!-- Sent Message -->
-                <div class="message-group sent">
-                    <div class="message-content">
-                        <div class="message-bubble">
-                            Please make sure to get the organic options where available
-                        </div>
-                        <div class="message-time">10:33 AM</div>
+                <!-- Messages List -->
+                <div *ngIf="selectedRoom && !isLoading">
+                    <!-- System Message for new conversation -->
+                    <div *ngIf="messages.length === 0" class="system-message">
+                        Start of conversation with {{ getRoomDisplayName(selectedRoom) }}
                     </div>
-                </div>
 
-                <!-- Received Message -->
-                <div class="message-group received">
-                    <div class="message-avatar">QE</div>
-                    <div class="message-content">
-                        <div class="message-bubble">
-                            Absolutely! I'll prioritize organic options. I'm at the store now.
+                    <!-- Messages -->
+                    <div *ngFor="let message of messages" 
+                         class="message-group" 
+                         [class.sent]="isMyMessage(message)"
+                         [class.received]="!isMyMessage(message)">
+                        
+                        <!-- Message Avatar -->
+                        <div class="message-avatar" *ngIf="!isMyMessage(message)">
+                            {{ getInitials(message.sender) }}
                         </div>
-                        <div class="message-time">10:45 AM</div>
-                    </div>
-                </div>
-
-                <!-- Received Message with Image -->
-                <div class="message-group received">
-                    <div class="message-avatar">QE</div>
-                    <div class="message-content">
-                        <div class="message-bubble">
-                            Quick question - they're out of the brand of milk you requested. Would this alternative work?
+                        
+                        <div class="message-content">
+                            <!-- Text Message -->
+                            <div class="message-bubble" *ngIf="message.message_type === 'text'">
+                                {{ message.content }}
+                                <span *ngIf="message.is_edited" class="edited-indicator">(edited)</span>
+                            </div>
+                            
+                            <!-- Image Message -->
+                            <div class="message-bubble" *ngIf="message.message_type === 'image'" style="padding: 5px;">
+                                <div *ngIf="message.content" class="mb-2">{{ message.content }}</div>
+                                <img [src]="message.file_url" 
+                                     [alt]="message.content" 
+                                     style="max-width: 200px; border-radius: 10px;"
+                                     *ngIf="message.file_url">
+                            </div>
+                            
+                            <!-- File Message -->
+                            <div class="message-bubble" *ngIf="message.message_type === 'file'">
+                                <div class="file-message">
+                                    <i class="fas fa-file me-2"></i>
+                                    <a [href]="message.file_url" target="_blank" *ngIf="message.file_url">
+                                        {{ message.content }}
+                                    </a>
+                                    <span *ngIf="!message.file_url">{{ message.content }}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- System Message -->
+                            <div class="system-message-inline" *ngIf="message.message_type === 'system'">
+                                {{ message.content }}
+                            </div>
+                            
+                            <!-- Message Time -->
+                            <div class="message-time" *ngIf="message.message_type !== 'system'">
+                                {{ message.content }} <br>
+                                {{ formatTime(message.created_at) }}
+                                
+                                <!-- Message Status for sent messages -->
+                                <span *ngIf="isMyMessage(message)" class="message-status">
+                                    <i class="fas fa-check" 
+                                       [class.text-success]="hasReadReceipt(message)"
+                                       [class.text-muted]="!hasReadReceipt(message)"></i>
+                                </span>
+                            </div>
                         </div>
-                        <div class="message-bubble" style="padding: 5px;">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='14'%3EProduct Image%3C/text%3E%3C/svg%3E" alt="Product" style="width: 200px; border-radius: 10px;">
+                        
+                        <!-- Sent Message Avatar -->
+                        <div class="message-avatar" *ngIf="isMyMessage(message)">
+                            {{ getInitials(message.sender) }}
                         </div>
-                        <div class="message-time">11:15 AM</div>
-                    </div>
-                </div>
-
-                <!-- Sent Message -->
-                <div class="message-group sent">
-                    <div class="message-avatar">JD</div>
-                    <div class="message-content">
-                        <div class="message-bubble">
-                            Yes, that looks perfect! Thank you for checking.
-                        </div>
-                        <div class="message-time">11:18 AM</div>
-                    </div>
-                </div>
-
-                <!-- Recent Messages -->
-                <div class="message-group received">
-                    <div class="message-avatar">QE</div>
-                    <div class="message-content">
-                        <div class="message-bubble">
-                            Great! I've finished shopping and I'm heading to checkout now.
-                        </div>
-                        <div class="message-time">11:45 AM</div>
-                    </div>
-                </div>
-
-                <div class="message-group received">
-                    <div class="message-avatar">QE</div>
-                    <div class="message-content">
-                        <div class="message-bubble">
-                            I've picked up your groceries and I'm on my way
-                        </div>
-                        <div class="message-time">11:58 AM</div>
                     </div>
                 </div>
 
                 <!-- Typing Indicator -->
-                <div class="message-group received" id="typingIndicator" #typingIndicator style="display: none;">
-                    <div class="message-avatar">QE</div>
+                <div class="message-group received" 
+                     id="typingIndicator" 
+                     #typingIndicator 
+                     style="display: none;"
+                     *ngIf="selectedRoom">
+                    <div class="message-avatar">{{ getInitials(getRoomDisplayUser(selectedRoom)) }}</div>
                     <div class="message-content">
                         <div class="typing-indicator">
                             <div class="typing-dot"></div>
@@ -232,7 +235,7 @@
             </div>
 
             <!-- Message Input Area -->
-            <div class="message-input-area" #messageInput>
+            <div class="message-input-area" #messageInput *ngIf="selectedRoom">
                 <div class="message-input-container">
                     <div class="message-actions">
                         <button title="Attach File">
@@ -243,9 +246,15 @@
                         </button>
                     </div>
                     <div class="message-input-wrapper">
-                        <textarea class="message-input" placeholder="Type a message..." rows="1"></textarea>
+                        <textarea class="message-input" 
+                                  placeholder="Type a message..." 
+                                  rows="1"
+                                  [(ngModel)]="messageText"
+                                  [disabled]="!isConnected"></textarea>
                     </div>
-                    <button class="send-button" (click)="sendMessage()">
+                    <button class="send-button" 
+                            (click)="sendMessage()"
+                            [disabled]="!messageText.trim() || !isConnected">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
@@ -253,3 +262,5 @@
         </div>
     </div>
 </div>
+
+
