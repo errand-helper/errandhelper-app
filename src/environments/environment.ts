@@ -1,7 +1,6 @@
 export const environment = {
-  production:false,
-  baseUrl:'api/'
-
-  // baseUrl:'http://localhost:8080/',
+  production: false,
+  baseUrl: 'http://192.168.49.2:30108/',
+  wsUrl: 'ws://192.168.49.2:30108/'
 };
 

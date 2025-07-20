@@ -28,8 +28,7 @@ export class WebSocketService {
       return;
     }
 
-    const wsUrl = environment.baseUrl.replace('http://', 'ws://').replace('https://', 'wss://');
-    const socketUrl = `${wsUrl}ws/chat/${roomId}/?token=${token}`;
+    const socketUrl = `${environment.wsUrl}ws/chat/${roomId}/?token=${token}`;
 
     this.socket = new WebSocket(socketUrl);
 
