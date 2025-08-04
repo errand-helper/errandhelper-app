@@ -1,215 +1,414 @@
-<app-navbar class="bg-white"></app-navbar> <br /><br /><br /><br /><br />
+<app-navbar class="bg-white"></app-navbar>
 <!-- Aside -->
 <app-sidebar></app-sidebar>
 <!-- Main -->
-<div id="main-demo" class="">
-  <div class="container-xxl p-0">
-    <!-- Header Start -->
-    <!-- <div class="container-fluid bg-white p-0">
-      <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
-        <div class="col-md-6 p-4 mt-lg-5">
-          <h2 class="display-5 animated fadeIn mb-4">
-            Find A <span class="text-primary">Perfect ErrandHelper</span> To Run
-            Your Errands
-          </h2>
-          <p class="animated fadeIn mb-4 pb-2">
-            Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no.
-            Kasd rebum ipsum et diam justo clita et kasd rebum sea elitr.
-          </p>
-          <a href="" class="btn btn-primary py-3 px-5 me-3 animated fadeIn"
-            >Get Started</a
-          >
+<!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Header with Search -->
+        <div class="page-header">
+            <button class="mobile-toggle mb-3" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="h3 mb-4">Find Service Providers</h1>
+            <!-- <div class="search-container">
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="Search for services or providers..." id="searchInput">
+                    <button class="search-button" onclick="performSearch()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div> -->
         </div>
-        <div class="col-md-6 animated fadeIn">
-          <div class="owl-carousel header-carousel">
-            <div class="owl-carousel-item">
-              <img
-                class="img-fluid"
-                src="https://images.unsplash.com/photo-1530631673369-bc20fdb32288?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3BsYXNofGVufDB8fDB8fHww"
-                alt=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <!-- Header End -->
 
-    <!-- Search Start -->
-    <div
-      class="container-fluid bg-primary wow fadeIn"
-      data-wow-delay="0.1s"
-      style="padding: 35px"
-    >
-      <div class="container">
-        <div class="row g-2">
-          <div class="col-md-10">
-            <div class="row g-2">
-              <div class="col-md-4">
-                <input
-                  type="text"
-                  class="form-control border-0 py-3"
-                  placeholder="Search Keyword"
-                />
-              </div>
-              <div class="col-md-4">
-                <select class="form-select border-0 py-3">
-                  <option selected>Property Type</option>
-                  <option value="1">Property Type 1</option>
-                  <option value="2">Property Type 2</option>
-                  <option value="3">Property Type 3</option>
-                </select>
-              </div>
-              <div class="col-md-4">
-                <select class="form-select border-0 py-3">
-                  <option selected>Location</option>
-                  <option value="1">Location 1</option>
-                  <option value="2">Location 2</option>
-                  <option value="3">Location 3</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2">
-            <button class="btn btn-dark border-0 w-100 py-3">Search</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Search End -->
+        <div class="row">
+            <!-- Filters Column -->
+            <div class="col-lg-3 mb-4">
+                <div class="filters-section">
+                    <h5 class="mb-3">Filters</h5>
 
-    <!-- Category Start -->
-    <div class="container-xxl py-5"></div>
-    <!-- Category End -->
-
-    <!-- Property List Start -->
-    <div class="">
-      <div class="">
-        <div>
-          <div id="tab-1" class="tab-pane fade show p-0">
-            <div class="row gx-5 gy-4 pb-3">
-              @for (item of business_list; track item.name) {
-              <div
-                class="col-lg-3 col-md-6 wow fadeInUp"
-                data-wow-delay="0.1s"
-                style="
-                  box-shadow: 43px 14px 80px rgba(0, 0, 0, 0.07);
-                  border-radius: 5px;
-                "
-              >
-                <a
-                  routerLink="/business/1/detail"
-                  class="property-item rounded overflow-hidden"
-                >
-                  <div class="position-relative overflow-hidden">
-                    <!-- <a> -->
-                    <div>
-                      <img
-                        class="img-fluid"
-                        style="height: 12rem; width: 100%"
-                        src="https://images.unsplash.com/photo-1530631673369-bc20fdb32288?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3BsYXNofGVufDB8fDB8fHww"
-                        alt=""
-                      />
+                    <!-- Service Categories -->
+                    <div class="filter-group">
+                        <div class="filter-title">Service Categories</div>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="shopping" onchange="applyFilters()">
+                            <span>Shopping & Delivery</span>
+                            <span class="filter-badge">24</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="cleaning" onchange="applyFilters()">
+                            <span>Cleaning Services</span>
+                            <span class="filter-badge">18</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="moving" onchange="applyFilters()">
+                            <span>Moving & Packing</span>
+                            <span class="filter-badge">12</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="pet" onchange="applyFilters()">
+                            <span>Pet Services</span>
+                            <span class="filter-badge">15</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="handyman" onchange="applyFilters()">
+                            <span>Handyman</span>
+                            <span class="filter-badge">20</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="admin" onchange="applyFilters()">
+                            <span>Admin & Office</span>
+                            <span class="filter-badge">10</span>
+                        </label>
                     </div>
-                    <!-- </a> -->
-                    <div
-                      class="bg-primary rounded text-white position-absolute top-0 m-2 py-1 px-2"
-                    >
-                      6 Reviews
+
+                    <!-- Price Range -->
+                    <div class="filter-group">
+                        <div class="filter-title">Price Range</div>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="0-25" onchange="applyFilters()">
+                            <span>$0 - $25</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="25-50" onchange="applyFilters()">
+                            <span>$25 - $50</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="50-100" onchange="applyFilters()">
+                            <span>$50 - $100</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="100+" onchange="applyFilters()">
+                            <span>$100+</span>
+                        </label>
                     </div>
-                    <div
-                      class="rounded-top position-absolute bottom-0 mx-2 pt-1 px-2"
-                      style="
-                        border: 2px solid #fff;
-                        color: #0c6dfd;
-                        background-color: #edf2ff;
-                      "
-                    >
-                      verified
+
+                    <!-- Rating -->
+                    <div class="filter-group">
+                        <div class="filter-title">Minimum Rating</div>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="4.5" onchange="applyFilters()">
+                            <span>4.5+ Stars</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="4.0" onchange="applyFilters()">
+                            <span>4.0+ Stars</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="3.5" onchange="applyFilters()">
+                            <span>3.5+ Stars</span>
+                        </label>
+                    </div>
+
+                    <!-- Other Filters -->
+                    <div class="filter-group">
+                        <div class="filter-title">Other</div>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="verified" onchange="applyFilters()">
+                            <span>Verified Only</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="available" onchange="applyFilters()">
+                            <span>Available Now</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="premium" onchange="applyFilters()">
+                            <span>Premium Providers</span>
+                        </label>
+                    </div>
+
+                    <button class="btn btn-sm btn-outline-secondary w-100 mt-3" onclick="clearFilters()">
+                        Clear All Filters
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Column -->
+            <div class="col-lg-9">
+                <!-- Results Info -->
+                <div class="results-info">
+                  <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" class="search-input" placeholder="Search for services or providers..." id="searchInput">
+                        <button class="search-button" onclick="performSearch()">
+                            <i class="fas fa-search"></i>
+                        </button>
                     </div>
                   </div>
-                  <div class="pb-0">
-                    <h5 class="text-primary mb-3">
-                      {{ item?.business_name }}
-                    </h5>
-                    <div
-                      style="font-size: 0.85rem"
-                      class="d-block h6 mb-2 text-bold text-decoration-none"
-                    >
-                      {{ item?.bio }}
-                      <!-- We are also able to help you squeeze the most out of your
-                      time in Havana with our bespoke concierge service. As well
-                      as organising individual .... -->
+                    <!-- <div class="results-count">
+                        Showing <strong>48</strong> service providers
+                    </div> -->
+                    <div class="sort-dropdown">
+                        <label class="me-2 text-muted">Sort by:</label>
+                        <select class="form-select form-select-sm" style="width: auto;" onchange="sortResults()">
+                            <option value="recommended">Recommended</option>
+                            <option value="rating">Highest Rated</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="distance">Nearest First</option>
+                            <option value="jobs">Most Jobs Completed</option>
+                        </select>
                     </div>
-                    <p style="font-size: 0.85rem; margin: 0">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="#0C6DFD"
-                        class="bi bi-telephone-fill"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"
-                        />
-                      </svg>
-                      {{ item?.phone_number }}
-                    </p>
-                    <p style="font-size: 0.85rem; margin: 0">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="#0C6DFD"
-                        class="bi bi-envelope-fill"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"
-                        />
-                      </svg>
-                      {{ item?.email }}
-                    </p>
-                    <p
-                      style="
-                        font-size: 0.85rem;
-                        margin: 0;
-                        margin-bottom: 0.6rem;
-                      "
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="14"
-                        fill="#0C6DFD"
-                        class="bi bi-geo-alt-fill"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"
-                        />
-                      </svg>
-                      <!-- Sarova Stanley Hotel, Westlands -->
-                      {{ item?.location.location }} - {{ item?.location.town }}
-                    </p>
-                  </div>
-                </a>
-              </div>
-              } @empty {
-              <li>There are no items.</li>
-              }
-            </div>
-          </div>
-        </div>
-        <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-          <a class="btn btn-primary py-3 px-5" href="">Browse More Property</a>
-        </div>
-      </div>
-    </div>
-    <!-- Property List End -->
-  </div>
-</div>
+                </div>
 
-<app-footer></app-footer>
+                <!-- Business Listings -->
+                <div id="businessList">
+                    <!-- Business Card 1 -->
+                    <div class="business-card">
+                        <div class="business-header">
+                            <div class="business-logo">QE</div>
+                            <div class="business-info">
+                                <h4 class="business-name">Quick Errands Co.</h4>
+                                <div class="business-rating">
+                                    <span class="rating-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    <span class="rating-value">5.0</span>
+                                    <span class="rating-count">(127 reviews)</span>
+                                </div>
+                                <div class="location-info">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>2.5 miles away • New York, NY</span>
+                                </div>
+                                <div class="business-badges">
+                                    <span class="badge-verified">
+                                        <i class="fas fa-check-circle"></i>
+                                        Verified
+                                    </span>
+                                    <span class="badge-premium">
+                                        <i class="fas fa-crown"></i>
+                                        Premium
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="business-services">
+                            <span class="service-tag active">Shopping & Delivery</span>
+                            <span class="service-tag">Grocery Shopping</span>
+                            <span class="service-tag">Package Pickup</span>
+                            <span class="service-tag">Same-Day Delivery</span>
+                        </div>
+                        <p class="business-description">
+                            Professional errand running service specializing in grocery shopping, deliveries, and personal shopping.
+                            Available 7 days a week with same-day service options. Trusted by over 500 satisfied customers.
+                        </p>
+                        <div class="business-footer">
+                            <div class="business-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span>523 jobs</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span> 1hr response</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="price-range">$25-$50/hour</span>
+                                </div>
+                            </div>
+                            <div class="business-actions">
+                                <button class="btn btn-view-profile" routerLink="/business/detail">View Profile</button>
+                                <button class="btn btn-hire">Hire Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Business Card 2 -->
+                    <div class="business-card">
+                        <div class="business-header">
+                            <div class="business-logo" style="background-color: #007bff;">CP</div>
+                            <div class="business-info">
+                                <h4 class="business-name">CleanPro Services</h4>
+                                <div class="business-rating">
+                                    <span class="rating-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </span>
+                                    <span class="rating-value">4.8</span>
+                                    <span class="rating-count">(89 reviews)</span>
+                                </div>
+                                <div class="location-info">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>3.8 miles away • Brooklyn, NY</span>
+                                </div>
+                                <div class="business-badges">
+                                    <span class="badge-verified">
+                                        <i class="fas fa-check-circle"></i>
+                                        Verified
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="business-services">
+                            <span class="service-tag">House Cleaning</span>
+                            <span class="service-tag">Office Cleaning</span>
+                            <span class="service-tag">Deep Cleaning</span>
+                            <span class="service-tag">Move-in/out Cleaning</span>
+                        </div>
+                        <p class="business-description">
+                            Professional cleaning services for homes and offices. Eco-friendly products, insured and bonded team.
+                            Flexible scheduling including weekends. Satisfaction guaranteed or your money back.
+                        </p>
+                        <div class="business-footer">
+                            <div class="business-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span>342 jobs</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>< 2hr response</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="price-range">$50-$120/job</span>
+                                </div>
+                            </div>
+                            <div class="business-actions">
+                                <button class="btn btn-view-profile">View Profile</button>
+                                <button class="btn btn-hire">Hire Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Business Card 3 -->
+                    <div class="business-card">
+                        <div class="business-header">
+                            <div class="business-logo" style="background-color: #28a745;">ES</div>
+                            <div class="business-info">
+                                <h4 class="business-name">Express Services</h4>
+                                <div class="business-rating">
+                                    <span class="rating-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    <span class="rating-value">4.9</span>
+                                    <span class="rating-count">(156 reviews)</span>
+                                </div>
+                                <div class="location-info">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>1.2 miles away • Manhattan, NY</span>
+                                </div>
+                                <div class="business-badges">
+                                    <span class="badge-verified">
+                                        <i class="fas fa-check-circle"></i>
+                                        Verified
+                                    </span>
+                                    <span class="badge-premium">
+                                        <i class="fas fa-crown"></i>
+                                        Premium
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="business-services">
+                            <span class="service-tag">Document Delivery</span>
+                            <span class="service-tag">Package Pickup</span>
+                            <span class="service-tag">Rush Delivery</span>
+                            <span class="service-tag">Notary Services</span>
+                        </div>
+                        <p class="business-description">
+                            Fast and reliable document and package delivery service. Specializing in time-sensitive deliveries
+                            with real-time tracking. Licensed and insured couriers available 24/7.
+                        </p>
+                        <div class="business-footer">
+                            <div class="business-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span>892 jobs</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>< 30min response</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="price-range">$15-$45/delivery</span>
+                                </div>
+                            </div>
+                            <div class="business-actions">
+                                <button class="btn btn-view-profile">View Profile</button>
+                                <button class="btn btn-hire">Hire Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Business Card 4 -->
+                    <div class="business-card">
+                        <div class="business-header">
+                            <div class="business-logo" style="background-color: #6f42c1;">PP</div>
+                            <div class="business-info">
+                                <h4 class="business-name">PetCare Pros</h4>
+                                <div class="business-rating">
+                                    <span class="rating-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    <span class="rating-value">5.0</span>
+                                    <span class="rating-count">(73 reviews)</span>
+                                </div>
+                                <div class="location-info">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>4.2 miles away • Queens, NY</span>
+                                </div>
+                                <div class="business-badges">
+                                    <span class="badge-verified">
+                                        <i class="fas fa-check-circle"></i>
+                                        Verified
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="business-services">
+                            <span class="service-tag">Pet Sitting</span>
+                            <span class="service-tag">Dog Walking</span>
+                            <span class="service-tag">Pet Grooming</span>
+                            <span class="service-tag">Vet Transport</span>
+                        </div>
+                        <p class="business-description">
+                            Caring and professional pet services by certified pet handlers. From daily walks to overnight sitting,
+                            we treat your pets like family. All staff are background checked and pet first-aid certified.
+                        </p>
+                        <div class="business-footer">
+                            <div class="business-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span>234 jobs</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span> 1hr response</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="price-range">$30-$60/hour</span>
+                                </div>
+                            </div>
+                            <div class="business-actions">
+                                <button class="btn btn-view-profile">View Profile</button>
+                                <button class="btn btn-hire">Hire Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load More Button -->
+                <div class="load-more">
+                    <button class="btn btn-load-more" onclick="loadMore()">
+                        Load More Providers
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- <app-footer></app-footer> -->

@@ -6,7 +6,7 @@ import { BDashboardComponent } from './components/b-dashboard/b-dashboard.compon
 
 const routes: Routes = [
   { path: 'list', component:BusinessListComponent },
-  { path: ':id/detail', component:BusinessDetailComponent },
+  { path: 'detail', component:BusinessDetailComponent },
   { path: '', component:BDashboardComponent },
 
 
