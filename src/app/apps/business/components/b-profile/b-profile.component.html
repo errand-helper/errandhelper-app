@@ -1,0 +1,620 @@
+<app-navbar></app-navbar>
+
+<!-- Aside -->
+<app-sidebar></app-sidebar>
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Page Header -->
+  <div class="page-header">
+    <button class="mobile-toggle mb-3" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <h1 class="h3 mb-0">Edit Provider Profile</h1>
+    <p class="text-muted mb-0">Manage your business information and services</p>
+  </div>
+
+  <form id="providerProfileForm">
+    <!-- Basic Information Section -->
+    <div class="form-section">
+      <h2 class="section-title">Basic Information</h2>
+
+      <div class="logo-upload-container">
+        <div class="logo-preview" id="logoPreview">
+          <span id="logoInitials">QE</span>
+          <input
+            type="file"
+            id="logoInput"
+            accept="image/*"
+            style="display: none"
+          />
+        </div>
+        <div>
+          <div
+            class="logo-upload-btn"
+            onclick="document.getElementById('logoInput').click()"
+          >
+            <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
+            <p class="mb-0">Click to upload logo</p>
+            <small class="text-muted">PNG, JPG up to 5MB</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="businessName" class="form-label"
+            >Business Name <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessName"
+            placeholder="Enter your business name"
+            required
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="businessEmail" class="form-label"
+            >Business Email <span class="required">*</span></label
+          >
+          <input
+            type="email"
+            class="form-control"
+            id="businessEmail"
+            placeholder="business@example.com"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="businessPhone" class="form-label"
+            >Business Phone <span class="required">*</span></label
+          >
+          <input
+            type="tel"
+            class="form-control"
+            id="businessPhone"
+            placeholder="+1 (555) 123-4567"
+            required
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="businessWebsite" class="form-label">Website</label>
+          <input
+            type="url"
+            class="form-control"
+            id="businessWebsite"
+            placeholder="https://www.example.com"
+          />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="businessTagline" class="form-label">Business Tagline</label>
+        <input
+          type="text"
+          class="form-control"
+          id="businessTagline"
+          placeholder="Your trusted partner for all errand services"
+          maxlength="100"
+        />
+        <div class="info-text">
+          A short, catchy phrase that describes your business (max 100
+          characters)
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="businessDescription" class="form-label"
+          >Business Description <span class="required">*</span></label
+        >
+        <textarea
+          class="form-control"
+          id="businessDescription"
+          rows="4"
+          placeholder="Tell customers about your business, experience, and what makes you unique..."
+          required
+        ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Business Badges</label>
+        <div class="badge-selection">
+          <label class="badge-checkbox">
+            <input type="checkbox" id="verifiedBadge" />
+            <span>Verified Business</span>
+          </label>
+          <label class="badge-checkbox">
+            <input type="checkbox" id="premiumBadge" />
+            <span>Premium Provider</span>
+          </label>
+          <label class="badge-checkbox">
+            <input type="checkbox" id="insuredBadge" />
+            <span>Fully Insured</span>
+          </label>
+          <label class="badge-checkbox">
+            <input type="checkbox" id="licensedBadge" />
+            <span>Licensed</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location & Hours Section -->
+    <div class="form-section">
+      <h2 class="section-title">Location & Business Hours</h2>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="businessAddress" class="form-label"
+            >Business Address <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessAddress"
+            placeholder="123 Main Street"
+            required
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="businessCity" class="form-label"
+            >City <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessCity"
+            placeholder="New York"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="businessState" class="form-label"
+            >State <span class="required">*</span></label
+          >
+          <select class="form-select" id="businessState" required>
+            <option value="">Select State</option>
+            <option value="NY">New York</option>
+            <option value="CA">California</option>
+            <option value="TX">Texas</option>
+            <!-- Add more states -->
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="businessZip" class="form-label"
+            >ZIP Code <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessZip"
+            placeholder="10001"
+            required
+          />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="serviceRadius" class="form-label"
+            >Service Radius (miles)</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="serviceRadius"
+            placeholder="10"
+            min="1"
+            max="100"
+          />
+        </div>
+      </div>
+
+      <h5 class="mb-3">Business Hours</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-2">
+            <label class="form-label">Monday - Friday</label>
+            <div class="d-flex gap-2">
+              <input
+                type="time"
+                class="form-control"
+                id="weekdayOpen"
+                value="07:00"
+              />
+              <span class="align-self-center">to</span>
+              <input
+                type="time"
+                class="form-control"
+                id="weekdayClose"
+                value="21:00"
+              />
+            </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Saturday</label>
+            <div class="d-flex gap-2">
+              <input
+                type="time"
+                class="form-control"
+                id="saturdayOpen"
+                value="08:00"
+              />
+              <span class="align-self-center">to</span>
+              <input
+                type="time"
+                class="form-control"
+                id="saturdayClose"
+                value="20:00"
+              />
+            </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Sunday</label>
+            <div class="d-flex gap-2">
+              <input
+                type="time"
+                class="form-control"
+                id="sundayOpen"
+                value="09:00"
+              />
+              <span class="align-self-center">to</span>
+              <input
+                type="time"
+                class="form-control"
+                id="sundayClose"
+                value="18:00"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="emergencyService"
+            />
+            <label class="form-check-label" for="emergencyService">
+              Emergency services available 24/7
+            </label>
+          </div>
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="weekendAvailable"
+            />
+            <label class="form-check-label" for="weekendAvailable">
+              Available on weekends
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="holidayAvailable"
+            />
+            <label class="form-check-label" for="holidayAvailable">
+              Available on holidays
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services Section -->
+    <div class="form-section">
+      <h2 class="section-title">Services Offered</h2>
+
+      <div id="servicesList">
+        <div class="service-item">
+          <button
+            type="button"
+            class="remove-btn"
+            onclick="removeService(this)"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label"
+                >Service Name <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                placeholder="e.g., Grocery Shopping"
+                required
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Service Category</label>
+              <select class="form-select">
+                <option value="">Select Category</option>
+                <option value="shopping">Shopping & Delivery</option>
+                <option value="cleaning">Cleaning</option>
+                <option value="moving">Moving & Packing</option>
+                <option value="admin">Administrative</option>
+                <option value="pet">Pet Services</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Service Description</label>
+              <textarea
+                class="form-control"
+                rows="2"
+                placeholder="Describe what this service includes..."
+              ></textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Pricing Type</label>
+              <select class="form-select">
+                <option value="hourly">Hourly Rate</option>
+                <option value="fixed">Fixed Price</option>
+                <option value="quote">By Quote</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Price From ($)</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="25"
+                min="0"
+                step="0.01"
+              />
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Price To ($)</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="50"
+                min="0"
+                step="0.01"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-add" onclick="addService()">
+        <i class="fas fa-plus me-2"></i>Add Another Service
+      </button>
+    </div>
+
+    <!-- Team Members Section -->
+    <div class="form-section">
+      <h2 class="section-title">Team Members</h2>
+
+      <div class="row" id="teamMembersList">
+        <div class="col-md-4 mb-3">
+          <div class="team-member-card">
+            <button
+              type="button"
+              class="remove-btn"
+              onclick="removeTeamMember(this)"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+            <div
+              class="team-avatar-upload"
+              onclick="this.querySelector('input').click()"
+            >
+              <span>JW</span>
+              <input type="file" accept="image/*" style="display: none" />
+            </div>
+            <input
+              type="text"
+              class="form-control mb-2"
+              placeholder="Member Name"
+            />
+            <input type="text" class="form-control" placeholder="Role/Title" />
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-add" onclick="addTeamMember()">
+        <i class="fas fa-plus me-2"></i>Add Team Member
+      </button>
+    </div>
+
+    <!-- Portfolio Gallery Section -->
+    <div class="form-section">
+      <h2 class="section-title">Portfolio Gallery</h2>
+
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Gallery items will be added here -->
+      </div>
+
+      <div
+        class="gallery-upload-area"
+        onclick="document.getElementById('galleryInput').click()"
+      >
+        <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+        <h5>Upload Portfolio Images</h5>
+        <p class="text-muted mb-0">Click to upload or drag and drop</p>
+        <small class="text-muted">PNG, JPG up to 10MB each</small>
+        <input
+          type="file"
+          id="galleryInput"
+          multiple
+          accept="image/*"
+          style="display: none"
+        />
+      </div>
+    </div>
+
+    <!-- Service Areas Section -->
+    <div class="form-section">
+      <h2 class="section-title">Service Areas</h2>
+
+      <div class="mb-3">
+        <label class="form-label">Areas You Serve</label>
+        <textarea
+          class="form-control"
+          rows="3"
+          placeholder="Enter the neighborhoods, cities, or areas you provide service to (one per line)"
+        ></textarea>
+        <div class="info-text">List all areas where you provide services</div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="serveManhattan"
+            />
+            <label class="form-check-label" for="serveManhattan"
+              >Manhattan</label
+            >
+          </div>
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="serveBrooklyn"
+            />
+            <label class="form-check-label" for="serveBrooklyn">Brooklyn</label>
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="serveQueens" />
+            <label class="form-check-label" for="serveQueens">Queens</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="serveBronx" />
+            <label class="form-check-label" for="serveBronx">Bronx</label>
+          </div>
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="serveStatenIsland"
+            />
+            <label class="form-check-label" for="serveStatenIsland"
+              >Staten Island</label
+            >
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="serveOther" />
+            <label class="form-check-label" for="serveOther">Other Areas</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="form-section">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+
+      <div id="faqList">
+        <div class="faq-item">
+          <button type="button" class="remove-btn" onclick="removeFAQ(this)">
+            <i class="fas fa-times"></i>
+          </button>
+          <div class="mb-3">
+            <label class="form-label">Question</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="e.g., How quickly can you complete an errand?"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Answer</label>
+            <textarea
+              class="form-control"
+              rows="2"
+              placeholder="Provide a detailed answer..."
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-add" onclick="addFAQ()">
+        <i class="fas fa-plus me-2"></i>Add FAQ
+      </button>
+    </div>
+
+    <!-- Insurance & Certifications Section -->
+    <div class="form-section">
+      <h2 class="section-title">Insurance & Certifications</h2>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="insuranceProvider" class="form-label"
+            >Insurance Provider</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="insuranceProvider"
+            placeholder="Insurance company name"
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="insurancePolicy" class="form-label">Policy Number</label>
+          <input
+            type="text"
+            class="form-control"
+            id="insurancePolicy"
+            placeholder="Policy number"
+          />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="certifications" class="form-label"
+          >Certifications & Licenses</label
+        >
+        <textarea
+          class="form-control"
+          id="certifications"
+          rows="3"
+          placeholder="List any relevant certifications, licenses, or credentials"
+        ></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Upload Documents</label>
+        <input
+          type="file"
+          class="form-control"
+          multiple
+          accept=".pdf,.jpg,.jpeg,.png"
+        />
+        <div class="info-text">
+          Upload copies of insurance certificates, licenses, or other
+          credentials
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Actions -->
+    <div class="save-actions">
+      <button
+        type="button"
+        class="btn btn-outline-custom"
+        onclick="saveDraft()"
+      >
+        Save as Draft
+      </button>
+      <button type="submit" class="btn btn-primary-custom">
+        Save & Publish Profile
+      </button>
+    </div>
+  </form>
+</div>

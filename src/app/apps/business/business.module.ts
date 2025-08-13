@@ -6,13 +6,15 @@ import { BusinessListComponent } from './components/business-list/business-list.
 import { SharedModule } from '../sharedmodule/sharedmodule.module';
 import { BusinessDetailComponent } from './components/business-detail/business-detail.component';
 import { BDashboardComponent } from './components/b-dashboard/b-dashboard.component';
+import { BProfileComponent } from './components/b-profile/b-profile.component';
 
 
 @NgModule({
   declarations: [
     BusinessListComponent,
     BusinessDetailComponent,
-    BDashboardComponent
+    BDashboardComponent,
+    BProfileComponent
   ],
   imports: [
     CommonModule,
