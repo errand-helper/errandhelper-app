@@ -17,38 +17,38 @@
                 </div>
 
                 <div class="p-4">
-                  <form action="" [formGroup]="userTypeForm">
-                    <label for="">Select User type</label>
-
-                    <div class="row g-3">
-                      <div class="col-md-6 col-sm-12">
-                        <label style="font-weight: 500;" for="customer" class="form-label">Customer</label
-                        >&nbsp;
-                        <input
-                          type="radio"
-                          value="customer"
-                          formControlName="user_type"
-                        />
-                      </div>
-                      <div class="col-md-6 col-sm-12">
-                        <label style="font-weight: 500;" for="business" class="form-label">Business</label
-                        >&nbsp;
-                        <input
-                          type="radio"
-                          value="business"
-                          formControlName="user_type"
-                        />
-                      </div>
-                    </div>
-                  </form>
-  
                   <form
                     class="row g-3 needs-validation"
                     [formGroup]="registerForm"
                     (ngSubmit)="registerUser()"
                   >
-                    <div class="col-md-6 col-sm-12" *ngIf="customer || business">
-                      <label for="yourName" class="form-label">First Name</label>
+                    <div class="col-md-12 col-sm-12">
+                      <label for="role" class="form-label"
+                        >Select User Role</label
+                      >
+                      <select
+                        class="form-select"
+                        formControlName="role"
+                        aria-label="Default select example"
+                      >
+                        <option value="client">Client</option>
+                        <option value="business">Business</option>
+                      </select>
+                      <div
+                        class="invalid-feedback"
+                        *ngIf="
+                          registerForm.get('role')?.invalid &&
+                          registerForm.get('role')?.touched
+                        "
+                      >
+                        Please select a user role.
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12">
+                      <label for="yourName" class="form-label"
+                        >First Name</label
+                      >
                       <input
                         type="text"
                         name="name"
@@ -66,7 +66,7 @@
                         Please enter your first name.
                       </div>
                     </div>
-                    <div class="col-md-6 col-sm-12" *ngIf="customer || business">
+                    <div class="col-md-6 col-sm-12">
                       <label for="yourName" class="form-label">Last Name</label>
                       <input
                         type="text"
@@ -85,7 +85,7 @@
                         Please enter your last name.
                       </div>
                     </div>
-                    <div class="col-md-6 col-sm-12" *ngIf="customer || business">
+                    <div class="col-md-6 col-sm-12">
                       <label for="" class="form-label">Email</label>
                       <input
                         type="email"
@@ -104,65 +104,27 @@
                         Please enter your email.
                       </div>
                     </div>
-                    <div class="col-md-6 col-sm-12" *ngIf="customer || business">
-                      <label for="" class="form-label">Id Number</label>
-                      <input
-                        type="id_number"
-                        name="id_number"
-                        class="form-control"
-                        required
-                        formControlName="id_number"
-                      />
-                      <div
-                        class="invalid-feedback"
-                        *ngIf="
-                          registerForm.get('id_number')?.invalid &&
-                          registerForm.get('id_number')?.touched
-                        "
-                      >
-                        Please enter your id_number.
-                      </div>
-                    </div>
-                    <div class="col-md-6 col-sm-12" *ngIf="business">
-                      <label for="" class="form-label">Business Reg no</label>
+                    <div class="col-md-6 col-sm-12">
+                      <label for="" class="form-label">Phone Number</label>
                       <input
                         type="text"
-                        name="registration_number"
+                        name="phone"
                         class="form-control"
                         required
-                        formControlName="registration_number"
+                        formControlName="phone"
                       />
                       <div
                         class="invalid-feedback"
                         *ngIf="
-                          registerForm.get('registration_number')?.invalid &&
-                          registerForm.get('registration_number')?.touched
+                          registerForm.get('phone')?.invalid &&
+                          registerForm.get('phone')?.touched
                         "
                       >
-                        Please enter your registration number.
+                        Please enter your phone.
                       </div>
                     </div>
-                   <div class="col-md-6 col-sm-12" *ngIf="business">
-                      <label for="" class="form-label">Business name</label>
-                      <input
-                        type="text"
-                        name="business_name"
-                        class="form-control"
-                        required
-                        formControlName="business_name"
-                      />
-                      <div
-                        class="invalid-feedback"
-                        *ngIf="
-                          registerForm.get('business_name')?.invalid &&
-                          registerForm.get('business_name')?.touched
-                        "
-                      >
-                        Please enter your business name.
-                      </div>
-                    </div>
-  
-                    <div class="col-md-6 col-sm-12" *ngIf="customer || business">
+
+                    <div class="col-md-6 col-sm-12">
                       <label for="yourPassword" class="form-label"
                         >Password</label
                       >
@@ -183,8 +145,8 @@
                         Please enter your password.
                       </div>
                     </div>
-  
-                    <div class="col-md-6 col-sm-12" *ngIf="customer || business">
+
+                    <div class="col-md-6 col-sm-12">
                       <label for="yourPassword" class="form-label"
                         >Confirm Password</label
                       >
@@ -205,16 +167,20 @@
                         Please enter your password.
                       </div>
                     </div>
-                    
+
                     <div class="col-12">
                       <button class="btn create-btn w-100" type="submit">
                         Create Account
                       </button>
                     </div>
                     <div class="col-12">
-                      <p class="mb-0" style="font-size: 16px;">
+                      <p class="mb-0" style="font-size: 16px">
                         Already have an account?
-                        <a routerLink="/login" style="color: var(--primary-blue);font-weight: 600;">Log in</a>
+                        <a
+                          routerLink="/login"
+                          style="color: var(--primary-blue); font-weight: 600"
+                          >Log in</a
+                        >
                       </p>
                     </div>
                   </form>

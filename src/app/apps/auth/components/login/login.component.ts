@@ -27,9 +27,9 @@ export class LoginComponent {
     }
    this.authService.loginUser(data).subscribe((res:any)=>{
     localStorage.setItem('access_token', res.access);
-    localStorage.setItem('user_type', res.user_type);
+    localStorage.setItem('user_type', res.role);
     this.toastr.success('Login successful');
-    if(res.user_type === 'BUSINESS'){ 
+    if(res.user_type === 'BUSINESS'){
       this.route.navigate(['/business']);
     }else{
         this.route.navigate(['/client']);
