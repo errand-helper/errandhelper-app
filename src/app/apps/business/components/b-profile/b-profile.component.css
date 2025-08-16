@@ -339,7 +339,7 @@ textarea.form-control {
 
 /* Save Actions */
 .save-actions {
-  position: sticky;
+  /* position: sticky; */
   bottom: 20px;
   background-color: var(--primary-white);
   padding: 20px;
@@ -348,7 +348,7 @@ textarea.form-control {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  z-index: 10;
+  /* z-index: 10; */
 }
 
 /* Badges */

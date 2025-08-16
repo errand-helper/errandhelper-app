@@ -23,9 +23,10 @@ export class SidebarComponent {
       this.sidebarActive = state;
     });
 
-    this.user_type = localStorage.getItem('user_type');
+    const userTypeString = localStorage.getItem('user_type');
+    this.user_type = userTypeString ? JSON.parse(userTypeString) : null;
   }
-  
+
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {

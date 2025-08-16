@@ -1,521 +1,1376 @@
-<app-navbar></app-navbar>
-
 <!-- Aside -->
 <app-sidebar></app-sidebar>
 <!-- Main -->
- <!-- Main Content -->
-    <div class="main-content">
-        <!-- Back Button -->
-        <div class="mb-3">
-            <button class="mobile-toggle me-3" onclick="toggleSidebar()">
-                <i class="fas fa-bars"></i>
-            </button>
-            <a (click)="navigateBack()" class="btn btn-link text-decoration-none">
-                <i class="fas fa-arrow-left me-2"></i>Back to Providers
-            </a>
+<!-- Main Content -->
+<div class="main-content">
+  <app-navbar></app-navbar>
+
+  <!-- Back Button -->
+  <div class="mb-3">
+    <!-- <button class="mobile-toggle me-3" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button> -->
+    <div>
+      <button
+        (click)="navigateBack()"
+        class="btn btn-link text-decoration-none badge-item badge-insured"
+      >
+        <i class="fas fa-arrow-left me-2"></i>Back to Providers
+      </button>
+    </div>
+  </div>
+
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="provider-info">
+      <div class="provider-logo">QE</div>
+      <div class="provider-details">
+        <h1 class="provider-name">Quick Errands Co.</h1>
+        <p class="provider-tagline">
+          Your Trusted Partner for All Errand Services
+        </p>
+        <div class="provider-badges">
+          <span class="badge-item badge-verified">
+            <i class="fas fa-check-circle"></i>
+            Verified Business
+          </span>
+          <!-- <span class="badge-item badge-premium">
+            <i class="fas fa-crown"></i>
+            Premium Provider
+          </span>
+          <span class="badge-item badge-insured">
+            <i class="fas fa-shield-alt"></i>
+            Fully Insured
+          </span>
+          <span class="badge-item badge-licensed">
+            <i class="fas fa-certificate"></i>
+            Licensed
+          </span> -->
         </div>
-
-        <!-- Profile Header -->
-        <div class="profile-header">
-            <div class="provider-info">
-                <div class="provider-logo">QE</div>
-                <div class="provider-details">
-                    <h1 class="provider-name">Quick Errands Co.</h1>
-                    <p class="provider-tagline">Your Trusted Partner for All Errand Services</p>
-                    <div class="provider-badges">
-                        <span class="badge-item badge-verified">
-                            <i class="fas fa-check-circle"></i>
-                            Verified Business
-                        </span>
-                        <span class="badge-item badge-premium">
-                            <i class="fas fa-crown"></i>
-                            Premium Provider
-                        </span>
-                        <span class="badge-item badge-insured">
-                            <i class="fas fa-shield-alt"></i>
-                            Fully Insured
-                        </span>
-                        <span class="badge-item badge-licensed">
-                            <i class="fas fa-certificate"></i>
-                            Licensed
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="provider-stats">
-                <div class="stat-item">
-                    <span class="stat-value">5.0</span>
-                    <div class="rating-stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <span class="stat-label">127 reviews</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value">523</span>
-                    <span class="stat-label">Jobs Completed</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value">98%</span>
-                    <span class="stat-label">On-Time Rate</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value">&lt; 1hr</span>
-                    <span class="stat-label">Response Time</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value">2.5mi</span>
-                    <span class="stat-label">Distance</span>
-                </div>
-            </div>
-
-            <div class="profile-actions mt-4">
-                <button class="btn btn-hire-now">
-                    <i class="fas fa-briefcase me-2"></i>Hire Now
-                </button>
-                <button class="btn btn-message">
-                    <i class="fas fa-comment me-2"></i>Send Message
-                </button>
-                <button class="btn btn-save" onclick="toggleSave(this)">
-                    <i class="fas fa-heart me-2"></i>Save
-                </button>
-            </div>
-        </div>
-
-        <!-- About Section -->
-        <div class="profile-section">
-            <h2 class="section-title">About Quick Errands Co.</h2>
-            <p class="mb-3">
-                Quick Errands Co. is a premier errand running service that has been serving the New York area for over 5 years.
-                We specialize in providing reliable, efficient, and professional errand services to busy individuals and families
-                who need an extra hand with their daily tasks.
-            </p>
-            <p class="mb-3">
-                Our team of dedicated professionals is committed to making your life easier by handling everything from grocery
-                shopping and deliveries to administrative tasks and personal shopping. We pride ourselves on our attention to
-                detail, punctuality, and exceptional customer service.
-            </p>
-            <div class="row mt-4">
-                <div class="col-md-6">
-                    <h5 class="mb-3">Why Choose Us?</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>5+ years of experience</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Background-checked staff</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Fully insured and bonded</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Same-day service available</li>
-                    </ul>
-                </div>
-                <div class="col-md-6">
-                    <h5 class="mb-3">Business Hours</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">Monday - Friday: 7:00 AM - 9:00 PM</li>
-                        <li class="mb-2">Saturday: 8:00 AM - 8:00 PM</li>
-                        <li class="mb-2">Sunday: 9:00 AM - 6:00 PM</li>
-                        <li class="mb-2 text-success"><i class="fas fa-bolt me-2"></i>Emergency services available 24/7</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Services Section -->
-        <div class="profile-section">
-            <h2 class="section-title">Our Services</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                    </div>
-                    <h5 class="service-name">Grocery Shopping</h5>
-                    <p class="service-description">Complete grocery shopping with your list, including organic options and special dietary needs.</p>
-                    <div class="service-price">$25-$35/hour + cost of groceries</div>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-truck"></i>
-                    </div>
-                    <h5 class="service-name">Package Delivery</h5>
-                    <p class="service-description">Same-day pickup and delivery for packages, documents, and parcels.</p>
-                    <div class="service-price">$15-$45 per delivery</div>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-gift"></i>
-                    </div>
-                    <h5 class="service-name">Personal Shopping</h5>
-                    <p class="service-description">Gift shopping, clothing shopping, and returns/exchanges at any store.</p>
-                    <div class="service-price">$35-$50/hour</div>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <h5 class="service-name">Administrative Tasks</h5>
-                    <p class="service-description">Post office runs, DMV services, banking errands, and document filing.</p>
-                    <div class="service-price">$30-$40/hour</div>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-prescription-bottle"></i>
-                    </div>
-                    <h5 class="service-name">Pharmacy Runs</h5>
-                    <p class="service-description">Prescription pickup and delivery from any pharmacy with proper authorization.</p>
-                    <div class="service-price">$20-$30 per trip</div>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-utensils"></i>
-                    </div>
-                    <h5 class="service-name">Food Delivery</h5>
-                    <p class="service-description">Restaurant pickup and delivery from any establishment in the area.</p>
-                    <div class="service-price">$15-$25 + meal cost</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Reviews Section -->
-        <div class="profile-section">
-            <h2 class="section-title">Customer Reviews</h2>
-
-            <!-- Review Summary -->
-            <div class="review-summary">
-                <div class="review-average">
-                    <div class="review-score">5.0</div>
-                    <div class="review-stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <div class="review-count">Based on 127 reviews</div>
-                </div>
-                <div class="review-breakdown">
-                    <div class="rating-bar">
-                        <span class="rating-label">5 stars</span>
-                        <div class="rating-progress">
-                            <div class="rating-fill" style="width: 92%"></div>
-                        </div>
-                        <span class="rating-percent">92%</span>
-                    </div>
-                    <div class="rating-bar">
-                        <span class="rating-label">4 stars</span>
-                        <div class="rating-progress">
-                            <div class="rating-fill" style="width: 6%"></div>
-                        </div>
-                        <span class="rating-percent">6%</span>
-                    </div>
-                    <div class="rating-bar">
-                        <span class="rating-label">3 stars</span>
-                        <div class="rating-progress">
-                            <div class="rating-fill" style="width: 2%"></div>
-                        </div>
-                        <span class="rating-percent">2%</span>
-                    </div>
-                    <div class="rating-bar">
-                        <span class="rating-label">2 stars</span>
-                        <div class="rating-progress">
-                            <div class="rating-fill" style="width: 0%"></div>
-                        </div>
-                        <span class="rating-percent">0%</span>
-                    </div>
-                    <div class="rating-bar">
-                        <span class="rating-label">1 star</span>
-                        <div class="rating-progress">
-                            <div class="rating-fill" style="width: 0%"></div>
-                        </div>
-                        <span class="rating-percent">0%</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Review Items -->
-            <div class="reviews-list">
-                <div class="review-item">
-                    <div class="review-header">
-                        <div class="reviewer-info">
-                            <div class="reviewer-avatar">JD</div>
-                            <div>
-                                <div class="reviewer-name">John Doe</div>
-                                <div class="review-date">2 days ago</div>
-                            </div>
-                        </div>
-                        <div class="review-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                    <p class="review-content">
-                        Excellent service! Quick Errands Co. has been handling my weekly grocery shopping for the past 3 months,
-                        and I couldn't be happier. They always get exactly what I need and even suggest alternatives when items
-                        are out of stock. Highly recommended!
-                    </p>
-                    <span class="review-service">Grocery Shopping</span>
-                </div>
-
-                <div class="review-item">
-                    <div class="review-header">
-                        <div class="reviewer-info">
-                            <div class="reviewer-avatar">SJ</div>
-                            <div>
-                                <div class="reviewer-name">Sarah Johnson</div>
-                                <div class="review-date">1 week ago</div>
-                            </div>
-                        </div>
-                        <div class="review-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                    <p class="review-content">
-                        I needed urgent document delivery to multiple locations, and Quick Errands Co. saved the day!
-                        They were professional, fast, and kept me updated throughout the entire process. Will definitely
-                        use their services again.
-                    </p>
-                    <span class="review-service">Package Delivery</span>
-                </div>
-
-                <div class="review-item">
-                    <div class="review-header">
-                        <div class="reviewer-info">
-                            <div class="reviewer-avatar">MS</div>
-                            <div>
-                                <div class="reviewer-name">Mike Smith</div>
-                                <div class="review-date">2 weeks ago</div>
-                            </div>
-                        </div>
-                        <div class="review-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                    <p class="review-content">
-                        As a busy professional, I don't have time for errands. Quick Errands Co. has been a lifesaver!
-                        From pharmacy runs to banking tasks, they handle everything efficiently. Great communication and
-                        always on time.
-                    </p>
-                    <span class="review-service">Administrative Tasks</span>
-                </div>
-            </div>
-
-            <div class="text-center mt-4">
-                <button class="btn btn-outline-primary">Load More Reviews</button>
-            </div>
-        </div>
-
-        <!-- Portfolio/Gallery Section -->
-        <div class="profile-section">
-            <h2 class="section-title">Our Work</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='16'%3EGrocery Shopping%3C/text%3E%3C/svg%3E" alt="Grocery Shopping">
-                    <div class="gallery-overlay">
-                        <h6>Grocery Shopping</h6>
-                        <p>Weekly shopping for families</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='16'%3EPackage Delivery%3C/text%3E%3C/svg%3E" alt="Package Delivery">
-                    <div class="gallery-overlay">
-                        <h6>Package Delivery</h6>
-                        <p>Safe and timely deliveries</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='16'%3EPersonal Shopping%3C/text%3E%3C/svg%3E" alt="Personal Shopping">
-                    <div class="gallery-overlay">
-                        <h6>Personal Shopping</h6>
-                        <p>Gift and personal shopping</p>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='16'%3EFood Delivery%3C/text%3E%3C/svg%3E" alt="Food Delivery">
-                    <div class="gallery-overlay">
-                        <h6>Food Delivery</h6>
-                        <p>Restaurant pickup & delivery</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Availability Section -->
-        <div class="profile-section">
-            <h2 class="section-title">Availability</h2>
-            <div class="availability-legend">
-                <div class="legend-item">
-                    <div class="legend-color legend-available"></div>
-                    <span>Available</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color legend-limited"></div>
-                    <span>Limited Availability</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color legend-busy"></div>
-                    <span>Fully Booked</span>
-                </div>
-            </div>
-            <div class="calendar-widget">
-                <div class="calendar-header">
-                    <button class="btn btn-sm"><i class="fas fa-chevron-left"></i></button>
-                    <h5 class="mb-0">January 2025</h5>
-                    <button class="btn btn-sm"><i class="fas fa-chevron-right"></i></button>
-                </div>
-                <div class="calendar-grid">
-                    <div class="text-muted small">S</div>
-                    <div class="text-muted small">M</div>
-                    <div class="text-muted small">T</div>
-                    <div class="text-muted small">W</div>
-                    <div class="text-muted small">T</div>
-                    <div class="text-muted small">F</div>
-                    <div class="text-muted small">S</div>
-
-                    <div class="calendar-day">5</div>
-                    <div class="calendar-day day-available">6</div>
-                    <div class="calendar-day day-available">7</div>
-                    <div class="calendar-day day-limited">8</div>
-                    <div class="calendar-day day-available">9</div>
-                    <div class="calendar-day day-available">10</div>
-                    <div class="calendar-day day-busy">11</div>
-                    <div class="calendar-day day-available">12</div>
-                    <div class="calendar-day day-available">13</div>
-                    <div class="calendar-day day-limited">14</div>
-                    <div class="calendar-day day-available">15</div>
-                    <div class="calendar-day day-available">16</div>
-                    <div class="calendar-day day-available">17</div>
-                    <div class="calendar-day day-limited">18</div>
-                </div>
-            </div>
-            <div class="mt-3">
-                <p class="text-muted mb-2">Next available slot: <strong>Today at 2:00 PM</strong></p>
-                <button class="btn btn-primary">Book Now</button>
-            </div>
-        </div>
-
-        <!-- Team Section -->
-        <div class="profile-section">
-            <h2 class="section-title">Our Team</h2>
-            <div class="team-grid">
-                <div class="team-member">
-                    <div class="team-avatar">JW</div>
-                    <h6 class="team-name">John Williams</h6>
-                    <p class="team-role">Founder & Lead Errand Runner</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-avatar">SM</div>
-                    <h6 class="team-name">Sarah Martinez</h6>
-                    <p class="team-role">Senior Errand Specialist</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-avatar">TC</div>
-                    <h6 class="team-name">Tom Chen</h6>
-                    <p class="team-role">Delivery Specialist</p>
-                </div>
-                <div class="team-member">
-                    <div class="team-avatar">ED</div>
-                    <h6 class="team-name">Emma Davis</h6>
-                    <p class="team-role">Personal Shopping Expert</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Service Area Section -->
-        <div class="profile-section">
-            <h2 class="section-title">Service Area</h2>
-            <div class="map-container">
-                <i class="fas fa-map-marked-alt fa-3x"></i>
-                <p>Interactive Map Coming Soon</p>
-            </div>
-            <h5 class="mb-3">We Serve These Areas:</h5>
-            <div class="coverage-list">
-                <div class="coverage-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Manhattan</span>
-                </div>
-                <div class="coverage-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Brooklyn</span>
-                </div>
-                <div class="coverage-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Queens</span>
-                </div>
-                <div class="coverage-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Upper East Side</span>
-                </div>
-                <div class="coverage-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Upper West Side</span>
-                </div>
-                <div class="coverage-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Midtown</span>
-                </div>
-                <div class="coverage-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Financial District</span>
-                </div>
-                <div class="coverage-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Williamsburg</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- FAQ Section -->
-        <div class="profile-section">
-            <h2 class="section-title">Frequently Asked Questions</h2>
-            <div class="faq-list">
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>How quickly can you complete an errand?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>We offer same-day service for most errands. Our typical response time is under 1 hour, and we can usually complete errands within 2-4 hours depending on the complexity and location.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>What payment methods do you accept?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>We accept all major credit cards, debit cards, PayPal, and payments through the ErrandHub platform. For regular clients, we also offer monthly billing options.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Are your staff background checked?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Yes, all our team members undergo thorough background checks, including criminal history and reference verification. We are also fully insured and bonded for your peace of mind.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Can I request the same errand runner?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Absolutely! Many of our clients prefer working with the same team member. You can request your preferred errand runner when booking, and we'll do our best to accommodate based on availability.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
 
+    <div class="provider-stats">
+      <div class="stat-item">
+        <span class="stat-value">5.0</span>
+        <div class="rating-stars">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+        <span class="stat-label">127 reviews</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">523</span>
+        <span class="stat-label">Jobs Completed</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">98%</span>
+        <span class="stat-label">On-Time Rate</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">&lt; 1hr</span>
+        <span class="stat-label">Response Time</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">2.5mi</span>
+        <span class="stat-label">Distance</span>
+      </div>
+    </div>
+
+    <div class="profile-actions mt-4">
+      <button class="btn btn-hire-now">
+        <i class="fas fa-briefcase me-2"></i>Hire Now
+      </button>
+      <button class="btn btn-message">
+        <i class="fas fa-comment me-2"></i>Send Message
+      </button>
+      <button class="btn btn-save">
+        <i class="fas fa-heart me-2"></i>Save
+      </button>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showForm){
+      <h2>About Quick Errands Co.</h2>
+      }@else {
+      <h2>Add Basic Information</h2>
+      }
+      <button class="btn btn-primary" (click)="toggleForm()">
+        <i class="fas fa-edit me-2"></i>Edit
+      </button>
+    </div>
+
+    @if(!showForm){
+    <div>
+      <p class="mb-3">
+        Quick Errands Co. is a premier errand running service that has been
+        serving the New York area for over 5 years. We specialize in providing
+        reliable, efficient, and professional errand services to busy
+        individuals and families who need an extra hand with their daily tasks.
+      </p>
+      <p class="mb-3">
+        Our team of dedicated professionals is committed to making your life
+        easier by handling everything from grocery shopping and deliveries to
+        administrative tasks and personal shopping. We pride ourselves on our
+        attention to detail, punctuality, and exceptional customer service.
+      </p>
+    </div>
+    } @if(showForm) {
+    <!-- Basic Information Section -->
+    <form class="form-section" [formGroup]="basicInfoForm">
+      <div class="logo-upload-container">
+        <div class="logo-preview" id="logoPreview">
+          <span id="logoInitials">QE</span>
+          <input
+            type="file"
+            id="logoInput"
+            accept="image/*"
+            style="display: none"
+            formControlName="business_logo"
+          />
+        </div>
+        <div>
+          <div
+            class="logo-upload-btn"
+            onclick="document.getElementById('logoInput').click()"
+          >
+            <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
+            <p class="mb-0">Click to upload logo</p>
+            <small class="text-muted">PNG, JPG up to 5MB</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="businessName" class="form-label"
+            >Business Name <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessName"
+            placeholder="Enter your business name"
+            formControlName="business_name"
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="businessEmail" class="form-label"
+            >Business Email <span class="required">*</span></label
+          >
+          <input
+            type="email"
+            class="form-control"
+            id="businessEmail"
+            placeholder="business@example.com"
+            formControlName="business_email"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="businessPhone" class="form-label"
+            >Business Phone <span class="required">*</span></label
+          >
+          <input
+            type="tel"
+            class="form-control"
+            id="businessPhone"
+            placeholder="+1 (555) 123-4567"
+            formControlName="business_phone"
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="registration_number" class="form-label">Registration Number</label>
+          <input
+            type="url"
+            class="form-control"
+            id="registration_number"
+            formControlName="registration_number"
+            placeholder="https://www.example.com"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="KRAPIN" class="form-label"
+            >KRA PIN <span class="required">*</span></label
+          >
+          <input
+            type="tel"
+            class="form-control"
+            id="kra_pin"
+            placeholder="KRA PIN"
+            formControlName="kra_pin"
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="businessWebsite" class="form-label">Website</label>
+          <input
+            type="url"
+            class="form-control"
+            id="businessWebsite"
+            formControlName="website"
+            placeholder="https://www.example.com"
+          />
+        </div>
+      </div>
+       <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="businessPhone" class="form-label"
+            >Facebook <span class="required">*</span></label
+          >
+          <input
+            type="tel"
+            class="form-control"
+            id="businessPhone"
+            placeholder="+1 (555) 123-4567"
+            formControlName="facebook"
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="businessWebsite" class="form-label">X</label>
+          <input
+            type="url"
+            class="form-control"
+            id="businessWebsite"
+            placeholder="https://www.example.com"
+            formControlName="twitter"
+          />
+        </div>
+      </div>
+
+       <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="businessPhone" class="form-label"
+            >Instagram <span class="required">*</span></label
+          >
+          <input
+            type="tel"
+            class="form-control"
+            id="businessPhone"
+            placeholder="+1 (555) 123-4567"
+            formControlName="instagram"
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="businessWebsite" class="form-label">Linkedin</label>
+          <input
+            type="url"
+            class="form-control"
+            id="businessWebsite"
+            placeholder="https://www.example.com"
+            formControlName="linkedin"
+          />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="businessTagline" class="form-label">Business Tagline</label>
+        <input
+          type="text"
+          class="form-control"
+          id="businessTagline"
+          placeholder="Your trusted partner for all errand services"
+          maxlength="100"
+          formControlName="business_tagline"
+        />
+        <small class="info-text">
+          A short, catchy phrase that describes your business (max 100
+          characters)
+        </small>
+      </div>
+
+      <div class="mb-3">
+        <label for="businessDescription" class="form-label"
+          >Business Description <span class="required">*</span></label
+        >
+        <textarea
+          class="form-control"
+          id="businessDescription"
+          rows="4"
+          placeholder="Tell customers about your business, experience, and what makes you unique..."
+          formControlName="business_description"
+        ></textarea>
+      </div>
+      <button (click)="addBusinessInfo()" type="button" class="btn btn-add">
+        <i class="fas fa-plus me-2"></i>Add Details
+      </button>
+    </form>
+    }
+  </div>
+
+  <!-- Services Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showServiceForm){
+      <h2>Our Services</h2>
+      }@else {
+      <h2>Add Services</h2>
+      }
+      <button class="btn btn-primary" (click)="toggleServiceForm()">
+        <i class="fas fa-edit me-2"></i>Edit
+      </button>
+    </div>
+    @if(!showServiceForm){
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <h5 class="service-name">Grocery Shopping</h5>
+        <p class="service-description">
+          Complete grocery shopping with your list, including organic options
+          and special dietary needs.
+        </p>
+        <div class="service-price">$25-$35/hour + cost of groceries</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="fas fa-truck"></i>
+        </div>
+        <h5 class="service-name">Package Delivery</h5>
+        <p class="service-description">
+          Same-day pickup and delivery for packages, documents, and parcels.
+        </p>
+        <div class="service-price">$15-$45 per delivery</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="fas fa-gift"></i>
+        </div>
+        <h5 class="service-name">Personal Shopping</h5>
+        <p class="service-description">
+          Gift shopping, clothing shopping, and returns/exchanges at any store.
+        </p>
+        <div class="service-price">$35-$50/hour</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h5 class="service-name">Administrative Tasks</h5>
+        <p class="service-description">
+          Post office runs, DMV services, banking errands, and document filing.
+        </p>
+        <div class="service-price">$30-$40/hour</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="fas fa-prescription-bottle"></i>
+        </div>
+        <h5 class="service-name">Pharmacy Runs</h5>
+        <p class="service-description">
+          Prescription pickup and delivery from any pharmacy with proper
+          authorization.
+        </p>
+        <div class="service-price">$20-$30 per trip</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="fas fa-utensils"></i>
+        </div>
+        <h5 class="service-name">Food Delivery</h5>
+        <p class="service-description">
+          Restaurant pickup and delivery from any establishment in the area.
+        </p>
+        <div class="service-price">$15-$25 + meal cost</div>
+      </div>
+    </div>
+    } @if(showServiceForm) {
+    <!-- Services Section -->
+    <div class="form-section">
+      <div id="servicesList">
+        <div class="service-item">
+          <button
+            type="button"
+            class="remove-btn"
+            onclick="removeService(this)"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label"
+                >Service Name <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                placeholder="e.g., Grocery Shopping"
+                required
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Service Category</label>
+              <select class="form-select">
+                <option value="">Select Category</option>
+                <option value="shopping">Shopping & Delivery</option>
+                <option value="cleaning">Cleaning</option>
+                <option value="moving">Moving & Packing</option>
+                <option value="admin">Administrative</option>
+                <option value="pet">Pet Services</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Service Description</label>
+              <textarea
+                class="form-control"
+                rows="2"
+                placeholder="Describe what this service includes..."
+              ></textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Pricing Type</label>
+              <select class="form-select">
+                <option value="hourly">Hourly Rate</option>
+                <option value="fixed">Fixed Price</option>
+                <option value="quote">By Quote</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Price From ($)</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="25"
+                min="0"
+                step="0.01"
+              />
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Price To ($)</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="50"
+                min="0"
+                step="0.01"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-add">
+        <i class="fas fa-plus me-2"></i>Add Another Service
+      </button>
+    </div>
+    }
+  </div>
+
+  <!-- Reviews Section -->
+  <div class="profile-section">
+    <h2 class="section-title">Customer Reviews</h2>
+
+    <!-- Review Summary -->
+    <div class="review-summary">
+      <div class="review-average">
+        <div class="review-score">5.0</div>
+        <div class="review-stars">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="review-count">Based on 127 reviews</div>
+      </div>
+      <div class="review-breakdown">
+        <div class="rating-bar">
+          <span class="rating-label">5 stars</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 92%"></div>
+          </div>
+          <span class="rating-percent">92%</span>
+        </div>
+        <div class="rating-bar">
+          <span class="rating-label">4 stars</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 6%"></div>
+          </div>
+          <span class="rating-percent">6%</span>
+        </div>
+        <div class="rating-bar">
+          <span class="rating-label">3 stars</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 2%"></div>
+          </div>
+          <span class="rating-percent">2%</span>
+        </div>
+        <div class="rating-bar">
+          <span class="rating-label">2 stars</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 0%"></div>
+          </div>
+          <span class="rating-percent">0%</span>
+        </div>
+        <div class="rating-bar">
+          <span class="rating-label">1 star</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 0%"></div>
+          </div>
+          <span class="rating-percent">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review Items -->
+    <div class="reviews-list">
+      <div class="review-item">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar">JD</div>
+            <div>
+              <div class="reviewer-name">John Doe</div>
+              <div class="review-date">2 days ago</div>
+            </div>
+          </div>
+          <div class="review-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+        </div>
+        <p class="review-content">
+          Excellent service! Quick Errands Co. has been handling my weekly
+          grocery shopping for the past 3 months, and I couldn't be happier.
+          They always get exactly what I need and even suggest alternatives when
+          items are out of stock. Highly recommended!
+        </p>
+        <span class="review-service">Grocery Shopping</span>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar">SJ</div>
+            <div>
+              <div class="reviewer-name">Sarah Johnson</div>
+              <div class="review-date">1 week ago</div>
+            </div>
+          </div>
+          <div class="review-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+        </div>
+        <p class="review-content">
+          I needed urgent document delivery to multiple locations, and Quick
+          Errands Co. saved the day! They were professional, fast, and kept me
+          updated throughout the entire process. Will definitely use their
+          services again.
+        </p>
+        <span class="review-service">Package Delivery</span>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar">MS</div>
+            <div>
+              <div class="reviewer-name">Mike Smith</div>
+              <div class="review-date">2 weeks ago</div>
+            </div>
+          </div>
+          <div class="review-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+        </div>
+        <p class="review-content">
+          As a busy professional, I don't have time for errands. Quick Errands
+          Co. has been a lifesaver! From pharmacy runs to banking tasks, they
+          handle everything efficiently. Great communication and always on time.
+        </p>
+        <span class="review-service">Administrative Tasks</span>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <button class="btn btn-outline-primary">Load More Reviews</button>
+    </div>
+  </div>
+
+  <!-- Portfolio/Gallery Section -->
+  <!-- <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showServiceForm){
+      <h2>Our Work</h2>
+      }@else {
+      <h2>Portfolio Gallery</h2>
+      }
+      <button class="btn btn-primary" (click)="toggleServiceForm()">
+        <i class="fas fa-edit me-2"></i>Edit
+      </button>
+    </div>
+    @if(!showServiceForm){
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img
+          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='16'%3EGrocery Shopping%3C/text%3E%3C/svg%3E"
+          alt="Grocery Shopping"
+        />
+        <div class="gallery-overlay">
+          <h6>Grocery Shopping</h6>
+          <p>Weekly shopping for families</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img
+          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='16'%3EPackage Delivery%3C/text%3E%3C/svg%3E"
+          alt="Package Delivery"
+        />
+        <div class="gallery-overlay">
+          <h6>Package Delivery</h6>
+          <p>Safe and timely deliveries</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img
+          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='16'%3EPersonal Shopping%3C/text%3E%3C/svg%3E"
+          alt="Personal Shopping"
+        />
+        <div class="gallery-overlay">
+          <h6>Personal Shopping</h6>
+          <p>Gift and personal shopping</p>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <img
+          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='16'%3EFood Delivery%3C/text%3E%3C/svg%3E"
+          alt="Food Delivery"
+        />
+        <div class="gallery-overlay">
+          <h6>Food Delivery</h6>
+          <p>Restaurant pickup & delivery</p>
+        </div>
+      </div>
+    </div>
+    } @if(showServiceForm) {
+    <div class="form-section">
+      <div
+        class="gallery-upload-area"
+        onclick="document.getElementById('galleryInput').click()"
+      >
+        <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+        <h5>Upload Portfolio Images</h5>
+        <p class="text-muted mb-0">Click to upload or drag and drop</p>
+        <small class="text-muted">PNG, JPG up to 10MB each</small>
+        <input
+          type="file"
+          id="galleryInput"
+          multiple
+          accept="image/*"
+          style="display: none"
+        />
+      </div>
+    </div>
+    }
+  </div> -->
+
+  <!-- Availability Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showServiceForm){
+      <h2>Availability</h2>
+      }@else {
+      <h2>Location & Business Hours</h2>
+
+      }
+      <button class="btn btn-primary" (click)="toggleServiceForm()">
+        <i class="fas fa-edit me-2"></i>Edit
+      </button>
+    </div>
+    @if(!showServiceForm){
+    <div
+      class="d-md-flex d-lg-flex d-sm-block justify-content-between items-center"
+    >
+      <div class="w-50 p-2">
+        <div class="availability-legend">
+          <div class="legend-item">
+            <div class="legend-color legend-available"></div>
+            <span>Available</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color legend-limited"></div>
+            <span>Limited Availability</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color legend-busy"></div>
+            <span>Fully Booked</span>
+          </div>
+        </div>
+        <div class="calendar-widget">
+          <div class="calendar-header">
+            <button class="btn btn-sm">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <h5 class="mb-0">January 2025</h5>
+            <button class="btn btn-sm">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+          <div class="calendar-grid">
+            <div class="text-muted small">S</div>
+            <div class="text-muted small">M</div>
+            <div class="text-muted small">T</div>
+            <div class="text-muted small">W</div>
+            <div class="text-muted small">T</div>
+            <div class="text-muted small">F</div>
+            <div class="text-muted small">S</div>
+
+            <div class="calendar-day">1</div>
+            <div class="calendar-day">2</div>
+            <div class="calendar-day">3</div>
+            <div class="calendar-day">4</div>
+            <div class="calendar-day">5</div>
+            <div class="calendar-day day-available">6</div>
+            <div class="calendar-day day-available">7</div>
+            <div class="calendar-day day-limited">8</div>
+            <div class="calendar-day day-available">9</div>
+            <div class="calendar-day day-available">10</div>
+            <div class="calendar-day day-busy">11</div>
+            <div class="calendar-day day-available">12</div>
+            <div class="calendar-day day-available">13</div>
+            <div class="calendar-day day-limited">14</div>
+            <div class="calendar-day day-available">15</div>
+            <div class="calendar-day day-available">16</div>
+            <div class="calendar-day day-available">17</div>
+            <div class="calendar-day day-limited">18</div>
+            <div class="calendar-day">19</div>
+            <div class="calendar-day">20</div>
+            <div class="calendar-day">21</div>
+            <div class="calendar-day">22</div>
+            <div class="calendar-day">23</div>
+            <div class="calendar-day">24</div>
+            <div class="calendar-day">25</div>
+            <div class="calendar-day">26</div>
+            <div class="calendar-day">27</div>
+            <div class="calendar-day">28</div>
+            <div class="calendar-day">28</div>
+            <div class="calendar-day">30</div>
+            <div class="calendar-day">31</div>
+          </div>
+        </div>
+        <div class="mt-3">
+          <p class="text-muted mb-2">
+            Next available slot: <strong>Today at 2:00 PM</strong>
+          </p>
+          <button class="btn btn-primary">Book Now</button>
+        </div>
+      </div>
+      <div class="w-50 p-2">
+        <h5 class="mb-3">
+          <strong>Business Hours</strong>
+        </h5>
+        <div class="row">
+          <!-- <div class="col-md-6">
+            <div class="mb-2">
+              <label class="form-label">Monday - Friday</label>
+              <div class="d-flex gap-2">
+                <input
+                  type="time"
+                  class="form-control"
+                  id="weekdayOpen"
+                  value="07:00"
+                />
+                <span class="align-self-center">to</span>
+                <input
+                  type="time"
+                  class="form-control"
+                  id="weekdayClose"
+                  value="21:00"
+                />
+              </div>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Saturday</label>
+              <div class="d-flex gap-2">
+                <input
+                  type="time"
+                  class="form-control"
+                  id="saturdayOpen"
+                  value="08:00"
+                />
+                <span class="align-self-center">to</span>
+                <input
+                  type="time"
+                  class="form-control"
+                  id="saturdayClose"
+                  value="20:00"
+                />
+              </div>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Sunday</label>
+              <div class="d-flex gap-2">
+                <input
+                  type="time"
+                  class="form-control"
+                  id="sundayOpen"
+                  value="09:00"
+                />
+                <span class="align-self-center">to</span>
+                <input
+                  type="time"
+                  class="form-control"
+                  id="sundayClose"
+                  value="18:00"
+                />
+              </div>
+            </div>
+          </div> -->
+          <div class="col-md-6">
+            <h5 class="mb-3">Business Hours</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">Monday - Friday: 7:00 AM - 9:00 PM</li>
+              <li class="mb-2">Saturday: 8:00 AM - 8:00 PM</li>
+              <li class="mb-2">Sunday: 9:00 AM - 6:00 PM</li>
+              <li class="mb-2 text-success">
+                <i class="fas fa-bolt me-2"></i>Emergency services available
+                24/7
+              </li>
+               <li class="mb-2 text-warning">
+                <i class="fas fa-bolt me-2"></i>Available on weekends
+              </li>
+               <li class="mb-2 text-danger">
+                <i class="fas fa-bolt me-2"></i>Available on holidays
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    } @if(showServiceForm) {
+    <!-- Location & Hours Section -->
+    <div class="form-section">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="businessAddress" class="form-label"
+            >Business Address <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessAddress"
+            placeholder="123 Main Street"
+            required
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="businessCity" class="form-label"
+            >City <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessCity"
+            placeholder="New York"
+            required
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="businessState" class="form-label"
+            >State <span class="required">*</span></label
+          >
+          <select class="form-select" id="businessState" required>
+            <option value="">Select State</option>
+            <option value="NY">New York</option>
+            <option value="CA">California</option>
+            <option value="TX">Texas</option>
+            <!-- Add more states -->
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="businessZip" class="form-label"
+            >ZIP Code <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessZip"
+            placeholder="10001"
+            required
+          />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="serviceRadius" class="form-label"
+            >Service Radius (miles)</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="serviceRadius"
+            placeholder="10"
+            min="1"
+            max="100"
+          />
+        </div>
+      </div>
+      <br />
+      <h5 class="mb-3">
+        <strong>Business Hours</strong>
+      </h5>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-2">
+            <label class="form-label">Monday - Friday</label>
+            <div class="d-flex gap-2">
+              <input
+                type="time"
+                class="form-control"
+                id="weekdayOpen"
+                value="07:00"
+              />
+              <span class="align-self-center">to</span>
+              <input
+                type="time"
+                class="form-control"
+                id="weekdayClose"
+                value="21:00"
+              />
+            </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Saturday</label>
+            <div class="d-flex gap-2">
+              <input
+                type="time"
+                class="form-control"
+                id="saturdayOpen"
+                value="08:00"
+              />
+              <span class="align-self-center">to</span>
+              <input
+                type="time"
+                class="form-control"
+                id="saturdayClose"
+                value="20:00"
+              />
+            </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Sunday</label>
+            <div class="d-flex gap-2">
+              <input
+                type="time"
+                class="form-control"
+                id="sundayOpen"
+                value="09:00"
+              />
+              <span class="align-self-center">to</span>
+              <input
+                type="time"
+                class="form-control"
+                id="sundayClose"
+                value="18:00"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="emergencyService"
+            />
+            <label class="form-check-label" for="emergencyService">
+              Emergency services available 24/7
+            </label>
+          </div>
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="weekendAvailable"
+            />
+            <label class="form-check-label" for="weekendAvailable">
+              Available on weekends
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="holidayAvailable"
+            />
+            <label class="form-check-label" for="holidayAvailable">
+              Available on holidays
+            </label>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-add">
+        <i class="fas fa-plus me-2"></i>Save
+      </button>
+    </div>
+    }
+  </div>
+
+  <!-- Team Section -->
+  <!-- <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showServiceForm){
+      <h2>Our Team</h2>
+      }@else {
+      <h2>Update Team Members</h2>
+      }
+      <button class="btn btn-primary" (click)="toggleServiceForm()">
+        <i class="fas fa-edit me-2"></i>Edit
+      </button>
+    </div>
+    @if(!showServiceForm){
+    <div class="team-grid">
+      <div class="team-member">
+        <div class="team-avatar">JW</div>
+        <h6 class="team-name">John Williams</h6>
+        <p class="team-role">Founder & Lead Errand Runner</p>
+      </div>
+      <div class="team-member">
+        <div class="team-avatar">SM</div>
+        <h6 class="team-name">Sarah Martinez</h6>
+        <p class="team-role">Senior Errand Specialist</p>
+      </div>
+      <div class="team-member">
+        <div class="team-avatar">TC</div>
+        <h6 class="team-name">Tom Chen</h6>
+        <p class="team-role">Delivery Specialist</p>
+      </div>
+      <div class="team-member">
+        <div class="team-avatar">ED</div>
+        <h6 class="team-name">Emma Davis</h6>
+        <p class="team-role">Personal Shopping Expert</p>
+      </div>
+    </div>
+    }@if(showServiceForm){
+    <div class="form-section">
+      <div class="row" id="teamMembersList">
+        <div class="col-md-4 mb-3">
+          <div class="team-member-card">
+            <button
+              type="button"
+              class="remove-btn"
+              onclick="removeTeamMember(this)"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+            <div
+              class="team-avatar-upload"
+              onclick="this.querySelector('input').click()"
+            >
+              <span>JW</span>
+              <input type="file" accept="image/*" style="display: none" />
+            </div>
+            <input
+              type="text"
+              class="form-control mb-2"
+              placeholder="Member Name"
+            />
+            <input type="text" class="form-control" placeholder="Role/Title" />
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-add" onclick="addTeamMember()">
+        <i class="fas fa-plus me-2"></i>Add Team Member
+      </button>
+    </div>
+    }
+  </div> -->
+
+  <!-- Service Area Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showServiceForm){
+      <h2>Service Area</h2>
+      }@else {
+      <h2>Service Area</h2>
+      }
+      <button class="btn btn-primary" (click)="toggleServiceForm()">
+        <i class="fas fa-edit me-2"></i>Edit
+      </button>
+    </div>
+    @if(!showServiceForm){
+    <div class="map-container">
+      <i class="fas fa-map-marked-alt fa-3x"></i>
+      <p>Interactive Map Coming Soon</p>
+    </div>
+    <h5 class="mb-3">We Serve These Areas:</h5>
+    <div class="coverage-list">
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Manhattan</span>
+      </div>
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Brooklyn</span>
+      </div>
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Queens</span>
+      </div>
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Upper East Side</span>
+      </div>
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Upper West Side</span>
+      </div>
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Midtown</span>
+      </div>
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Financial District</span>
+      </div>
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Williamsburg</span>
+      </div>
+    </div>
+    } @if(showServiceForm) {
+    <!-- Service Area Section -->
+    <div class="form-section">
+      <div class="mb-3">
+        <label class="form-label">Areas You Serve</label>
+        <textarea
+          class="form-control"
+          rows="3"
+          placeholder="Enter the neighborhoods, cities, or areas you provide service to (one per line)"
+        ></textarea>
+        <div class="info-text">List all areas where you provide services</div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="serveManhattan"
+            />
+            <label class="form-check-label" for="serveManhattan"
+              >Manhattan</label
+            >
+          </div>
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="serveBrooklyn"
+            />
+            <label class="form-check-label" for="serveBrooklyn">Brooklyn</label>
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="serveQueens" />
+            <label class="form-check-label" for="serveQueens">Queens</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="serveBronx" />
+            <label class="form-check-label" for="serveBronx">Bronx</label>
+          </div>
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="serveStatenIsland"
+            />
+            <label class="form-check-label" for="serveStatenIsland"
+              >Staten Island</label
+            >
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="serveOther" />
+            <label class="form-check-label" for="serveOther">Other Areas</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showServiceForm){
+      <h2>Frequently Asked Questions</h2>
+      }@else {
+      <h2>Frequently Asked Questions</h2>
+      }
+      <button class="btn btn-primary" (click)="toggleServiceForm()">
+        <i class="fas fa-edit me-2"></i>Edit
+      </button>
+    </div>
+    @if(!showServiceForm){
+    <div class="faq-list">
+      <div class="faq-list">
+        @for (faq of faqs; track faq.question; let i = $index) {
+        <div class="faq-item">
+          <div
+            class="faq-question"
+            (click)="toggleFAQ(i)"
+            [class.active]="faq.isOpen"
+          >
+            <span>{{ faq.question }}</span>
+            <i
+              class="fas"
+              [ngClass]="faq.isOpen ? 'fa-chevron-up' : 'fa-chevron-down'"
+            ></i>
+          </div>
+          @if (faq.isOpen) {
+          <div class="faq-answer">
+            <p>{{ faq.answer }}</p>
+          </div>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- @for (faq of faqs; track faq.question; let i = $index) {
+      <div class="faq-item">
+        <div
+          class="faq-question"
+          (click)="toggleFAQ(i)"
+          [class.active]="faq.isOpen"
+        >
+          <span>{{ faq.question }}</span>
+          <i
+            class="fas"
+            [ngClass]="faq.isOpen ? 'fa-chevron-up' : 'fa-chevron-down'"
+          ></i>
+        </div>
+        @if (faq.isOpen) {
+        <div class="faq-answer">
+          <p>{{ faq.answer }}</p>
+        </div>
+        }
+      </div>
+      } -->
+
+      <!-- <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <span>What payment methods do you accept?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <p>
+            We accept all major credit cards, debit cards, PayPal, and payments
+            through the ErrandHub platform. For regular clients, we also offer
+            monthly billing options.
+          </p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <span>Are your staff background checked?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <p>
+            Yes, all our team members undergo thorough background checks,
+            including criminal history and reference verification. We are also
+            fully insured and bonded for your peace of mind.
+          </p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <span>Can I request the same errand runner?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <p>
+            Absolutely! Many of our clients prefer working with the same team
+            member. You can request your preferred errand runner when booking,
+            and we'll do our best to accommodate based on availability.
+          </p>
+        </div>
+      </div> -->
+    </div>
+    }@if(showServiceForm){
+    <!-- FAQ Section -->
+    <div class="form-section">
+      <div id="faqList">
+        <div
+          class="faq-item"
+          style="background-color: var(--light-gray); padding: 20px"
+        >
+          <button type="button" class="remove-btn" onclick="removeFAQ(this)">
+            <i class="fas fa-times"></i>
+          </button>
+          <div class="mb-3">
+            <label class="form-label">Question</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="e.g., How quickly can you complete an errand?"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Answer</label>
+            <textarea
+              class="form-control"
+              rows="2"
+              placeholder="Provide a detailed answer..."
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <br />
+      <button type="button" class="btn btn-add" onclick="addFAQ()">
+        <i class="fas fa-plus me-2"></i>Add FAQ
+      </button>
+    </div>
+    }
+  </div>
+</div>

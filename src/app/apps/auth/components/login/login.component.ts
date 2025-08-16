@@ -27,11 +27,16 @@ export class LoginComponent {
     }
    this.authService.loginUser(data).subscribe((res:any)=>{
     localStorage.setItem('access_token', res.access);
-    localStorage.setItem('user_type', res.role);
+    localStorage.setItem('user_type', JSON.stringify(res.role));
+    const userTypeString = localStorage.getItem('user_type');
+    const userType = userTypeString ? JSON.parse(userTypeString) : null;
+    console.log('userType',userType);
+
+    // localStorage.setItem('user_type', res.role);
     this.toastr.success('Login successful');
-    if(res.user_type === 'BUSINESS'){
+    if(userType === 'business'){
       this.route.navigate(['/business']);
-    }else{
+    }else if(userType === 'client'){
         this.route.navigate(['/client']);
     }
     },(error)=>{

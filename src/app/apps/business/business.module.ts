@@ -7,6 +7,7 @@ import { SharedModule } from '../sharedmodule/sharedmodule.module';
 import { BusinessDetailComponent } from './components/business-detail/business-detail.component';
 import { BDashboardComponent } from './components/b-dashboard/b-dashboard.component';
 import { BProfileComponent } from './components/b-profile/b-profile.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -20,6 +21,8 @@ import { BProfileComponent } from './components/b-profile/b-profile.component';
     CommonModule,
     BusinessRoutingModule,
     SharedModule,
+    ReactiveFormsModule,
+    FormsModule,
 
   ]
 })
