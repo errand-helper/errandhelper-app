@@ -10,16 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './business-detail.component.css',
 })
 export class BusinessDetailComponent implements OnInit {
-  // basicInfoForm!: FormGroup;
-  // serviceInfoForm!:FormGroup
-  // logoPreviewUrl: string | ArrayBuffer | null = null;
-  // logoInitials: string = 'BN';
   businessId!:string;
   business_details:any;
-  // categories:any
-  // logged_in_user!:any;
-  // is_logged_in_user = false;
-  // my_business_id:any;
 
   constructor(
     private _businessService: BusinessService,
@@ -32,118 +24,15 @@ export class BusinessDetailComponent implements OnInit {
 
   ngOnInit() {
     this.businessId = this.route.snapshot.paramMap.get('id')!;
-    //  this.basicInfoForm = this.fb.group({
-    //   business_name: ['', Validators.required],
-    //   business_logo: [''],
-    //   business_email: ['', Validators.required],
-    //   business_phone: ['', Validators.required],
-    //   business_tagline: [''],
-    //   business_description: ['', Validators.required],
-    //   registration_number: ['', Validators.required],
-    //   kra_pin: ['', Validators.required],
-    //   facebook: [''],
-    //   twitter: [''],
-    //   linkedin: [''],
-    //   instagram: [''],
-    //   website: [''],
-    // });
-
-    // this.logged_in_user = JSON.parse(localStorage.getItem('user_id') || 'null');
-
-    // this.serviceInfoForm = this.fb.group({
-
-    // })
-
-
-    // this.basicInfoForm
-    //   .get('business_name')
-    //   ?.valueChanges.subscribe((name: string) => {
-    //     if (name) {
-    //       const words = name.trim().split(' ');
-    //       if (words.length === 1) {
-    //         this.logoInitials = words[0].substring(0, 2).toUpperCase();
-    //       } else {
-    //         this.logoInitials = (words[0][0] + words[1][0]).toUpperCase();
-    //       }
-    //     } else {
-    //       this.logoInitials = 'BN';
-    //     }
-    //   });
     this.getBusinessInfo()
-    // this.getCategories()
   }
-
-  // getCategories(){
-  //   this._businessService.getCategories().subscribe((res:any)=>{
-  //     console.log(res);
-  //     this.categories = res;
-  //   })
-  // }
 
   getBusinessInfo() {
     this._businessService.getBusinessDetail(this.businessId).subscribe((res:any)=>{
       console.log(res);
       this.business_details = res;
-      // console.log(this.logged_in_user,this.business_details.user);
-
-      // if(this.logged_in_user === this.business_details.user){
-      //   this.is_logged_in_user = true
-      //   // this.my_business_id = this.business_details.id
-      // }
     })
   }
-
-  // addBusinessInfo() {
-  //   if (this.basicInfoForm.invalid) {
-  //     this.basicInfoForm.markAllAsTouched();
-  //     this.toastr.error('Please fill all required fields correctly.');
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-
-  //   // Loop through all controls and append to FormData
-  //   Object.keys(this.basicInfoForm.controls).forEach((key) => {
-  //     const controlValue = this.basicInfoForm.get(key)?.value;
-  //     if (key === 'business_logo' && controlValue instanceof File) {
-  //       formData.append(key, controlValue); // append file
-  //     } else {
-  //       formData.append(key, controlValue);
-  //     }
-  //   });
-
-  //   this._businessService.addBusiness(formData).subscribe({
-  //     next: (res) => {
-  //       this.toastr.success('Business information added successfully!');
-  //       // this.route.navigate(['/dashboard']); // adjust route as needed
-  //     },
-  //     error: (err) => {
-  //       this.toastr.error('Failed to add business information.');
-  //       console.error(err);
-  //     },
-  //   });
-  // }
-
-  // onFileSelected(event: Event) {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files && input.files.length > 0) {
-  //     const file = input.files[0];
-  //     this.basicInfoForm.patchValue({ business_logo: file });
-  //     this.basicInfoForm.get('business_logo')?.updateValueAndValidity();
-  //     // generate preview
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       this.logoPreviewUrl = reader.result;
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // }
-
-  // removeLogo() {
-  //   this.basicInfoForm.patchValue({ business_logo: null });
-  //   this.basicInfoForm.get('business_logo')?.updateValueAndValidity();
-  //   this.logoPreviewUrl = null; // go back to initials
-  // }
 
   faqs = [
     {
@@ -172,20 +61,10 @@ export class BusinessDetailComponent implements OnInit {
     },
   ];
 
-  // showForm = false;
-  // showServiceForm = false;
 
   toggleFAQ(index: number) {
     this.faqs[index].isOpen = !this.faqs[index].isOpen;
   }
-
-  // toggleForm() {
-  //   this.showForm = !this.showForm;
-  // }
-
-  // toggleServiceForm() {
-  //   this.showServiceForm = !this.showServiceForm;
-  // }
 
   navigateBack() {
     window.history.back();

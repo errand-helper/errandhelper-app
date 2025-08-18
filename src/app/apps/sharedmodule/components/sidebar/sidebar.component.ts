@@ -26,6 +26,9 @@ export class SidebarComponent {
     const userTypeString = localStorage.getItem('user_type');
     this.user_type = userTypeString ? JSON.parse(userTypeString) : null;
 
+    console.log('this.user_type',this.user_type);
+
+
 
   }
 

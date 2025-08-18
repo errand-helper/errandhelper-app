@@ -1,15 +1,9 @@
 <!-- Aside -->
 <app-sidebar></app-sidebar>
 <!-- Main -->
-<!-- Main Content -->
 <div class="main-content">
   <app-navbar></app-navbar>
-
-  <!-- Back Button -->
   <div class="mb-3">
-    <!-- <button class="mobile-toggle me-3" onclick="toggleSidebar()">
-      <i class="fas fa-bars"></i>
-    </button> -->
     <div>
       <button
         (click)="navigateBack()"
@@ -87,14 +81,7 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      <!-- @if(!showForm){ -->
       <h2>About {{business_details?.business_name}}</h2>
-      <!-- }@else {
-      <h2>Add Basic Information</h2>
-      } -->
-      <!-- <button class="btn btn-primary" (click)="toggleForm()" *ngIf="is_logged_in_user">
-        <i class="fas fa-edit me-2"></i><span>{{ business_details ? 'Edit' : 'Add' }}</span>
-      </button> -->
     </div>
 
 
@@ -103,263 +90,6 @@
         {{business_details?.business_description}}
       </p>
     </div>
-
-    <!-- <form class="form-section" [formGroup]="basicInfoForm">
-      <div class="logo-upload-container">
-        <div class="logo-preview" id="logoPreview">
-          @if (!logoPreviewUrl) {
-          <span id="logoInitials">{{ logoInitials }}</span>
-          }
-
-          @if (logoPreviewUrl) {
-          <div class="logo-img-wrapper">
-            <img [src]="logoPreviewUrl" alt="Logo Preview" class="logo-img" />
-            <button
-              type="button"
-              class="remove-logo-btn"
-              (click)="removeLogo()"
-            >
-              ✕
-            </button>
-          </div>
-          }
-
-          <input
-            type="file"
-            id="logoInput"
-            accept="image/*"
-            style="display: none"
-            (change)="onFileSelected($event)"
-          />
-        </div>
-
-        <div>
-          <div
-            class="logo-upload-btn"
-            onclick="document.getElementById('logoInput').click()"
-          >
-            <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
-            <p class="mb-0">Click to upload logo</p>
-            <small class="text-muted">PNG, JPG up to 5MB</small>
-          </div>
-          @if (basicInfoForm.get('business_logo')?.touched &&
-          basicInfoForm.get('business_logo')?.invalid) {
-          <div class="text-danger mt-1">
-            <small>Business logo is required.</small>
-          </div>
-          }
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="businessName" class="form-label"
-            >Business Name <span class="required">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="businessName"
-            placeholder="Enter your business name"
-            formControlName="business_name"
-          />
-          @if (basicInfoForm.get('business_name')?.touched &&
-          basicInfoForm.get('business_name')?.invalid) {
-          <div class="text-danger mt-1">
-            <small>Business name is required.</small>
-          </div>
-          }
-        </div>
-
-        <div class="col-md-6 mb-3">
-          <label for="businessEmail" class="form-label"
-            >Business Email <span class="required">*</span></label
-          >
-          <input
-            type="email"
-            class="form-control"
-            id="businessEmail"
-            placeholder="business@example.com"
-            formControlName="business_email"
-          />
-          @if (basicInfoForm.get('business_email')?.touched &&
-          basicInfoForm.get('business_email')?.invalid) {
-          <div class="text-danger mt-1">
-            @if (basicInfoForm.get('business_email')?.errors?.['required']) {
-            <small>Email is required.</small>
-            } @if (basicInfoForm.get('business_email')?.errors?.['email']) {
-            <small>Enter a valid email address.</small>
-            }
-          </div>
-          }
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="businessPhone" class="form-label"
-            >Business Phone <span class="required">*</span></label
-          >
-          <input
-            type="tel"
-            class="form-control"
-            id="businessPhone"
-            placeholder="+1 (555) 123-4567"
-            formControlName="business_phone"
-          />
-          @if (basicInfoForm.get('business_phone')?.touched &&
-          basicInfoForm.get('business_phone')?.invalid) {
-          <div class="text-danger mt-1">
-            <small>Business phone is required.</small>
-          </div>
-          }
-        </div>
-
-        <div class="col-md-6 mb-3">
-          <label for="registration_number" class="form-label"
-            >Registration Number <span class="required">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="registration_number"
-            formControlName="registration_number"
-            placeholder="Registration number"
-          />
-          @if (basicInfoForm.get('registration_number')?.touched &&
-          basicInfoForm.get('registration_number')?.invalid) {
-          <div class="text-danger mt-1">
-            <small>Registration number is required.</small>
-          </div>
-          }
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="kra_pin" class="form-label"
-            >KRA PIN <span class="required">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="kra_pin"
-            placeholder="KRA PIN"
-            formControlName="kra_pin"
-          />
-          @if (basicInfoForm.get('kra_pin')?.touched &&
-          basicInfoForm.get('kra_pin')?.invalid) {
-          <div class="text-danger mt-1">
-            <small>KRA PIN is required.</small>
-          </div>
-          }
-        </div>
-
-        <div class="col-md-6 mb-3">
-          <label for="businessWebsite" class="form-label">Website</label>
-          <input
-            type="url"
-            class="form-control"
-            id="businessWebsite"
-            formControlName="website"
-            placeholder="https://www.example.com"
-          />
-
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="facebook" class="form-label">Facebook</label>
-          <input
-            type="url"
-            class="form-control"
-            id="facebook"
-            placeholder="Facebook URL"
-            formControlName="facebook"
-          />
-        </div>
-
-        <div class="col-md-6 mb-3">
-          <label for="twitter" class="form-label">X (Twitter)</label>
-          <input
-            type="url"
-            class="form-control"
-            id="twitter"
-            placeholder="https://twitter.com/yourprofile"
-            formControlName="twitter"
-          />
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="instagram" class="form-label">Instagram</label>
-          <input
-            type="url"
-            class="form-control"
-            id="instagram"
-            placeholder="Instagram URL"
-            formControlName="instagram"
-          />
-        </div>
-
-        <div class="col-md-6 mb-3">
-          <label for="linkedin" class="form-label">LinkedIn</label>
-          <input
-            type="url"
-            class="form-control"
-            id="linkedin"
-            placeholder="https://linkedin.com/in/yourprofile"
-            formControlName="linkedin"
-          />
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="businessTagline" class="form-label">Business Tagline</label>
-        <input
-          type="text"
-          class="form-control"
-          id="businessTagline"
-          placeholder="Your trusted partner for all errand services"
-          maxlength="100"
-          formControlName="business_tagline"
-        />
-        <small class="info-text">
-          A short, catchy phrase that describes your business (max 100
-          characters)
-        </small>
-      </div>
-
-      <div class="mb-3">
-        <label for="businessDescription" class="form-label"
-          >Business Description <span class="required">*</span></label
-        >
-        <textarea
-          class="form-control"
-          id="businessDescription"
-          rows="4"
-          placeholder="Tell customers about your business, experience, and what makes you unique..."
-          formControlName="business_description"
-        ></textarea>
-        @if (basicInfoForm.get('business_description')?.touched &&
-        basicInfoForm.get('business_description')?.invalid) {
-        <div class="text-danger mt-1">
-          <small>Business description is required.</small>
-        </div>
-        }
-      </div>
-
-      <button
-        (click)="addBusinessInfo()"
-        [disabled]="basicInfoForm.invalid"
-        type="button"
-        class="btn btn-add"
-      >
-        <i class="fas fa-plus me-2"></i>Add Details
-      </button>
-    </form> -->
   </div>
 
   <div class="profile-section">
@@ -367,16 +97,8 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      <!-- @if(!showServiceForm){ -->
       <h2>Our Services</h2>
-      <!-- }@else { -->
-      <!-- <h2>Add Services</h2>
-      } -->
-      <!-- <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
-        <i class="fas fa-edit me-2"></i>Edit
-      </button> -->
     </div>
-    <!-- @if(!showServiceForm){ -->
     <div class="services-grid">
       <div class="service-card">
         <h5 class="service-name">Grocery Shopping</h5>
@@ -403,71 +125,6 @@
         <div class="service-price">$15-$25 + meal cost</div>
       </div>
     </div>
-    <!-- } @if(showServiceForm) { -->
-    <!-- Services Section -->
-    <!-- <div class="form-section">
-      <div id="servicesList">
-        <div class="service-item">
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label"
-                >Service Name <span class="required">*</span></label
-              >
-              <input
-                type="text"
-                class="form-control"
-                placeholder="e.g., Grocery Shopping"
-                required
-              />
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Service Category</label>
-              <select class="form-select">
-                <option selected>Service Category</option>
-                @for(category of categories; track category.id){
-                  <option value="{{category.id}}">{{category.name}}</option>
-                }
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Pricing Type</label>
-              <select class="form-select">
-                <option value="hourly">Hourly Rate</option>
-                <option value="fixed">Fixed Price</option>
-                <option value="quote">By Quote</option>
-              </select>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Price From ($)</label>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="25"
-                min="0"
-                step="0.01"
-              />
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Price To ($)</label>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="50"
-                min="0"
-                step="0.01"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <button type="button" class="btn btn-add">
-        <i class="fas fa-plus me-2"></i>Add Service
-      </button>
-    </div> -->
-    <!-- } -->
   </div>
 
   <!-- Reviews Section -->
@@ -617,17 +274,8 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      <!-- @if(!showServiceForm){ -->
       <h2>Availability</h2>
-      <!-- }@else {
-      <h2>Location & Business Hours</h2>
-
-      } -->
-      <!-- <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
-        <i class="fas fa-edit me-2"></i>Edit
-      </button> -->
     </div>
-    <!-- @if(!showServiceForm){ -->
     <div
       class="d-md-flex d-lg-flex d-sm-block justify-content-between items-center"
     >
@@ -710,62 +358,6 @@
           <strong>Business Hours</strong>
         </h5>
         <div class="row">
-          <!-- <div class="col-md-6">
-            <div class="mb-2">
-              <label class="form-label">Monday - Friday</label>
-              <div class="d-flex gap-2">
-                <input
-                  type="time"
-                  class="form-control"
-                  id="weekdayOpen"
-                  value="07:00"
-                />
-                <span class="align-self-center">to</span>
-                <input
-                  type="time"
-                  class="form-control"
-                  id="weekdayClose"
-                  value="21:00"
-                />
-              </div>
-            </div>
-            <div class="mb-2">
-              <label class="form-label">Saturday</label>
-              <div class="d-flex gap-2">
-                <input
-                  type="time"
-                  class="form-control"
-                  id="saturdayOpen"
-                  value="08:00"
-                />
-                <span class="align-self-center">to</span>
-                <input
-                  type="time"
-                  class="form-control"
-                  id="saturdayClose"
-                  value="20:00"
-                />
-              </div>
-            </div>
-            <div class="mb-2">
-              <label class="form-label">Sunday</label>
-              <div class="d-flex gap-2">
-                <input
-                  type="time"
-                  class="form-control"
-                  id="sundayOpen"
-                  value="09:00"
-                />
-                <span class="align-self-center">to</span>
-                <input
-                  type="time"
-                  class="form-control"
-                  id="sundayClose"
-                  value="18:00"
-                />
-              </div>
-            </div>
-          </div> -->
           <div class="col-md-6">
             <h5 class="mb-3">Business Hours</h5>
             <ul class="list-unstyled">
@@ -787,173 +379,6 @@
         </div>
       </div>
     </div>
-
-    <!-- } -->
-    <!-- @if(showServiceForm) {
-    <div class="form-section">
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="businessAddress" class="form-label"
-            >Business Address <span class="required">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="businessAddress"
-            placeholder="123 Main Street"
-            required
-          />
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="businessCity" class="form-label"
-            >City <span class="required">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="businessCity"
-            placeholder="New York"
-            required
-          />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4 mb-3">
-          <label for="businessState" class="form-label"
-            >State <span class="required">*</span></label
-          >
-          <select class="form-select" id="businessState" required>
-            <option value="">Select State</option>
-            <option value="NY">New York</option>
-            <option value="CA">California</option>
-            <option value="TX">Texas</option>
-          </select>
-        </div>
-        <div class="col-md-4 mb-3">
-          <label for="businessZip" class="form-label"
-            >ZIP Code <span class="required">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="businessZip"
-            placeholder="10001"
-            required
-          />
-        </div>
-        <div class="col-md-4 mb-3">
-          <label for="serviceRadius" class="form-label"
-            >Service Radius (miles)</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            id="serviceRadius"
-            placeholder="10"
-            min="1"
-            max="100"
-          />
-        </div>
-      </div>
-      <br />
-      <h5 class="mb-3">
-        <strong>Business Hours</strong>
-      </h5>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="mb-2">
-            <label class="form-label">Monday - Friday</label>
-            <div class="d-flex gap-2">
-              <input
-                type="time"
-                class="form-control"
-                id="weekdayOpen"
-                value="07:00"
-              />
-              <span class="align-self-center">to</span>
-              <input
-                type="time"
-                class="form-control"
-                id="weekdayClose"
-                value="21:00"
-              />
-            </div>
-          </div>
-          <div class="mb-2">
-            <label class="form-label">Saturday</label>
-            <div class="d-flex gap-2">
-              <input
-                type="time"
-                class="form-control"
-                id="saturdayOpen"
-                value="08:00"
-              />
-              <span class="align-self-center">to</span>
-              <input
-                type="time"
-                class="form-control"
-                id="saturdayClose"
-                value="20:00"
-              />
-            </div>
-          </div>
-          <div class="mb-2">
-            <label class="form-label">Sunday</label>
-            <div class="d-flex gap-2">
-              <input
-                type="time"
-                class="form-control"
-                id="sundayOpen"
-                value="09:00"
-              />
-              <span class="align-self-center">to</span>
-              <input
-                type="time"
-                class="form-control"
-                id="sundayClose"
-                value="18:00"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-check mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="emergencyService"
-            />
-            <label class="form-check-label" for="emergencyService">
-              Emergency services available 24/7
-            </label>
-          </div>
-          <div class="form-check mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="weekendAvailable"
-            />
-            <label class="form-check-label" for="weekendAvailable">
-              Available on weekends
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="holidayAvailable"
-            />
-            <label class="form-check-label" for="holidayAvailable">
-              Available on holidays
-            </label>
-          </div>
-        </div>
-      </div>
-      <button type="button" class="btn btn-add">
-        <i class="fas fa-plus me-2"></i>Save
-      </button>
-    </div>
-    } -->
   </div>
 
   <!-- Service Area Section -->
@@ -962,16 +387,8 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      <!-- @if(!showServiceForm){ -->
       <h2>Service Area</h2>
-      <!-- }@else {
-      <h2>Service Area</h2>
-      } -->
-      <!-- <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
-        <i class="fas fa-edit me-2"></i>Edit
-      </button> -->
     </div>
-    <!-- @if(!showServiceForm){ -->
     <div class="map-container">
       <i class="fas fa-map-marked-alt fa-3x"></i>
       <p>Interactive Map Coming Soon</p>
@@ -1011,67 +428,6 @@
         <span>Williamsburg</span>
       </div>
     </div>
-    <!-- }  -->
-    <!-- @if(showServiceForm) {
-    <div class="form-section">
-      <div class="mb-3">
-        <label class="form-label">Areas You Serve</label>
-        <textarea
-          class="form-control"
-          rows="3"
-          placeholder="Enter the neighborhoods, cities, or areas you provide service to (one per line)"
-        ></textarea>
-        <div class="info-text">List all areas where you provide services</div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-check mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="serveManhattan"
-            />
-            <label class="form-check-label" for="serveManhattan"
-              >Manhattan</label
-            >
-          </div>
-          <div class="form-check mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="serveBrooklyn"
-            />
-            <label class="form-check-label" for="serveBrooklyn">Brooklyn</label>
-          </div>
-          <div class="form-check mb-2">
-            <input class="form-check-input" type="checkbox" id="serveQueens" />
-            <label class="form-check-label" for="serveQueens">Queens</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-check mb-2">
-            <input class="form-check-input" type="checkbox" id="serveBronx" />
-            <label class="form-check-label" for="serveBronx">Bronx</label>
-          </div>
-          <div class="form-check mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="serveStatenIsland"
-            />
-            <label class="form-check-label" for="serveStatenIsland"
-              >Staten Island</label
-            >
-          </div>
-          <div class="form-check mb-2">
-            <input class="form-check-input" type="checkbox" id="serveOther" />
-            <label class="form-check-label" for="serveOther">Other Areas</label>
-          </div>
-        </div>
-      </div>
-    </div>
-    } -->
   </div>
 
   <!-- FAQ Section -->
@@ -1080,16 +436,8 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      <!-- @if(!showServiceForm){ -->
       <h2>Frequently Asked Questions</h2>
-      <!-- }@else {
-      <h2>Frequently Asked Questions</h2>
-      } -->
-      <!-- <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
-        <i class="fas fa-edit me-2"></i>Edit
-      </button> -->
     </div>
-    <!-- @if(!showServiceForm){ -->
     <div class="faq-list">
       <div class="faq-list">
         @for (faq of faqs; track faq.question; let i = $index) {
@@ -1114,39 +462,5 @@
         }
       </div>
     </div>
-    <!-- }@if(showServiceForm){
-    <div class="form-section">
-      <div id="faqList">
-        <div
-          class="faq-item"
-          style="background-color: var(--light-gray); padding: 20px"
-        >
-          <button type="button" class="remove-btn" onclick="removeFAQ(this)">
-            <i class="fas fa-times"></i>
-          </button>
-          <div class="mb-3">
-            <label class="form-label">Question</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="e.g., How quickly can you complete an errand?"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Answer</label>
-            <textarea
-              class="form-control"
-              rows="2"
-              placeholder="Provide a detailed answer..."
-            ></textarea>
-          </div>
-        </div>
-      </div>
-      <br />
-      <button type="button" class="btn btn-add" onclick="addFAQ()">
-        <i class="fas fa-plus me-2"></i>Add FAQ
-      </button>
-    </div>
-    } -->
   </div>
 </div>

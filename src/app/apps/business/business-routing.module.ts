@@ -6,12 +6,10 @@ import { BDashboardComponent } from './components/b-dashboard/b-dashboard.compon
 import { BProfileComponent } from './components/b-profile/b-profile.component';
 
 const routes: Routes = [
+  { path: '', component:BDashboardComponent },
   { path: 'list', component:BusinessListComponent },
   { path: 'detail/:id', component:BusinessDetailComponent },
-    { path: 'profile/:id', component:BProfileComponent },
-  { path: '', component:BDashboardComponent },
-
-
+  { path: 'profile/:id', component:BProfileComponent },
 ];
 
 @NgModule({
