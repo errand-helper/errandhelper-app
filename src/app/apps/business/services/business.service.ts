@@ -19,24 +19,32 @@ export class BusinessService {
 
 
   constructor(private http: HttpClient) { }
-  // http://127.0.0.1:8000/business_profile/profiles
-  getBusinessList() {
-    return this.http.get(`${this.baseUrl}business/businesses/`, {
-      headers: headers,
-    });
-  }
 
   addBusiness(data: FormData) {
-    return this.http.post(`${this.baseUrl}/business/businesses/`, data,{
+    return this.http.post(`${this.baseUrl}/business/business/`, data,{
         headers: headers,
       });
   }
 
-  getBusinessDetail(id:string){
-    return this.http.get(`${this.baseUrl}business/businesses/${id}`, {
+  getLoggedInUserBusinessList(){
+    return this.http.get(`${this.baseUrl}business/business/`, {
       headers: headers,
     });
   }
+
+   getBusinessList() {
+    return this.http.get(`${this.baseUrl}business/business-list/`, {
+      headers: headers,
+    });
+  }
+
+  getBusinessDetail(id:string){
+    return this.http.get(`${this.baseUrl}business/business-list/${id}`, {
+      headers: headers,
+    });
+  }
+
+
 
   getCategories(){
     return this.http.get(`${this.baseUrl}service/category/`, {

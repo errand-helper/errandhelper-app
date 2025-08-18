@@ -1,33 +1,141 @@
-<app-navbar></app-navbar>
-
 <!-- Aside -->
 <app-sidebar></app-sidebar>
+<!-- Main -->
 <!-- Main Content -->
 <div class="main-content">
-  <!-- Page Header -->
-  <div class="page-header">
-    <button class="mobile-toggle mb-3" onclick="toggleSidebar()">
+  <app-navbar></app-navbar>
+
+  <!-- Back Button -->
+  <div class="mb-3">
+    <!-- <button class="mobile-toggle me-3" onclick="toggleSidebar()">
       <i class="fas fa-bars"></i>
-    </button>
-    <h1 class="h3 mb-0">Edit Provider Profile</h1>
-    <p class="text-muted mb-0">Manage your business information and services</p>
+    </button> -->
+    <div>
+      <button
+        (click)="navigateBack()"
+        class="btn btn-link text-decoration-none badge-item badge-insured"
+      >
+        <i class="fas fa-arrow-left me-2"></i>Back to Providers
+      </button>
+    </div>
   </div>
 
-  <form id="providerProfileForm">
-    <!-- Basic Information Section -->
-    <div class="form-section">
-      <h2 class="section-title">Basic Information</h2>
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="provider-info">
+      <div class="provider-logo">QE</div>
+      <div class="provider-details">
+        <h1 class="provider-name">{{business_details?.business_name}}</h1>
+        <p class="provider-tagline">
+          {{business_details?.business_tagline}}
+        </p>
+        <div class="provider-badges">
+          <span class="badge-item badge-verified">
+            <i class="fas fa-check-circle"></i>
+            Verified Business
+          </span>
+        </div>
+      </div>
+    </div>
 
+    <div class="provider-stats">
+      <div class="stat-item">
+        <span class="stat-value">5.0</span>
+        <div class="rating-stars">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+        <span class="stat-label">127 reviews</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">523</span>
+        <span class="stat-label">Jobs Completed</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">98%</span>
+        <span class="stat-label">On-Time Rate</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">&lt; 1hr</span>
+        <span class="stat-label">Response Time</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">2.5mi</span>
+        <span class="stat-label">Distance</span>
+      </div>
+    </div>
+
+    <div class="profile-actions mt-4">
+      <button class="btn btn-hire-now">
+        <i class="fas fa-briefcase me-2"></i>Hire Now
+      </button>
+      <button class="btn btn-message">
+        <i class="fas fa-comment me-2"></i>Send Message
+      </button>
+      <button class="btn btn-save">
+        <i class="fas fa-heart me-2"></i>Save
+      </button>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showForm){
+      <h2>About {{business_details?.business_name}}</h2>
+      }@else {
+      <h2>Add Basic Information</h2>
+      }
+      <button class="btn btn-primary" (click)="toggleForm()" *ngIf="is_logged_in_user">
+        <i class="fas fa-edit me-2"></i><span>{{ business_details ? 'Edit' : 'Add' }}</span>
+      </button>
+    </div>
+
+    @if(!showForm){
+    <div>
+      <p class="mb-3">
+        {{business_details?.business_description}}
+      </p>
+    </div>
+    } @if(showForm) {
+    <!-- Basic Information Section -->
+    <form class="form-section" [formGroup]="basicInfoForm">
       <div class="logo-upload-container">
         <div class="logo-preview" id="logoPreview">
-          <span id="logoInitials">QE</span>
+          <!-- Show initials if no logo selected -->
+          @if (!logoPreviewUrl) {
+          <span id="logoInitials">{{ logoInitials }}</span>
+          }
+
+          <!-- Show uploaded logo preview -->
+          @if (logoPreviewUrl) {
+          <div class="logo-img-wrapper">
+            <img [src]="logoPreviewUrl" alt="Logo Preview" class="logo-img" />
+            <button
+              type="button"
+              class="remove-logo-btn"
+              (click)="removeLogo()"
+            >
+              ✕
+            </button>
+          </div>
+          }
+
           <input
             type="file"
             id="logoInput"
             accept="image/*"
             style="display: none"
+            (change)="onFileSelected($event)"
           />
         </div>
+
         <div>
           <div
             class="logo-upload-btn"
@@ -37,6 +145,12 @@
             <p class="mb-0">Click to upload logo</p>
             <small class="text-muted">PNG, JPG up to 5MB</small>
           </div>
+          @if (basicInfoForm.get('business_logo')?.touched &&
+          basicInfoForm.get('business_logo')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Business logo is required.</small>
+          </div>
+          }
         </div>
       </div>
 
@@ -50,9 +164,16 @@
             class="form-control"
             id="businessName"
             placeholder="Enter your business name"
-            required
+            formControlName="business_name"
           />
+          @if (basicInfoForm.get('business_name')?.touched &&
+          basicInfoForm.get('business_name')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Business name is required.</small>
+          </div>
+          }
         </div>
+
         <div class="col-md-6 mb-3">
           <label for="businessEmail" class="form-label"
             >Business Email <span class="required">*</span></label
@@ -62,8 +183,18 @@
             class="form-control"
             id="businessEmail"
             placeholder="business@example.com"
-            required
+            formControlName="business_email"
           />
+          @if (basicInfoForm.get('business_email')?.touched &&
+          basicInfoForm.get('business_email')?.invalid) {
+          <div class="text-danger mt-1">
+            @if (basicInfoForm.get('business_email')?.errors?.['required']) {
+            <small>Email is required.</small>
+            } @if (basicInfoForm.get('business_email')?.errors?.['email']) {
+            <small>Enter a valid email address.</small>
+            }
+          </div>
+          }
         </div>
       </div>
 
@@ -77,16 +208,118 @@
             class="form-control"
             id="businessPhone"
             placeholder="+1 (555) 123-4567"
-            required
+            formControlName="business_phone"
           />
+          @if (basicInfoForm.get('business_phone')?.touched &&
+          basicInfoForm.get('business_phone')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Business phone is required.</small>
+          </div>
+          }
         </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="registration_number" class="form-label"
+            >Registration Number <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="registration_number"
+            formControlName="registration_number"
+            placeholder="Registration number"
+          />
+          @if (basicInfoForm.get('registration_number')?.touched &&
+          basicInfoForm.get('registration_number')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Registration number is required.</small>
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="kra_pin" class="form-label"
+            >KRA PIN <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="kra_pin"
+            placeholder="KRA PIN"
+            formControlName="kra_pin"
+          />
+          @if (basicInfoForm.get('kra_pin')?.touched &&
+          basicInfoForm.get('kra_pin')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>KRA PIN is required.</small>
+          </div>
+          }
+        </div>
+
         <div class="col-md-6 mb-3">
           <label for="businessWebsite" class="form-label">Website</label>
           <input
             type="url"
             class="form-control"
             id="businessWebsite"
+            formControlName="website"
             placeholder="https://www.example.com"
+          />
+          <!-- @if (basicInfoForm.get('website')?.touched &&
+          basicInfoForm.get('website')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Website is required.</small>
+          </div>
+          } -->
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="facebook" class="form-label">Facebook</label>
+          <input
+            type="url"
+            class="form-control"
+            id="facebook"
+            placeholder="Facebook URL"
+            formControlName="facebook"
+          />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="twitter" class="form-label">X (Twitter)</label>
+          <input
+            type="url"
+            class="form-control"
+            id="twitter"
+            placeholder="https://twitter.com/yourprofile"
+            formControlName="twitter"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="instagram" class="form-label">Instagram</label>
+          <input
+            type="url"
+            class="form-control"
+            id="instagram"
+            placeholder="Instagram URL"
+            formControlName="instagram"
+          />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="linkedin" class="form-label">LinkedIn</label>
+          <input
+            type="url"
+            class="form-control"
+            id="linkedin"
+            placeholder="https://linkedin.com/in/yourprofile"
+            formControlName="linkedin"
           />
         </div>
       </div>
@@ -99,11 +332,12 @@
           id="businessTagline"
           placeholder="Your trusted partner for all errand services"
           maxlength="100"
+          formControlName="business_tagline"
         />
-        <div class="info-text">
+        <small class="info-text">
           A short, catchy phrase that describes your business (max 100
           characters)
-        </div>
+        </small>
       </div>
 
       <div class="mb-3">
@@ -115,37 +349,458 @@
           id="businessDescription"
           rows="4"
           placeholder="Tell customers about your business, experience, and what makes you unique..."
-          required
+          formControlName="business_description"
         ></textarea>
+        @if (basicInfoForm.get('business_description')?.touched &&
+        basicInfoForm.get('business_description')?.invalid) {
+        <div class="text-danger mt-1">
+          <small>Business description is required.</small>
+        </div>
+        }
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Business Badges</label>
-        <div class="badge-selection">
-          <label class="badge-checkbox">
-            <input type="checkbox" id="verifiedBadge" />
-            <span>Verified Business</span>
-          </label>
-          <label class="badge-checkbox">
-            <input type="checkbox" id="premiumBadge" />
-            <span>Premium Provider</span>
-          </label>
-          <label class="badge-checkbox">
-            <input type="checkbox" id="insuredBadge" />
-            <span>Fully Insured</span>
-          </label>
-          <label class="badge-checkbox">
-            <input type="checkbox" id="licensedBadge" />
-            <span>Licensed</span>
-          </label>
+      <button
+        (click)="addBusinessInfo()"
+        [disabled]="basicInfoForm.invalid"
+        type="button"
+        class="btn btn-add"
+      >
+        <i class="fas fa-plus me-2"></i>Add Details
+      </button>
+    </form>
+    }
+  </div>
+
+  <!-- Services Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showServiceForm){
+      <h2>Our Services</h2>
+      }@else {
+      <h2>Add Services</h2>
+      }
+      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
+        <i class="fas fa-edit me-2"></i>Edit
+      </button>
+    </div>
+    @if(!showServiceForm){
+    <div class="services-grid">
+      <div class="service-card">
+        <h5 class="service-name">Grocery Shopping</h5>
+        <div class="service-price">$25-$35/hour</div>
+      </div>
+      <div class="service-card">
+        <h5 class="service-name">Package Delivery</h5>
+        <div class="service-description">$15-$45 per delivery</div>
+      </div>
+      <div class="service-card">
+        <h5 class="service-name">Personal Shopping</h5>
+        <div class="service-price">$35-$50/hour</div>
+      </div>
+      <div class="service-card">
+        <h5 class="service-name">Administrative Tasks</h5>
+        <div class="service-price">$30-$40/hour</div>
+      </div>
+      <div class="service-card">
+        <h5 class="service-name">Pharmacy Runs</h5>
+        <div class="service-price">$20-$30 per trip</div>
+      </div>
+      <div class="service-card">
+        <h5 class="service-name">Food Delivery</h5>
+        <div class="service-price">$15-$25 + meal cost</div>
+      </div>
+    </div>
+    } @if(showServiceForm) {
+    <!-- Services Section -->
+    <div class="form-section">
+      <div id="servicesList">
+        <div class="service-item">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label"
+                >Service Name <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                placeholder="e.g., Grocery Shopping"
+                required
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Service Category</label>
+              <select class="form-select">
+                <option selected>Service Category</option>
+                @for(category of categories; track category.id){
+                  <option value="{{category.id}}">{{category.name}}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Pricing Type</label>
+              <select class="form-select">
+                <option value="hourly">Hourly Rate</option>
+                <option value="fixed">Fixed Price</option>
+                <option value="quote">By Quote</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Price From ($)</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="25"
+                min="0"
+                step="0.01"
+              />
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Price To ($)</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="50"
+                min="0"
+                step="0.01"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-add">
+        <i class="fas fa-plus me-2"></i>Add Service
+      </button>
+    </div>
+    }
+  </div>
+
+  <!-- Reviews Section -->
+  <div class="profile-section">
+    <h2 class="section-title">Customer Reviews</h2>
+
+    <!-- Review Summary -->
+    <div class="review-summary">
+      <div class="review-average">
+        <div class="review-score">5.0</div>
+        <div class="review-stars">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="review-count">Based on 127 reviews</div>
+      </div>
+      <div class="review-breakdown">
+        <div class="rating-bar">
+          <span class="rating-label">5 stars</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 92%"></div>
+          </div>
+          <span class="rating-percent">92%</span>
+        </div>
+        <div class="rating-bar">
+          <span class="rating-label">4 stars</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 6%"></div>
+          </div>
+          <span class="rating-percent">6%</span>
+        </div>
+        <div class="rating-bar">
+          <span class="rating-label">3 stars</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 2%"></div>
+          </div>
+          <span class="rating-percent">2%</span>
+        </div>
+        <div class="rating-bar">
+          <span class="rating-label">2 stars</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 0%"></div>
+          </div>
+          <span class="rating-percent">0%</span>
+        </div>
+        <div class="rating-bar">
+          <span class="rating-label">1 star</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 0%"></div>
+          </div>
+          <span class="rating-percent">0%</span>
         </div>
       </div>
     </div>
 
+    <!-- Review Items -->
+    <div class="reviews-list">
+      <div class="review-item">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar">JD</div>
+            <div>
+              <div class="reviewer-name">John Doe</div>
+              <div class="review-date">2 days ago</div>
+            </div>
+          </div>
+          <div class="review-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+        </div>
+        <p class="review-content">
+          Excellent service! Quick Errands Co. has been handling my weekly
+          grocery shopping for the past 3 months, and I couldn't be happier.
+          They always get exactly what I need and even suggest alternatives when
+          items are out of stock. Highly recommended!
+        </p>
+        <span class="review-service">Grocery Shopping</span>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar">SJ</div>
+            <div>
+              <div class="reviewer-name">Sarah Johnson</div>
+              <div class="review-date">1 week ago</div>
+            </div>
+          </div>
+          <div class="review-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+        </div>
+        <p class="review-content">
+          I needed urgent document delivery to multiple locations, and Quick
+          Errands Co. saved the day! They were professional, fast, and kept me
+          updated throughout the entire process. Will definitely use their
+          services again.
+        </p>
+        <span class="review-service">Package Delivery</span>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar">MS</div>
+            <div>
+              <div class="reviewer-name">Mike Smith</div>
+              <div class="review-date">2 weeks ago</div>
+            </div>
+          </div>
+          <div class="review-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+        </div>
+        <p class="review-content">
+          As a busy professional, I don't have time for errands. Quick Errands
+          Co. has been a lifesaver! From pharmacy runs to banking tasks, they
+          handle everything efficiently. Great communication and always on time.
+        </p>
+        <span class="review-service">Administrative Tasks</span>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <button class="btn btn-outline-primary">Load More Reviews</button>
+    </div>
+  </div>
+
+  <!-- Availability Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showServiceForm){
+      <h2>Availability</h2>
+      }@else {
+      <h2>Location & Business Hours</h2>
+
+      }
+      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
+        <i class="fas fa-edit me-2"></i>Edit
+      </button>
+    </div>
+    @if(!showServiceForm){
+    <div
+      class="d-md-flex d-lg-flex d-sm-block justify-content-between items-center"
+    >
+      <div class="w-50 p-2">
+        <div class="availability-legend">
+          <div class="legend-item">
+            <div class="legend-color legend-available"></div>
+            <span>Available</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color legend-limited"></div>
+            <span>Limited Availability</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color legend-busy"></div>
+            <span>Fully Booked</span>
+          </div>
+        </div>
+        <div class="calendar-widget">
+          <div class="calendar-header">
+            <button class="btn btn-sm">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <h5 class="mb-0">January 2025</h5>
+            <button class="btn btn-sm">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+          <div class="calendar-grid">
+            <div class="text-muted small">S</div>
+            <div class="text-muted small">M</div>
+            <div class="text-muted small">T</div>
+            <div class="text-muted small">W</div>
+            <div class="text-muted small">T</div>
+            <div class="text-muted small">F</div>
+            <div class="text-muted small">S</div>
+
+            <div class="calendar-day">1</div>
+            <div class="calendar-day">2</div>
+            <div class="calendar-day">3</div>
+            <div class="calendar-day">4</div>
+            <div class="calendar-day">5</div>
+            <div class="calendar-day day-available">6</div>
+            <div class="calendar-day day-available">7</div>
+            <div class="calendar-day day-limited">8</div>
+            <div class="calendar-day day-available">9</div>
+            <div class="calendar-day day-available">10</div>
+            <div class="calendar-day day-busy">11</div>
+            <div class="calendar-day day-available">12</div>
+            <div class="calendar-day day-available">13</div>
+            <div class="calendar-day day-limited">14</div>
+            <div class="calendar-day day-available">15</div>
+            <div class="calendar-day day-available">16</div>
+            <div class="calendar-day day-available">17</div>
+            <div class="calendar-day day-limited">18</div>
+            <div class="calendar-day">19</div>
+            <div class="calendar-day">20</div>
+            <div class="calendar-day">21</div>
+            <div class="calendar-day">22</div>
+            <div class="calendar-day">23</div>
+            <div class="calendar-day">24</div>
+            <div class="calendar-day">25</div>
+            <div class="calendar-day">26</div>
+            <div class="calendar-day">27</div>
+            <div class="calendar-day">28</div>
+            <div class="calendar-day">28</div>
+            <div class="calendar-day">30</div>
+            <div class="calendar-day">31</div>
+          </div>
+        </div>
+        <div class="mt-3">
+          <p class="text-muted mb-2">
+            Next available slot: <strong>Today at 2:00 PM</strong>
+          </p>
+          <button class="btn btn-primary">Book Now</button>
+        </div>
+      </div>
+      <div class="w-50 p-2">
+        <h5 class="mb-3">
+          <strong>Business Hours</strong>
+        </h5>
+        <div class="row">
+          <!-- <div class="col-md-6">
+            <div class="mb-2">
+              <label class="form-label">Monday - Friday</label>
+              <div class="d-flex gap-2">
+                <input
+                  type="time"
+                  class="form-control"
+                  id="weekdayOpen"
+                  value="07:00"
+                />
+                <span class="align-self-center">to</span>
+                <input
+                  type="time"
+                  class="form-control"
+                  id="weekdayClose"
+                  value="21:00"
+                />
+              </div>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Saturday</label>
+              <div class="d-flex gap-2">
+                <input
+                  type="time"
+                  class="form-control"
+                  id="saturdayOpen"
+                  value="08:00"
+                />
+                <span class="align-self-center">to</span>
+                <input
+                  type="time"
+                  class="form-control"
+                  id="saturdayClose"
+                  value="20:00"
+                />
+              </div>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Sunday</label>
+              <div class="d-flex gap-2">
+                <input
+                  type="time"
+                  class="form-control"
+                  id="sundayOpen"
+                  value="09:00"
+                />
+                <span class="align-self-center">to</span>
+                <input
+                  type="time"
+                  class="form-control"
+                  id="sundayClose"
+                  value="18:00"
+                />
+              </div>
+            </div>
+          </div> -->
+          <div class="col-md-6">
+            <h5 class="mb-3">Business Hours</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">Monday - Friday: 7:00 AM - 9:00 PM</li>
+              <li class="mb-2">Saturday: 8:00 AM - 8:00 PM</li>
+              <li class="mb-2">Sunday: 9:00 AM - 6:00 PM</li>
+              <li class="mb-2 text-success">
+                <i class="fas fa-bolt me-2"></i>Emergency services available
+                24/7
+              </li>
+              <li class="mb-2 text-warning">
+                <i class="fas fa-bolt me-2"></i>Available on weekends
+              </li>
+              <li class="mb-2 text-danger">
+                <i class="fas fa-bolt me-2"></i>Available on holidays
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    } @if(showServiceForm) {
     <!-- Location & Hours Section -->
     <div class="form-section">
-      <h2 class="section-title">Location & Business Hours</h2>
-
       <div class="row">
         <div class="col-md-6 mb-3">
           <label for="businessAddress" class="form-label"
@@ -172,7 +827,6 @@
           />
         </div>
       </div>
-
       <div class="row">
         <div class="col-md-4 mb-3">
           <label for="businessState" class="form-label"
@@ -212,8 +866,10 @@
           />
         </div>
       </div>
-
-      <h5 class="mb-3">Business Hours</h5>
+      <br />
+      <h5 class="mb-3">
+        <strong>Business Hours</strong>
+      </h5>
       <div class="row">
         <div class="col-md-6">
           <div class="mb-2">
@@ -304,160 +960,71 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Services Section -->
-    <div class="form-section">
-      <h2 class="section-title">Services Offered</h2>
-
-      <div id="servicesList">
-        <div class="service-item">
-          <button
-            type="button"
-            class="remove-btn"
-            onclick="removeService(this)"
-          >
-            <i class="fas fa-times"></i>
-          </button>
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label"
-                >Service Name <span class="required">*</span></label
-              >
-              <input
-                type="text"
-                class="form-control"
-                placeholder="e.g., Grocery Shopping"
-                required
-              />
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Service Category</label>
-              <select class="form-select">
-                <option value="">Select Category</option>
-                <option value="shopping">Shopping & Delivery</option>
-                <option value="cleaning">Cleaning</option>
-                <option value="moving">Moving & Packing</option>
-                <option value="admin">Administrative</option>
-                <option value="pet">Pet Services</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12 mb-3">
-              <label class="form-label">Service Description</label>
-              <textarea
-                class="form-control"
-                rows="2"
-                placeholder="Describe what this service includes..."
-              ></textarea>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Pricing Type</label>
-              <select class="form-select">
-                <option value="hourly">Hourly Rate</option>
-                <option value="fixed">Fixed Price</option>
-                <option value="quote">By Quote</option>
-              </select>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Price From ($)</label>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="25"
-                min="0"
-                step="0.01"
-              />
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Price To ($)</label>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="50"
-                min="0"
-                step="0.01"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <button type="button" class="btn btn-add" onclick="addService()">
-        <i class="fas fa-plus me-2"></i>Add Another Service
+      <button type="button" class="btn btn-add">
+        <i class="fas fa-plus me-2"></i>Save
       </button>
     </div>
+    }
+  </div>
 
-    <!-- Team Members Section -->
-    <div class="form-section">
-      <h2 class="section-title">Team Members</h2>
-
-      <div class="row" id="teamMembersList">
-        <div class="col-md-4 mb-3">
-          <div class="team-member-card">
-            <button
-              type="button"
-              class="remove-btn"
-              onclick="removeTeamMember(this)"
-            >
-              <i class="fas fa-times"></i>
-            </button>
-            <div
-              class="team-avatar-upload"
-              onclick="this.querySelector('input').click()"
-            >
-              <span>JW</span>
-              <input type="file" accept="image/*" style="display: none" />
-            </div>
-            <input
-              type="text"
-              class="form-control mb-2"
-              placeholder="Member Name"
-            />
-            <input type="text" class="form-control" placeholder="Role/Title" />
-          </div>
-        </div>
-      </div>
-
-      <button type="button" class="btn btn-add" onclick="addTeamMember()">
-        <i class="fas fa-plus me-2"></i>Add Team Member
+  <!-- Service Area Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showServiceForm){
+      <h2>Service Area</h2>
+      }@else {
+      <h2>Service Area</h2>
+      }
+      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
+        <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
-
-    <!-- Portfolio Gallery Section -->
-    <div class="form-section">
-      <h2 class="section-title">Portfolio Gallery</h2>
-
-      <div class="gallery-grid" id="galleryGrid">
-        <!-- Gallery items will be added here -->
+    @if(!showServiceForm){
+    <div class="map-container">
+      <i class="fas fa-map-marked-alt fa-3x"></i>
+      <p>Interactive Map Coming Soon</p>
+    </div>
+    <h5 class="mb-3">We Serve These Areas:</h5>
+    <div class="coverage-list">
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Manhattan</span>
       </div>
-
-      <div
-        class="gallery-upload-area"
-        onclick="document.getElementById('galleryInput').click()"
-      >
-        <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
-        <h5>Upload Portfolio Images</h5>
-        <p class="text-muted mb-0">Click to upload or drag and drop</p>
-        <small class="text-muted">PNG, JPG up to 10MB each</small>
-        <input
-          type="file"
-          id="galleryInput"
-          multiple
-          accept="image/*"
-          style="display: none"
-        />
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Brooklyn</span>
+      </div>
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Queens</span>
+      </div>
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Upper East Side</span>
+      </div>
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Upper West Side</span>
+      </div>
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Midtown</span>
+      </div>
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Financial District</span>
+      </div>
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>Williamsburg</span>
       </div>
     </div>
-
-    <!-- Service Areas Section -->
+    } @if(showServiceForm) {
+    <!-- Service Area Section -->
     <div class="form-section">
-      <h2 class="section-title">Service Areas</h2>
-
       <div class="mb-3">
         <label class="form-label">Areas You Serve</label>
         <textarea
@@ -515,13 +1082,57 @@
         </div>
       </div>
     </div>
+    }
+  </div>
 
+  <!-- FAQ Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showServiceForm){
+      <h2>Frequently Asked Questions</h2>
+      }@else {
+      <h2>Frequently Asked Questions</h2>
+      }
+      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
+        <i class="fas fa-edit me-2"></i>Edit
+      </button>
+    </div>
+    @if(!showServiceForm){
+    <div class="faq-list">
+      <div class="faq-list">
+        @for (faq of faqs; track faq.question; let i = $index) {
+        <div class="faq-item">
+          <div
+            class="faq-question"
+            (click)="toggleFAQ(i)"
+            [class.active]="faq.isOpen"
+          >
+            <span>{{ faq.question }}</span>
+            <i
+              class="fas"
+              [ngClass]="faq.isOpen ? 'fa-chevron-up' : 'fa-chevron-down'"
+            ></i>
+          </div>
+          @if (faq.isOpen) {
+          <div class="faq-answer">
+            <p>{{ faq.answer }}</p>
+          </div>
+          }
+        </div>
+        }
+      </div>
+    </div>
+    }@if(showServiceForm){
     <!-- FAQ Section -->
     <div class="form-section">
-      <h2 class="section-title">Frequently Asked Questions</h2>
-
       <div id="faqList">
-        <div class="faq-item">
+        <div
+          class="faq-item"
+          style="background-color: var(--light-gray); padding: 20px"
+        >
           <button type="button" class="remove-btn" onclick="removeFAQ(this)">
             <i class="fas fa-times"></i>
           </button>
@@ -543,78 +1154,11 @@
           </div>
         </div>
       </div>
-
+      <br />
       <button type="button" class="btn btn-add" onclick="addFAQ()">
         <i class="fas fa-plus me-2"></i>Add FAQ
       </button>
     </div>
-
-    <!-- Insurance & Certifications Section -->
-    <div class="form-section">
-      <h2 class="section-title">Insurance & Certifications</h2>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="insuranceProvider" class="form-label"
-            >Insurance Provider</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="insuranceProvider"
-            placeholder="Insurance company name"
-          />
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="insurancePolicy" class="form-label">Policy Number</label>
-          <input
-            type="text"
-            class="form-control"
-            id="insurancePolicy"
-            placeholder="Policy number"
-          />
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="certifications" class="form-label"
-          >Certifications & Licenses</label
-        >
-        <textarea
-          class="form-control"
-          id="certifications"
-          rows="3"
-          placeholder="List any relevant certifications, licenses, or credentials"
-        ></textarea>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Upload Documents</label>
-        <input
-          type="file"
-          class="form-control"
-          multiple
-          accept=".pdf,.jpg,.jpeg,.png"
-        />
-        <div class="info-text">
-          Upload copies of insurance certificates, licenses, or other
-          credentials
-        </div>
-      </div>
-    </div>
-
-    <!-- Save Actions -->
-    <div class="save-actions">
-      <button
-        type="button"
-        class="btn btn-outline-custom"
-        onclick="saveDraft()"
-      >
-        Save as Draft
-      </button>
-      <button type="submit" class="btn btn-primary-custom">
-        Save & Publish Profile
-      </button>
-    </div>
-  </form>
+    }
+  </div>
 </div>

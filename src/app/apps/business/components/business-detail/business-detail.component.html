@@ -27,7 +27,7 @@
       <div class="provider-details">
         <h1 class="provider-name">{{business_details?.business_name}}</h1>
         <p class="provider-tagline">
-          Your Trusted Partner for All Errand Services
+          {{business_details?.business_tagline}}
         </p>
         <div class="provider-badges">
           <span class="badge-item badge-verified">
@@ -87,33 +87,30 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      @if(!showForm){
+      <!-- @if(!showForm){ -->
       <h2>About {{business_details?.business_name}}</h2>
-      }@else {
+      <!-- }@else {
       <h2>Add Basic Information</h2>
-      }
-      <button class="btn btn-primary" (click)="toggleForm()" *ngIf="is_logged_in_user">
+      } -->
+      <!-- <button class="btn btn-primary" (click)="toggleForm()" *ngIf="is_logged_in_user">
         <i class="fas fa-edit me-2"></i><span>{{ business_details ? 'Edit' : 'Add' }}</span>
-      </button>
+      </button> -->
     </div>
 
-    @if(!showForm){
+
     <div>
       <p class="mb-3">
         {{business_details?.business_description}}
       </p>
     </div>
-    } @if(showForm) {
-    <!-- Basic Information Section -->
-    <form class="form-section" [formGroup]="basicInfoForm">
+
+    <!-- <form class="form-section" [formGroup]="basicInfoForm">
       <div class="logo-upload-container">
         <div class="logo-preview" id="logoPreview">
-          <!-- Show initials if no logo selected -->
           @if (!logoPreviewUrl) {
           <span id="logoInitials">{{ logoInitials }}</span>
           }
 
-          <!-- Show uploaded logo preview -->
           @if (logoPreviewUrl) {
           <div class="logo-img-wrapper">
             <img [src]="logoPreviewUrl" alt="Logo Preview" class="logo-img" />
@@ -267,12 +264,7 @@
             formControlName="website"
             placeholder="https://www.example.com"
           />
-          <!-- @if (basicInfoForm.get('website')?.touched &&
-          basicInfoForm.get('website')?.invalid) {
-          <div class="text-danger mt-1">
-            <small>Website is required.</small>
-          </div>
-          } -->
+
         </div>
       </div>
 
@@ -367,26 +359,24 @@
       >
         <i class="fas fa-plus me-2"></i>Add Details
       </button>
-    </form>
-    }
+    </form> -->
   </div>
 
-  <!-- Services Section -->
   <div class="profile-section">
     <div
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      @if(!showServiceForm){
+      <!-- @if(!showServiceForm){ -->
       <h2>Our Services</h2>
-      }@else {
-      <h2>Add Services</h2>
-      }
-      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
+      <!-- }@else { -->
+      <!-- <h2>Add Services</h2>
+      } -->
+      <!-- <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
         <i class="fas fa-edit me-2"></i>Edit
-      </button>
+      </button> -->
     </div>
-    @if(!showServiceForm){
+    <!-- @if(!showServiceForm){ -->
     <div class="services-grid">
       <div class="service-card">
         <h5 class="service-name">Grocery Shopping</h5>
@@ -413,9 +403,9 @@
         <div class="service-price">$15-$25 + meal cost</div>
       </div>
     </div>
-    } @if(showServiceForm) {
+    <!-- } @if(showServiceForm) { -->
     <!-- Services Section -->
-    <div class="form-section">
+    <!-- <div class="form-section">
       <div id="servicesList">
         <div class="service-item">
           <div class="row">
@@ -476,8 +466,8 @@
       <button type="button" class="btn btn-add">
         <i class="fas fa-plus me-2"></i>Add Service
       </button>
-    </div>
-    }
+    </div> -->
+    <!-- } -->
   </div>
 
   <!-- Reviews Section -->
@@ -627,17 +617,17 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      @if(!showServiceForm){
+      <!-- @if(!showServiceForm){ -->
       <h2>Availability</h2>
-      }@else {
+      <!-- }@else {
       <h2>Location & Business Hours</h2>
 
-      }
-      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
+      } -->
+      <!-- <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
         <i class="fas fa-edit me-2"></i>Edit
-      </button>
+      </button> -->
     </div>
-    @if(!showServiceForm){
+    <!-- @if(!showServiceForm){ -->
     <div
       class="d-md-flex d-lg-flex d-sm-block justify-content-between items-center"
     >
@@ -798,8 +788,8 @@
       </div>
     </div>
 
-    } @if(showServiceForm) {
-    <!-- Location & Hours Section -->
+    <!-- } -->
+    <!-- @if(showServiceForm) {
     <div class="form-section">
       <div class="row">
         <div class="col-md-6 mb-3">
@@ -837,7 +827,6 @@
             <option value="NY">New York</option>
             <option value="CA">California</option>
             <option value="TX">Texas</option>
-            <!-- Add more states -->
           </select>
         </div>
         <div class="col-md-4 mb-3">
@@ -964,7 +953,7 @@
         <i class="fas fa-plus me-2"></i>Save
       </button>
     </div>
-    }
+    } -->
   </div>
 
   <!-- Service Area Section -->
@@ -973,16 +962,16 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      @if(!showServiceForm){
+      <!-- @if(!showServiceForm){ -->
       <h2>Service Area</h2>
-      }@else {
+      <!-- }@else {
       <h2>Service Area</h2>
-      }
-      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
+      } -->
+      <!-- <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
         <i class="fas fa-edit me-2"></i>Edit
-      </button>
+      </button> -->
     </div>
-    @if(!showServiceForm){
+    <!-- @if(!showServiceForm){ -->
     <div class="map-container">
       <i class="fas fa-map-marked-alt fa-3x"></i>
       <p>Interactive Map Coming Soon</p>
@@ -1022,8 +1011,8 @@
         <span>Williamsburg</span>
       </div>
     </div>
-    } @if(showServiceForm) {
-    <!-- Service Area Section -->
+    <!-- }  -->
+    <!-- @if(showServiceForm) {
     <div class="form-section">
       <div class="mb-3">
         <label class="form-label">Areas You Serve</label>
@@ -1082,7 +1071,7 @@
         </div>
       </div>
     </div>
-    }
+    } -->
   </div>
 
   <!-- FAQ Section -->
@@ -1091,16 +1080,16 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      @if(!showServiceForm){
+      <!-- @if(!showServiceForm){ -->
       <h2>Frequently Asked Questions</h2>
-      }@else {
+      <!-- }@else {
       <h2>Frequently Asked Questions</h2>
-      }
-      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
+      } -->
+      <!-- <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
         <i class="fas fa-edit me-2"></i>Edit
-      </button>
+      </button> -->
     </div>
-    @if(!showServiceForm){
+    <!-- @if(!showServiceForm){ -->
     <div class="faq-list">
       <div class="faq-list">
         @for (faq of faqs; track faq.question; let i = $index) {
@@ -1125,8 +1114,7 @@
         }
       </div>
     </div>
-    }@if(showServiceForm){
-    <!-- FAQ Section -->
+    <!-- }@if(showServiceForm){
     <div class="form-section">
       <div id="faqList">
         <div
@@ -1159,6 +1147,6 @@
         <i class="fas fa-plus me-2"></i>Add FAQ
       </button>
     </div>
-    }
+    } -->
   </div>
 </div>
