@@ -7,33 +7,30 @@ import { BusinessService } from '../../services/business.service';
 @Component({
   selector: 'app-b-profile',
   templateUrl: './b-profile.component.html',
-  styleUrl: './b-profile.component.css'
+  styleUrl: './b-profile.component.css',
 })
 export class BProfileComponent {
-
   basicInfoForm!: FormGroup;
-  serviceInfoForm!:FormGroup
+  serviceInfoForm!: FormGroup;
   logoPreviewUrl: string | ArrayBuffer | null = null;
   logoInitials: string = 'BN';
-  businessId!:string;
-  business_details:any;
-  categories:any
-  logged_in_user!:any;
-  is_logged_in_user = false;
-  my_business_id:any;
+  businessId!: string;
+  business_details: any;
+  categories: any;
+  logged_in_user!: any;
+  // is_logged_in_user = false;
+  my_business_id: any;
 
   constructor(
     private _businessService: BusinessService,
     private fb: FormBuilder,
     private toastr: ToastrService,
-    private route: ActivatedRoute,
-  ) {
-
-  }
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.businessId = this.route.snapshot.paramMap.get('id')!;
-     this.basicInfoForm = this.fb.group({
+    this.basicInfoForm = this.fb.group({
       business_name: ['', Validators.required],
       business_logo: [''],
       business_email: ['', Validators.required],
@@ -51,10 +48,7 @@ export class BProfileComponent {
 
     this.logged_in_user = JSON.parse(localStorage.getItem('user_id') || 'null');
 
-    this.serviceInfoForm = this.fb.group({
-
-    })
-
+    this.serviceInfoForm = this.fb.group({});
 
     this.basicInfoForm
       .get('business_name')
@@ -70,30 +64,50 @@ export class BProfileComponent {
           this.logoInitials = 'BN';
         }
       });
-    this.getBusinessInfo()
-    this.getCategories()
+    this.getBusinessInfo();
+    this.getCategories();
   }
 
-  getCategories(){
-    this._businessService.getCategories().subscribe((res:any)=>{
+  getCategories() {
+    this._businessService.getCategories().subscribe((res: any) => {
       console.log(res);
       this.categories = res;
-    })
+    });
   }
 
-
-
   getBusinessInfo() {
-    this._businessService.getBusinessDetail(this.businessId).subscribe((res:any)=>{
-      console.log(res);
-      this.business_details = res;
-      console.log(this.logged_in_user,this.business_details.user);
+    this._businessService
+      .getBusinessDetail(this.businessId)
+      .subscribe((res: any) => {
+        console.log(res);
+        this.business_details = res;
+        if (this.business_details) {
+          // ✅ Prefill form with fetched data
+          this.basicInfoForm.patchValue({
+            business_name: this.business_details.business_name,
+            business_logo: this.business_details.business_logo,
+            business_email: this.business_details.business_email,
+            business_phone: this.business_details.business_phone,
+            business_tagline: this.business_details.business_tagline,
+            business_description: this.business_details.business_description,
+            registration_number: this.business_details.registration_number,
+            kra_pin: this.business_details.kra_pin,
+            facebook: this.business_details.social_links.facebook,
+            twitter: this.business_details.social_links.twitter,
+            linkedin: this.business_details.social_links.linkedin,
+            instagram: this.business_details.social_links.instagram,
+            website: this.business_details.social_links.website,
+          });
+        }
+        if (this.business_details.business_logo) {
+          this.logoPreviewUrl = this.business_details.business_logo;
+        }
+        console.log(this.logged_in_user, this.business_details.user);
 
-      if(this.logged_in_user === this.business_details.user){
-        this.is_logged_in_user = true
-        // this.my_business_id = this.business_details.id
-      }
-    })
+        // if (this.logged_in_user === this.business_details.user) {
+        //   this.is_logged_in_user = true;
+        // }
+      });
   }
 
   addBusinessInfo() {
@@ -182,7 +196,7 @@ export class BProfileComponent {
     this.faqs[index].isOpen = !this.faqs[index].isOpen;
   }
 
-  toggleForm() {
+  toggleBasicInfoForm() {
     this.showForm = !this.showForm;
   }
 

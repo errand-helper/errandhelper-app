@@ -25,9 +25,9 @@
     <div class="provider-info">
       <div class="provider-logo">QE</div>
       <div class="provider-details">
-        <h1 class="provider-name">{{business_details?.business_name}}</h1>
+        <h1 class="provider-name">{{ business_details?.business_name }}</h1>
         <p class="provider-tagline">
-          {{business_details?.business_tagline}}
+          {{ business_details?.business_tagline }}
         </p>
         <div class="provider-badges">
           <span class="badge-item badge-verified">
@@ -88,19 +88,23 @@
       style="display: flex; justify-content: space-between; align-items: center"
     >
       @if(!showForm){
-      <h2>About {{business_details?.business_name}}</h2>
+      <h2>About {{ business_details?.business_name }}</h2>
       }@else {
       <h2>Add Basic Information</h2>
       }
-      <button class="btn btn-primary" (click)="toggleForm()" *ngIf="is_logged_in_user">
-        <i class="fas fa-edit me-2"></i><span>{{ business_details ? 'Edit' : 'Add' }}</span>
+      <button
+        class="btn btn-primary"
+        (click)="toggleBasicInfoForm()"
+      >
+        <i class="fas fa-edit me-2"></i
+        ><span>{{ business_details ? "Edit" : "Add" }}</span>
       </button>
     </div>
 
     @if(!showForm){
     <div>
       <p class="mb-3">
-        {{business_details?.business_description}}
+        {{ business_details?.business_description }}
       </p>
     </div>
     } @if(showForm) {
@@ -154,6 +158,45 @@
         </div>
       </div>
 
+      <!-- <div class="row">
+        <div class="col-md-6 mb-3" *ngIf="!business_details?.business_name">
+          <label for="businessName" class="form-label"
+            >Business Name <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessName"
+            placeholder="Enter your business name"
+            formControlName="business_name"
+          />
+          @if (basicInfoForm.get('business_name')?.touched &&
+          basicInfoForm.get('business_name')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Business name is required.</small>
+          </div>
+          }
+        </div>
+        <div class="col-md-6 mb-3" *ngIf="!business_details?.registration_number">
+          <label for="registration_number" class="form-label"
+            >Registration Number <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="registration_number"
+            formControlName="registration_number"
+            placeholder="Registration number"
+          />
+          @if (basicInfoForm.get('registration_number')?.touched &&
+          basicInfoForm.get('registration_number')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Registration number is required.</small>
+          </div>
+          }
+        </div>
+      </div> -->
+
       <div class="row">
         <div class="col-md-6 mb-3">
           <label for="businessName" class="form-label"
@@ -173,7 +216,102 @@
           </div>
           }
         </div>
+        <div class="col-md-6 mb-3">
+          <label for="businessTagline" class="form-label"
+            >Business Tagline</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessTagline"
+            placeholder="Your trusted partner for all errand services"
+            maxlength="100"
+            formControlName="business_tagline"
+          />
+          <!-- <small class="info-text">
+            A short, catchy phrase that describes your business (max 100
+            characters)
+          </small> -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="registration_number" class="form-label"
+            >Registration Number <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="registration_number"
+            formControlName="registration_number"
+            placeholder="Registration number"
+          />
+          @if (basicInfoForm.get('registration_number')?.touched &&
+          basicInfoForm.get('registration_number')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Registration number is required.</small>
+          </div>
+          }
+        </div>
 
+        <div class="col-md-6 mb-3">
+          <label for="kra_pin" class="form-label"
+            >KRA PIN <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="kra_pin"
+            placeholder="KRA PIN"
+            formControlName="kra_pin"
+          />
+          @if (basicInfoForm.get('kra_pin')?.touched &&
+          basicInfoForm.get('kra_pin')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>KRA PIN is required.</small>
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="businessDescription" class="form-label"
+          >Business Description <span class="required">*</span></label
+        >
+        <textarea
+          class="form-control"
+          id="businessDescription"
+          rows="4"
+          placeholder="Tell customers about your business, experience, and what makes you unique..."
+          formControlName="business_description"
+        ></textarea>
+        @if (basicInfoForm.get('business_description')?.touched &&
+        basicInfoForm.get('business_description')?.invalid) {
+        <div class="text-danger mt-1">
+          <small>Business description is required.</small>
+        </div>
+        }
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="businessPhone" class="form-label"
+            >Business Phone <span class="required">*</span></label
+          >
+          <input
+            type="tel"
+            class="form-control"
+            id="businessPhone"
+            placeholder="+1 (555) 123-4567"
+            formControlName="business_phone"
+          />
+          @if (basicInfoForm.get('business_phone')?.touched &&
+          basicInfoForm.get('business_phone')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Business phone is required.</small>
+          </div>
+          }
+        </div>
         <div class="col-md-6 mb-3">
           <label for="businessEmail" class="form-label"
             >Business Email <span class="required">*</span></label
@@ -200,84 +338,6 @@
 
       <div class="row">
         <div class="col-md-6 mb-3">
-          <label for="businessPhone" class="form-label"
-            >Business Phone <span class="required">*</span></label
-          >
-          <input
-            type="tel"
-            class="form-control"
-            id="businessPhone"
-            placeholder="+1 (555) 123-4567"
-            formControlName="business_phone"
-          />
-          @if (basicInfoForm.get('business_phone')?.touched &&
-          basicInfoForm.get('business_phone')?.invalid) {
-          <div class="text-danger mt-1">
-            <small>Business phone is required.</small>
-          </div>
-          }
-        </div>
-
-        <div class="col-md-6 mb-3">
-          <label for="registration_number" class="form-label"
-            >Registration Number <span class="required">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="registration_number"
-            formControlName="registration_number"
-            placeholder="Registration number"
-          />
-          @if (basicInfoForm.get('registration_number')?.touched &&
-          basicInfoForm.get('registration_number')?.invalid) {
-          <div class="text-danger mt-1">
-            <small>Registration number is required.</small>
-          </div>
-          }
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="kra_pin" class="form-label"
-            >KRA PIN <span class="required">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="kra_pin"
-            placeholder="KRA PIN"
-            formControlName="kra_pin"
-          />
-          @if (basicInfoForm.get('kra_pin')?.touched &&
-          basicInfoForm.get('kra_pin')?.invalid) {
-          <div class="text-danger mt-1">
-            <small>KRA PIN is required.</small>
-          </div>
-          }
-        </div>
-
-        <div class="col-md-6 mb-3">
-          <label for="businessWebsite" class="form-label">Website</label>
-          <input
-            type="url"
-            class="form-control"
-            id="businessWebsite"
-            formControlName="website"
-            placeholder="https://www.example.com"
-          />
-          <!-- @if (basicInfoForm.get('website')?.touched &&
-          basicInfoForm.get('website')?.invalid) {
-          <div class="text-danger mt-1">
-            <small>Website is required.</small>
-          </div>
-          } -->
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
           <label for="facebook" class="form-label">Facebook</label>
           <input
             type="url"
@@ -289,7 +349,7 @@
         </div>
 
         <div class="col-md-6 mb-3">
-          <label for="twitter" class="form-label">X (Twitter)</label>
+          <label for="twitter" class="form-label">X</label>
           <input
             type="url"
             class="form-control"
@@ -324,39 +384,17 @@
         </div>
       </div>
 
-      <div class="mb-3">
-        <label for="businessTagline" class="form-label">Business Tagline</label>
-        <input
-          type="text"
-          class="form-control"
-          id="businessTagline"
-          placeholder="Your trusted partner for all errand services"
-          maxlength="100"
-          formControlName="business_tagline"
-        />
-        <small class="info-text">
-          A short, catchy phrase that describes your business (max 100
-          characters)
-        </small>
-      </div>
-
-      <div class="mb-3">
-        <label for="businessDescription" class="form-label"
-          >Business Description <span class="required">*</span></label
-        >
-        <textarea
-          class="form-control"
-          id="businessDescription"
-          rows="4"
-          placeholder="Tell customers about your business, experience, and what makes you unique..."
-          formControlName="business_description"
-        ></textarea>
-        @if (basicInfoForm.get('business_description')?.touched &&
-        basicInfoForm.get('business_description')?.invalid) {
-        <div class="text-danger mt-1">
-          <small>Business description is required.</small>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="businessWebsite" class="form-label">Website</label>
+          <input
+            type="url"
+            class="form-control"
+            id="businessWebsite"
+            formControlName="website"
+            placeholder="https://www.example.com"
+          />
         </div>
-        }
       </div>
 
       <button
@@ -382,7 +420,10 @@
       }@else {
       <h2>Add Services</h2>
       }
-      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
+      <button
+        class="btn btn-primary"
+        (click)="toggleServiceForm()"
+      >
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
@@ -435,7 +476,7 @@
               <select class="form-select">
                 <option selected>Service Category</option>
                 @for(category of categories; track category.id){
-                  <option value="{{category.id}}">{{category.name}}</option>
+                <option value="{{ category.id }}">{{ category.name }}</option>
                 }
               </select>
             </div>
@@ -633,7 +674,10 @@
       <h2>Location & Business Hours</h2>
 
       }
-      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
+      <button
+        class="btn btn-primary"
+        (click)="toggleServiceForm()"
+      >
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
@@ -978,7 +1022,10 @@
       }@else {
       <h2>Service Area</h2>
       }
-      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
+      <button
+        class="btn btn-primary"
+        (click)="toggleServiceForm()"
+      >
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
@@ -1096,7 +1143,10 @@
       }@else {
       <h2>Frequently Asked Questions</h2>
       }
-      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
+      <button
+        class="btn btn-primary"
+        (click)="toggleServiceForm()"
+      >
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
