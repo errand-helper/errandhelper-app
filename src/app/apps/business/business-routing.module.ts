@@ -7,7 +7,7 @@ import { BProfileComponent } from './components/b-profile/b-profile.component';
 
 const routes: Routes = [
   { path: 'list', component:BusinessListComponent },
-  { path: 'detail', component:BusinessDetailComponent },
+  { path: 'detail/:id', component:BusinessDetailComponent },
     { path: 'profile', component:BProfileComponent },
   { path: '', component:BDashboardComponent },
 

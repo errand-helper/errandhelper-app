@@ -25,7 +25,7 @@
     <div class="provider-info">
       <div class="provider-logo">QE</div>
       <div class="provider-details">
-        <h1 class="provider-name">Quick Errands Co.</h1>
+        <h1 class="provider-name">{{business_details?.business_name}}</h1>
         <p class="provider-tagline">
           Your Trusted Partner for All Errand Services
         </p>
@@ -34,18 +34,6 @@
             <i class="fas fa-check-circle"></i>
             Verified Business
           </span>
-          <!-- <span class="badge-item badge-premium">
-            <i class="fas fa-crown"></i>
-            Premium Provider
-          </span>
-          <span class="badge-item badge-insured">
-            <i class="fas fa-shield-alt"></i>
-            Fully Insured
-          </span>
-          <span class="badge-item badge-licensed">
-            <i class="fas fa-certificate"></i>
-            Licensed
-          </span> -->
         </div>
       </div>
     </div>
@@ -100,28 +88,19 @@
       style="display: flex; justify-content: space-between; align-items: center"
     >
       @if(!showForm){
-      <h2>About Quick Errands Co.</h2>
+      <h2>About {{business_details?.business_name}}</h2>
       }@else {
       <h2>Add Basic Information</h2>
       }
-      <button class="btn btn-primary" (click)="toggleForm()">
-        <i class="fas fa-edit me-2"></i>Edit
+      <button class="btn btn-primary" (click)="toggleForm()" *ngIf="is_logged_in_user">
+        <i class="fas fa-edit me-2"></i><span>{{ business_details ? 'Edit' : 'Add' }}</span>
       </button>
     </div>
 
     @if(!showForm){
     <div>
       <p class="mb-3">
-        Quick Errands Co. is a premier errand running service that has been
-        serving the New York area for over 5 years. We specialize in providing
-        reliable, efficient, and professional errand services to busy
-        individuals and families who need an extra hand with their daily tasks.
-      </p>
-      <p class="mb-3">
-        Our team of dedicated professionals is committed to making your life
-        easier by handling everything from grocery shopping and deliveries to
-        administrative tasks and personal shopping. We pride ourselves on our
-        attention to detail, punctuality, and exceptional customer service.
+        {{business_details?.business_description}}
       </p>
     </div>
     } @if(showForm) {
@@ -129,15 +108,34 @@
     <form class="form-section" [formGroup]="basicInfoForm">
       <div class="logo-upload-container">
         <div class="logo-preview" id="logoPreview">
-          <span id="logoInitials">QE</span>
+          <!-- Show initials if no logo selected -->
+          @if (!logoPreviewUrl) {
+          <span id="logoInitials">{{ logoInitials }}</span>
+          }
+
+          <!-- Show uploaded logo preview -->
+          @if (logoPreviewUrl) {
+          <div class="logo-img-wrapper">
+            <img [src]="logoPreviewUrl" alt="Logo Preview" class="logo-img" />
+            <button
+              type="button"
+              class="remove-logo-btn"
+              (click)="removeLogo()"
+            >
+              ✕
+            </button>
+          </div>
+          }
+
           <input
             type="file"
             id="logoInput"
             accept="image/*"
             style="display: none"
-            formControlName="business_logo"
+            (change)="onFileSelected($event)"
           />
         </div>
+
         <div>
           <div
             class="logo-upload-btn"
@@ -147,6 +145,12 @@
             <p class="mb-0">Click to upload logo</p>
             <small class="text-muted">PNG, JPG up to 5MB</small>
           </div>
+          @if (basicInfoForm.get('business_logo')?.touched &&
+          basicInfoForm.get('business_logo')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Business logo is required.</small>
+          </div>
+          }
         </div>
       </div>
 
@@ -162,7 +166,14 @@
             placeholder="Enter your business name"
             formControlName="business_name"
           />
+          @if (basicInfoForm.get('business_name')?.touched &&
+          basicInfoForm.get('business_name')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Business name is required.</small>
+          </div>
+          }
         </div>
+
         <div class="col-md-6 mb-3">
           <label for="businessEmail" class="form-label"
             >Business Email <span class="required">*</span></label
@@ -174,6 +185,16 @@
             placeholder="business@example.com"
             formControlName="business_email"
           />
+          @if (basicInfoForm.get('business_email')?.touched &&
+          basicInfoForm.get('business_email')?.invalid) {
+          <div class="text-danger mt-1">
+            @if (basicInfoForm.get('business_email')?.errors?.['required']) {
+            <small>Email is required.</small>
+            } @if (basicInfoForm.get('business_email')?.errors?.['email']) {
+            <small>Enter a valid email address.</small>
+            }
+          </div>
+          }
         </div>
       </div>
 
@@ -189,31 +210,54 @@
             placeholder="+1 (555) 123-4567"
             formControlName="business_phone"
           />
+          @if (basicInfoForm.get('business_phone')?.touched &&
+          basicInfoForm.get('business_phone')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Business phone is required.</small>
+          </div>
+          }
         </div>
+
         <div class="col-md-6 mb-3">
-          <label for="registration_number" class="form-label">Registration Number</label>
+          <label for="registration_number" class="form-label"
+            >Registration Number <span class="required">*</span></label
+          >
           <input
-            type="url"
+            type="text"
             class="form-control"
             id="registration_number"
             formControlName="registration_number"
-            placeholder="https://www.example.com"
+            placeholder="Registration number"
           />
+          @if (basicInfoForm.get('registration_number')?.touched &&
+          basicInfoForm.get('registration_number')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Registration number is required.</small>
+          </div>
+          }
         </div>
       </div>
+
       <div class="row">
         <div class="col-md-6 mb-3">
-          <label for="KRAPIN" class="form-label"
+          <label for="kra_pin" class="form-label"
             >KRA PIN <span class="required">*</span></label
           >
           <input
-            type="tel"
+            type="text"
             class="form-control"
             id="kra_pin"
             placeholder="KRA PIN"
             formControlName="kra_pin"
           />
+          @if (basicInfoForm.get('kra_pin')?.touched &&
+          basicInfoForm.get('kra_pin')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>KRA PIN is required.</small>
+          </div>
+          }
         </div>
+
         <div class="col-md-6 mb-3">
           <label for="businessWebsite" class="form-label">Website</label>
           <input
@@ -223,53 +267,58 @@
             formControlName="website"
             placeholder="https://www.example.com"
           />
+          <!-- @if (basicInfoForm.get('website')?.touched &&
+          basicInfoForm.get('website')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Website is required.</small>
+          </div>
+          } -->
         </div>
       </div>
-       <div class="row">
+
+      <div class="row">
         <div class="col-md-6 mb-3">
-          <label for="businessPhone" class="form-label"
-            >Facebook <span class="required">*</span></label
-          >
-          <input
-            type="tel"
-            class="form-control"
-            id="businessPhone"
-            placeholder="+1 (555) 123-4567"
-            formControlName="facebook"
-          />
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="businessWebsite" class="form-label">X</label>
+          <label for="facebook" class="form-label">Facebook</label>
           <input
             type="url"
             class="form-control"
-            id="businessWebsite"
-            placeholder="https://www.example.com"
+            id="facebook"
+            placeholder="Facebook URL"
+            formControlName="facebook"
+          />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="twitter" class="form-label">X (Twitter)</label>
+          <input
+            type="url"
+            class="form-control"
+            id="twitter"
+            placeholder="https://twitter.com/yourprofile"
             formControlName="twitter"
           />
         </div>
       </div>
 
-       <div class="row">
+      <div class="row">
         <div class="col-md-6 mb-3">
-          <label for="businessPhone" class="form-label"
-            >Instagram <span class="required">*</span></label
-          >
-          <input
-            type="tel"
-            class="form-control"
-            id="businessPhone"
-            placeholder="+1 (555) 123-4567"
-            formControlName="instagram"
-          />
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="businessWebsite" class="form-label">Linkedin</label>
+          <label for="instagram" class="form-label">Instagram</label>
           <input
             type="url"
             class="form-control"
-            id="businessWebsite"
-            placeholder="https://www.example.com"
+            id="instagram"
+            placeholder="Instagram URL"
+            formControlName="instagram"
+          />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="linkedin" class="form-label">LinkedIn</label>
+          <input
+            type="url"
+            class="form-control"
+            id="linkedin"
+            placeholder="https://linkedin.com/in/yourprofile"
             formControlName="linkedin"
           />
         </div>
@@ -302,8 +351,20 @@
           placeholder="Tell customers about your business, experience, and what makes you unique..."
           formControlName="business_description"
         ></textarea>
+        @if (basicInfoForm.get('business_description')?.touched &&
+        basicInfoForm.get('business_description')?.invalid) {
+        <div class="text-danger mt-1">
+          <small>Business description is required.</small>
+        </div>
+        }
       </div>
-      <button (click)="addBusinessInfo()" type="button" class="btn btn-add">
+
+      <button
+        (click)="addBusinessInfo()"
+        [disabled]="basicInfoForm.invalid"
+        type="button"
+        class="btn btn-add"
+      >
         <i class="fas fa-plus me-2"></i>Add Details
       </button>
     </form>
@@ -321,72 +382,34 @@
       }@else {
       <h2>Add Services</h2>
       }
-      <button class="btn btn-primary" (click)="toggleServiceForm()">
+      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
     @if(!showServiceForm){
     <div class="services-grid">
       <div class="service-card">
-        <div class="service-icon">
-          <i class="fas fa-shopping-cart"></i>
-        </div>
         <h5 class="service-name">Grocery Shopping</h5>
-        <p class="service-description">
-          Complete grocery shopping with your list, including organic options
-          and special dietary needs.
-        </p>
-        <div class="service-price">$25-$35/hour + cost of groceries</div>
+        <div class="service-price">$25-$35/hour</div>
       </div>
       <div class="service-card">
-        <div class="service-icon">
-          <i class="fas fa-truck"></i>
-        </div>
         <h5 class="service-name">Package Delivery</h5>
-        <p class="service-description">
-          Same-day pickup and delivery for packages, documents, and parcels.
-        </p>
-        <div class="service-price">$15-$45 per delivery</div>
+        <div class="service-description">$15-$45 per delivery</div>
       </div>
       <div class="service-card">
-        <div class="service-icon">
-          <i class="fas fa-gift"></i>
-        </div>
         <h5 class="service-name">Personal Shopping</h5>
-        <p class="service-description">
-          Gift shopping, clothing shopping, and returns/exchanges at any store.
-        </p>
         <div class="service-price">$35-$50/hour</div>
       </div>
       <div class="service-card">
-        <div class="service-icon">
-          <i class="fas fa-file-alt"></i>
-        </div>
         <h5 class="service-name">Administrative Tasks</h5>
-        <p class="service-description">
-          Post office runs, DMV services, banking errands, and document filing.
-        </p>
         <div class="service-price">$30-$40/hour</div>
       </div>
       <div class="service-card">
-        <div class="service-icon">
-          <i class="fas fa-prescription-bottle"></i>
-        </div>
         <h5 class="service-name">Pharmacy Runs</h5>
-        <p class="service-description">
-          Prescription pickup and delivery from any pharmacy with proper
-          authorization.
-        </p>
         <div class="service-price">$20-$30 per trip</div>
       </div>
       <div class="service-card">
-        <div class="service-icon">
-          <i class="fas fa-utensils"></i>
-        </div>
         <h5 class="service-name">Food Delivery</h5>
-        <p class="service-description">
-          Restaurant pickup and delivery from any establishment in the area.
-        </p>
         <div class="service-price">$15-$25 + meal cost</div>
       </div>
     </div>
@@ -395,13 +418,6 @@
     <div class="form-section">
       <div id="servicesList">
         <div class="service-item">
-          <button
-            type="button"
-            class="remove-btn"
-            onclick="removeService(this)"
-          >
-            <i class="fas fa-times"></i>
-          </button>
           <div class="row">
             <div class="col-md-6 mb-3">
               <label class="form-label"
@@ -417,24 +433,11 @@
             <div class="col-md-6 mb-3">
               <label class="form-label">Service Category</label>
               <select class="form-select">
-                <option value="">Select Category</option>
-                <option value="shopping">Shopping & Delivery</option>
-                <option value="cleaning">Cleaning</option>
-                <option value="moving">Moving & Packing</option>
-                <option value="admin">Administrative</option>
-                <option value="pet">Pet Services</option>
-                <option value="other">Other</option>
+                <option selected>Service Category</option>
+                @for(category of categories; track category.id){
+                  <option value="{{category.id}}">{{category.name}}</option>
+                }
               </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12 mb-3">
-              <label class="form-label">Service Description</label>
-              <textarea
-                class="form-control"
-                rows="2"
-                placeholder="Describe what this service includes..."
-              ></textarea>
             </div>
           </div>
           <div class="row">
@@ -471,7 +474,7 @@
       </div>
 
       <button type="button" class="btn btn-add">
-        <i class="fas fa-plus me-2"></i>Add Another Service
+        <i class="fas fa-plus me-2"></i>Add Service
       </button>
     </div>
     }
@@ -618,86 +621,6 @@
     </div>
   </div>
 
-  <!-- Portfolio/Gallery Section -->
-  <!-- <div class="profile-section">
-    <div
-      class="section-title"
-      style="display: flex; justify-content: space-between; align-items: center"
-    >
-      @if(!showServiceForm){
-      <h2>Our Work</h2>
-      }@else {
-      <h2>Portfolio Gallery</h2>
-      }
-      <button class="btn btn-primary" (click)="toggleServiceForm()">
-        <i class="fas fa-edit me-2"></i>Edit
-      </button>
-    </div>
-    @if(!showServiceForm){
-    <div class="gallery-grid">
-      <div class="gallery-item">
-        <img
-          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='16'%3EGrocery Shopping%3C/text%3E%3C/svg%3E"
-          alt="Grocery Shopping"
-        />
-        <div class="gallery-overlay">
-          <h6>Grocery Shopping</h6>
-          <p>Weekly shopping for families</p>
-        </div>
-      </div>
-      <div class="gallery-item">
-        <img
-          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='16'%3EPackage Delivery%3C/text%3E%3C/svg%3E"
-          alt="Package Delivery"
-        />
-        <div class="gallery-overlay">
-          <h6>Package Delivery</h6>
-          <p>Safe and timely deliveries</p>
-        </div>
-      </div>
-      <div class="gallery-item">
-        <img
-          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='16'%3EPersonal Shopping%3C/text%3E%3C/svg%3E"
-          alt="Personal Shopping"
-        />
-        <div class="gallery-overlay">
-          <h6>Personal Shopping</h6>
-          <p>Gift and personal shopping</p>
-        </div>
-      </div>
-      <div class="gallery-item">
-        <img
-          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='sans-serif' font-size='16'%3EFood Delivery%3C/text%3E%3C/svg%3E"
-          alt="Food Delivery"
-        />
-        <div class="gallery-overlay">
-          <h6>Food Delivery</h6>
-          <p>Restaurant pickup & delivery</p>
-        </div>
-      </div>
-    </div>
-    } @if(showServiceForm) {
-    <div class="form-section">
-      <div
-        class="gallery-upload-area"
-        onclick="document.getElementById('galleryInput').click()"
-      >
-        <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
-        <h5>Upload Portfolio Images</h5>
-        <p class="text-muted mb-0">Click to upload or drag and drop</p>
-        <small class="text-muted">PNG, JPG up to 10MB each</small>
-        <input
-          type="file"
-          id="galleryInput"
-          multiple
-          accept="image/*"
-          style="display: none"
-        />
-      </div>
-    </div>
-    }
-  </div> -->
-
   <!-- Availability Section -->
   <div class="profile-section">
     <div
@@ -710,7 +633,7 @@
       <h2>Location & Business Hours</h2>
 
       }
-      <button class="btn btn-primary" (click)="toggleServiceForm()">
+      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
@@ -863,10 +786,10 @@
                 <i class="fas fa-bolt me-2"></i>Emergency services available
                 24/7
               </li>
-               <li class="mb-2 text-warning">
+              <li class="mb-2 text-warning">
                 <i class="fas fa-bolt me-2"></i>Available on weekends
               </li>
-               <li class="mb-2 text-danger">
+              <li class="mb-2 text-danger">
                 <i class="fas fa-bolt me-2"></i>Available on holidays
               </li>
             </ul>
@@ -1044,80 +967,6 @@
     }
   </div>
 
-  <!-- Team Section -->
-  <!-- <div class="profile-section">
-    <div
-      class="section-title"
-      style="display: flex; justify-content: space-between; align-items: center"
-    >
-      @if(!showServiceForm){
-      <h2>Our Team</h2>
-      }@else {
-      <h2>Update Team Members</h2>
-      }
-      <button class="btn btn-primary" (click)="toggleServiceForm()">
-        <i class="fas fa-edit me-2"></i>Edit
-      </button>
-    </div>
-    @if(!showServiceForm){
-    <div class="team-grid">
-      <div class="team-member">
-        <div class="team-avatar">JW</div>
-        <h6 class="team-name">John Williams</h6>
-        <p class="team-role">Founder & Lead Errand Runner</p>
-      </div>
-      <div class="team-member">
-        <div class="team-avatar">SM</div>
-        <h6 class="team-name">Sarah Martinez</h6>
-        <p class="team-role">Senior Errand Specialist</p>
-      </div>
-      <div class="team-member">
-        <div class="team-avatar">TC</div>
-        <h6 class="team-name">Tom Chen</h6>
-        <p class="team-role">Delivery Specialist</p>
-      </div>
-      <div class="team-member">
-        <div class="team-avatar">ED</div>
-        <h6 class="team-name">Emma Davis</h6>
-        <p class="team-role">Personal Shopping Expert</p>
-      </div>
-    </div>
-    }@if(showServiceForm){
-    <div class="form-section">
-      <div class="row" id="teamMembersList">
-        <div class="col-md-4 mb-3">
-          <div class="team-member-card">
-            <button
-              type="button"
-              class="remove-btn"
-              onclick="removeTeamMember(this)"
-            >
-              <i class="fas fa-times"></i>
-            </button>
-            <div
-              class="team-avatar-upload"
-              onclick="this.querySelector('input').click()"
-            >
-              <span>JW</span>
-              <input type="file" accept="image/*" style="display: none" />
-            </div>
-            <input
-              type="text"
-              class="form-control mb-2"
-              placeholder="Member Name"
-            />
-            <input type="text" class="form-control" placeholder="Role/Title" />
-          </div>
-        </div>
-      </div>
-
-      <button type="button" class="btn btn-add" onclick="addTeamMember()">
-        <i class="fas fa-plus me-2"></i>Add Team Member
-      </button>
-    </div>
-    }
-  </div> -->
-
   <!-- Service Area Section -->
   <div class="profile-section">
     <div
@@ -1129,7 +978,7 @@
       }@else {
       <h2>Service Area</h2>
       }
-      <button class="btn btn-primary" (click)="toggleServiceForm()">
+      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
@@ -1247,7 +1096,7 @@
       }@else {
       <h2>Frequently Asked Questions</h2>
       }
-      <button class="btn btn-primary" (click)="toggleServiceForm()">
+      <button class="btn btn-primary" (click)="toggleServiceForm()" *ngIf="is_logged_in_user">
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
@@ -1275,67 +1124,6 @@
         </div>
         }
       </div>
-
-      <!-- @for (faq of faqs; track faq.question; let i = $index) {
-      <div class="faq-item">
-        <div
-          class="faq-question"
-          (click)="toggleFAQ(i)"
-          [class.active]="faq.isOpen"
-        >
-          <span>{{ faq.question }}</span>
-          <i
-            class="fas"
-            [ngClass]="faq.isOpen ? 'fa-chevron-up' : 'fa-chevron-down'"
-          ></i>
-        </div>
-        @if (faq.isOpen) {
-        <div class="faq-answer">
-          <p>{{ faq.answer }}</p>
-        </div>
-        }
-      </div>
-      } -->
-
-      <!-- <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <span>What payment methods do you accept?</span>
-          <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="faq-answer">
-          <p>
-            We accept all major credit cards, debit cards, PayPal, and payments
-            through the ErrandHub platform. For regular clients, we also offer
-            monthly billing options.
-          </p>
-        </div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <span>Are your staff background checked?</span>
-          <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="faq-answer">
-          <p>
-            Yes, all our team members undergo thorough background checks,
-            including criminal history and reference verification. We are also
-            fully insured and bonded for your peace of mind.
-          </p>
-        </div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFAQ(this)">
-          <span>Can I request the same errand runner?</span>
-          <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="faq-answer">
-          <p>
-            Absolutely! Many of our clients prefer working with the same team
-            member. You can request your preferred errand runner when booking,
-            and we'll do our best to accommodate based on availability.
-          </p>
-        </div>
-      </div> -->
     </div>
     }@if(showServiceForm){
     <!-- FAQ Section -->

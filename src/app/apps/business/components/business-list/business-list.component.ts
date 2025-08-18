@@ -9,6 +9,7 @@ import { BusinessService } from '../../services/business.service';
 export class BusinessListComponent implements OnInit{
 
   business_list:any;
+  display_filter: boolean = true;
 
   constructor(
     private _businessService:BusinessService
@@ -23,7 +24,10 @@ export class BusinessListComponent implements OnInit{
       console.log(res);
       this.business_list = res;
     })
+  }
 
+  displayFilters(){
+    this.display_filter = !this.display_filter
   }
 
 }
