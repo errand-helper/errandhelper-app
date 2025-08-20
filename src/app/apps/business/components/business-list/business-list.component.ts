@@ -22,7 +22,7 @@ export class BusinessListComponent implements OnInit{
   getBusinessList(){
     this._businessService.getBusinessList().subscribe((res:any)=>{
       console.log(res);
-      this.business_list = res;
+      this.business_list = res.results;
     })
   }
 

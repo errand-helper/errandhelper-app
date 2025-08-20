@@ -8,6 +8,7 @@ import { BusinessDetailComponent } from './components/business-detail/business-d
 import { BDashboardComponent } from './components/b-dashboard/b-dashboard.component';
 import { BProfileComponent } from './components/b-profile/b-profile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbAlertModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
+    NgbPaginationModule, NgbAlertModule
 
   ]
 })

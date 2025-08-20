@@ -92,10 +92,7 @@
       }@else {
       <h2>Add Basic Information</h2>
       }
-      <button
-        class="btn btn-primary"
-        (click)="toggleBasicInfoForm()"
-      >
+      <button class="btn btn-primary" (click)="toggleBasicInfoForm()">
         <i class="fas fa-edit me-2"></i
         ><span>{{ business_details ? "Edit" : "Add" }}</span>
       </button>
@@ -420,43 +417,70 @@
       }@else {
       <h2>Add Services</h2>
       }
-      <button
-        class="btn btn-primary"
-        (click)="toggleServiceForm()"
-      >
+      <button class="btn btn-primary" (click)="toggleServiceForm()">
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
     @if(!showServiceForm){
     <div class="services-grid">
+      @if(services_list?.length > 0){ @for(service of services_list; track
+      service.id){
       <div class="service-card">
-        <h5 class="service-name">Grocery Shopping</h5>
-        <div class="service-price">$25-$35/hour</div>
+        <h5 class="service-name">{{ service.name | titlecase }}</h5>
+        <div class="service-price">
+          Ksh.{{ service.price_from }}-Ksh.{{ service.price_to }}/{{
+            service.price_type
+          }}
+        </div>
+        <div>
+          <button class="btn btn-danger" (click)="deleteService(service.id)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-x-square-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"
+              />
+            </svg>
+          </button>&nbsp;&nbsp;
+          <button class="btn btn-primary">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-pencil-square"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+              />
+              <path
+                fill-rule="evenodd"
+                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
-      <div class="service-card">
-        <h5 class="service-name">Package Delivery</h5>
-        <div class="service-description">$15-$45 per delivery</div>
-      </div>
-      <div class="service-card">
-        <h5 class="service-name">Personal Shopping</h5>
-        <div class="service-price">$35-$50/hour</div>
-      </div>
-      <div class="service-card">
-        <h5 class="service-name">Administrative Tasks</h5>
-        <div class="service-price">$30-$40/hour</div>
-      </div>
-      <div class="service-card">
-        <h5 class="service-name">Pharmacy Runs</h5>
-        <div class="service-price">$20-$30 per trip</div>
-      </div>
-      <div class="service-card">
-        <h5 class="service-name">Food Delivery</h5>
-        <div class="service-price">$15-$25 + meal cost</div>
-      </div>
+      } }
+    </div>
+    <div class="d-flex justify-content-between p-2" style="margin-left: 1rem">
+      <ngb-pagination
+        [collectionSize]="totalItems()"
+        [page]="page()"
+        [pageSize]="pageSize()"
+        (pageChange)="onPageChange($event)"
+      >
+      </ngb-pagination>
     </div>
     } @if(showServiceForm) {
     <!-- Services Section -->
-    <div class="form-section">
+    <form class="form-section" [formGroup]="serviceInfoForm">
       <div id="servicesList">
         <div class="service-item">
           <div class="row">
@@ -468,12 +492,12 @@
                 type="text"
                 class="form-control"
                 placeholder="e.g., Grocery Shopping"
-                required
+                formControlName="name"
               />
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label">Service Category</label>
-              <select class="form-select">
+              <select class="form-select" formControlName="category">
                 <option selected>Service Category</option>
                 @for(category of categories; track category.id){
                 <option value="{{ category.id }}">{{ category.name }}</option>
@@ -484,10 +508,11 @@
           <div class="row">
             <div class="col-md-4 mb-3">
               <label class="form-label">Pricing Type</label>
-              <select class="form-select">
+              <select class="form-select" formControlName="price_type">
                 <option value="hourly">Hourly Rate</option>
                 <option value="fixed">Fixed Price</option>
                 <option value="quote">By Quote</option>
+                <option value="negotiable">Negotiable</option>
               </select>
             </div>
             <div class="col-md-4 mb-3">
@@ -498,6 +523,7 @@
                 placeholder="25"
                 min="0"
                 step="0.01"
+                formControlName="price_from"
               />
             </div>
             <div class="col-md-4 mb-3">
@@ -508,16 +534,17 @@
                 placeholder="50"
                 min="0"
                 step="0.01"
+                formControlName="price_to"
               />
             </div>
           </div>
         </div>
       </div>
 
-      <button type="button" class="btn btn-add">
+      <button type="button" class="btn btn-add" (click)="addService()">
         <i class="fas fa-plus me-2"></i>Add Service
       </button>
-    </div>
+    </form>
     }
   </div>
 
@@ -674,10 +701,7 @@
       <h2>Location & Business Hours</h2>
 
       }
-      <button
-        class="btn btn-primary"
-        (click)="toggleServiceForm()"
-      >
+      <button class="btn btn-primary" (click)="toggleServiceForm()">
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
@@ -1022,10 +1046,7 @@
       }@else {
       <h2>Service Area</h2>
       }
-      <button
-        class="btn btn-primary"
-        (click)="toggleServiceForm()"
-      >
+      <button class="btn btn-primary" (click)="toggleServiceForm()">
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
@@ -1143,10 +1164,7 @@
       }@else {
       <h2>Frequently Asked Questions</h2>
       }
-      <button
-        class="btn btn-primary"
-        (click)="toggleServiceForm()"
-      >
+      <button class="btn btn-primary" (click)="toggleServiceForm()">
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
@@ -1212,3 +1230,6 @@
     }
   </div>
 </div>
+
+
+

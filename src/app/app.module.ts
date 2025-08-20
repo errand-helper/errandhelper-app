@@ -9,7 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { HomepageComponent } from './apps/components/homepage/homepage.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule, NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { DecimalPipe } from '@angular/common';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 // import { MessagesComponent } from './apps/components/messages/messages.component';
@@ -29,7 +29,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
     NgbModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    NgbPaginationModule, NgbAlertModule
   ],
   providers: [
     DecimalPipe,

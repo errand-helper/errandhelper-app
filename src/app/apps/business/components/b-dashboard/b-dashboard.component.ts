@@ -25,8 +25,8 @@ export class BDashboardComponent {
 
   getBusinessList(){
     this._businessService.getLoggedInUserBusinessList().subscribe((res:any)=>{
-      console.log(res);
-      this.business_id = res[0].id;
+      console.log('res',res);
+      this.business_id = res.results[0].id;
       console.log(this.business_id);
 
     })

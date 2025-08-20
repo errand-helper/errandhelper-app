@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -20,6 +20,11 @@ export class BProfileComponent {
   logged_in_user!: any;
   // is_logged_in_user = false;
   my_business_id: any;
+  services_list: any;
+
+  page = signal(1);
+  pageSize = signal(10);
+  totalItems = signal(0);
 
   constructor(
     private _businessService: BusinessService,
@@ -48,7 +53,13 @@ export class BProfileComponent {
 
     this.logged_in_user = JSON.parse(localStorage.getItem('user_id') || 'null');
 
-    this.serviceInfoForm = this.fb.group({});
+    this.serviceInfoForm = this.fb.group({
+      name: ['', Validators.required],
+      category: ['', Validators.required],
+      price_type: ['', Validators.required],
+      price_from: ['', Validators.required],
+      price_to: ['', Validators.required],
+    });
 
     this.basicInfoForm
       .get('business_name')
@@ -66,11 +77,50 @@ export class BProfileComponent {
       });
     this.getBusinessInfo();
     this.getCategories();
+    this.getServices();
+  }
+
+  addService() {
+    this._businessService.addService(this.serviceInfoForm.value).subscribe(
+      (res: any) => {
+        this.toastr.success('Service added successfully');
+        this.serviceInfoForm.reset();
+        this.getServices();
+      },
+      (err) => {
+        this.toastr.error('Failed to add Service.');
+      }
+    );
+  }
+
+  getServices() {
+    // Example: fetch first page, 10 items per page, no search, no category filter
+    this._businessService
+      .getServices(this.page(), this.pageSize())
+      .subscribe((res: any) => {
+        this.services_list = res.results;
+        // Update total items for pagination
+        this.totalItems.set(res.count || res.total || 0);
+        console.log('getServices', this.services_list);
+
+        // this.categories = res;
+      });
+  }
+
+  deleteService(id:string){
+    this._businessService.deleteService(id).subscribe((res:any)=>{
+      console.log(res);
+    })
+  }
+
+  onPageChange(newPage: number) {
+    this.page.set(newPage);
+    this.getServices();
   }
 
   getCategories() {
     this._businessService.getCategories().subscribe((res: any) => {
-      console.log(res);
+      // console.log(res);
       this.categories = res;
     });
   }
@@ -79,8 +129,9 @@ export class BProfileComponent {
     this._businessService
       .getBusinessDetail(this.businessId)
       .subscribe((res: any) => {
-        console.log(res);
         this.business_details = res;
+        console.log('business_details', this.business_details, res);
+
         if (this.business_details) {
           // ✅ Prefill form with fetched data
           this.basicInfoForm.patchValue({
@@ -129,16 +180,33 @@ export class BProfileComponent {
       }
     });
 
-    this._businessService.addBusiness(formData).subscribe({
-      next: (res) => {
-        this.toastr.success('Business information added successfully!');
-        // this.route.navigate(['/dashboard']); // adjust route as needed
-      },
-      error: (err) => {
-        this.toastr.error('Failed to add business information.');
-        console.error(err);
-      },
-    });
+    const method = this.business_details ? 'updateBusinessInfo' : 'addBusiness';
+
+    if (method === 'updateBusinessInfo') {
+      this._businessService
+        .updateBusinessInfo(formData, this.businessId)
+        .subscribe({
+          next: (res) => {
+            this.toastr.success('Business information updated successfully!');
+            // this.route.navigate(['/dashboard']); // adjust route as needed
+          },
+          error: (err) => {
+            this.toastr.error('Failed to update business information.');
+            console.error(err);
+          },
+        });
+    } else {
+      this._businessService.addBusiness(formData).subscribe({
+        next: (res) => {
+          this.toastr.success('Business information added successfully!');
+          // this.route.navigate(['/dashboard']); // adjust route as needed
+        },
+        error: (err) => {
+          this.toastr.error('Failed to add business information.');
+          console.error(err);
+        },
+      });
+    }
   }
 
   onFileSelected(event: Event) {
