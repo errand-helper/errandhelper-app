@@ -55,6 +55,12 @@ export class BusinessService {
     });
   }
 
+  updateService(data: FormData,id:string) {
+    return this.http.put(`${this.baseUrl}/business/services/${id}/`, data, {
+      headers: headers,
+    });
+  }
+
   getServices(
     page: number=1,
     pageSize: number=10,

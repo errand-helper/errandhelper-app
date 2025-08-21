@@ -9,6 +9,7 @@ import { BDashboardComponent } from './components/b-dashboard/b-dashboard.compon
 import { BProfileComponent } from './components/b-profile/b-profile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbAlertModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { UpdateServiceComponent } from './components/modals/update-service/update-service.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { NgbAlertModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap'
     BusinessListComponent,
     BusinessDetailComponent,
     BDashboardComponent,
-    BProfileComponent
+    BProfileComponent,
+    UpdateServiceComponent
   ],
   imports: [
     CommonModule,

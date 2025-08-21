@@ -1,8 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BusinessService } from '../../services/business.service';
+import { ConfirmationServiceDialogService } from '../../../sharedmodule/services/confirmation-service-dialog.service';
+import { UpdateServiceComponent } from '../modals/update-service/update-service.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-b-profile',
@@ -18,8 +21,10 @@ export class BProfileComponent {
   business_details: any;
   categories: any;
   logged_in_user!: any;
+  private modalService = inject(NgbModal);
+
   // is_logged_in_user = false;
-  my_business_id: any;
+  // my_business_id: any;
   services_list: any;
 
   page = signal(1);
@@ -30,7 +35,8 @@ export class BProfileComponent {
     private _businessService: BusinessService,
     private fb: FormBuilder,
     private toastr: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private confirmationDialogService: ConfirmationServiceDialogService,
   ) {}
 
   ngOnInit() {
@@ -107,10 +113,46 @@ export class BProfileComponent {
       });
   }
 
-  deleteService(id:string){
-    this._businessService.deleteService(id).subscribe((res:any)=>{
-      console.log(res);
-    })
+  onServiceUpdated() {
+  this.getServices(); 
+}
+
+  open(content: TemplateRef<any>) {
+      this.modalService
+        .open(content, { ariaLabelledBy: 'modal-basic-title' })
+        .result.then(
+          (result) => {
+            console.log(result);
+          },
+          (reason) => {
+            console.log(reason);
+          }
+        );
+    }
+
+
+
+  deleteService(id: string) {
+    this.confirmationDialogService
+      .confirm('Please confirm', 'Do you really want to delete this service?')
+      .then((confirmed) => {
+        if (confirmed) {
+          this._businessService.deleteService(id).subscribe({
+            next: (res: any) => {
+              // console.log(res);
+              this.toastr.success('Service deleted successfully!');
+              this.getServices();
+            },
+            error: (err) => {
+              // console.error(err);
+              this.toastr.error('Failed to delete service. Please try again.');
+            },
+          });
+        }
+      })
+      .catch(() => {
+        console.log('User dismissed the dialog');
+      });
   }
 
   onPageChange(newPage: number) {

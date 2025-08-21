@@ -1,0 +1,64 @@
+<form class="form-section" [formGroup]="serviceInfoForm">
+  <div id="servicesList">
+    <div class="service-item">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label"
+            >Service Name <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            placeholder="e.g., Grocery Shopping"
+            formControlName="name"
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Service Category</label>
+          <select class="form-select" formControlName="category">
+            <option selected>Service Category</option>
+            @for(category of categories; track category.id){
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Pricing Type</label>
+          <select class="form-select" formControlName="price_type">
+            <option value="hourly">Hourly Rate</option>
+            <option value="fixed">Fixed Price</option>
+            <option value="quote">By Quote</option>
+            <option value="negotiable">Negotiable</option>
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Price From ($)</label>
+          <input
+            type="number"
+            class="form-control"
+            placeholder="25"
+            min="0"
+            step="0.01"
+            formControlName="price_from"
+          />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Price To ($)</label>
+          <input
+            type="number"
+            class="form-control"
+            placeholder="50"
+            min="0"
+            step="0.01"
+            formControlName="price_to"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="updateService()">Save</button>
+  </div>
+</form>
