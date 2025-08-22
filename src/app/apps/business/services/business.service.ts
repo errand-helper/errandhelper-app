@@ -49,22 +49,38 @@ export class BusinessService {
     });
   }
 
+  getFAQS() {
+    return this.http.get(`${this.baseUrl}business/frequently-asked-question/`, {
+      headers: headers,
+    });
+  }
+
+  addFAQS(data: FormData) {
+    return this.http.post(
+      `${this.baseUrl}/business/frequently-asked-question/`,
+      data,
+      {
+        headers: headers,
+      }
+    );
+  }
+
   addService(data: FormData) {
     return this.http.post(`${this.baseUrl}/business/services/`, data, {
       headers: headers,
     });
   }
 
-  updateService(data: FormData,id:string) {
+  updateService(data: FormData, id: string) {
     return this.http.put(`${this.baseUrl}/business/services/${id}/`, data, {
       headers: headers,
     });
   }
 
   getServices(
-    page: number=1,
-    pageSize: number=10,
-    search: string='',
+    page: number = 1,
+    pageSize: number = 10,
+    search: string = '',
     category?: number
   ) {
     const params: any = {
@@ -78,10 +94,36 @@ export class BusinessService {
       params.category = category;
     }
 
-    return this.http.get(`${this.baseUrl}business/services/`, { headers, params });
+    return this.http.get(`${this.baseUrl}business/services/`, {
+      headers,
+      params,
+    });
   }
 
-  deleteService(id:string){
+  getServiceAreas(
+    page: number = 1,
+    pageSize: number = 10,
+    search: string = ''
+  ) {
+    const params: any = {
+      page: page,
+      page_size: pageSize,
+      search: search,
+    };
+
+    return this.http.get(`${this.baseUrl}business/service-areas/`, {
+      headers,
+      params,
+    });
+  }
+
+  addServiceArea(data: any) {
+    return this.http.post(`${this.baseUrl}/business/service-areas/`, data, {
+      headers: headers,
+    });
+  }
+
+  deleteService(id: string) {
     return this.http.delete(`${this.baseUrl}business/services/${id}`, {
       headers: headers,
     });

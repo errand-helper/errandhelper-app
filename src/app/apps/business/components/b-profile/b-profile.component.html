@@ -449,7 +449,9 @@
           >&nbsp;&nbsp;
           <ng-template #content let-modal>
             <div class="modal-header">
-              <h4 class="modal-title" id="modal-basic-title">Update {{service.name}}</h4>
+              <h4 class="modal-title" id="modal-basic-title">
+                Update {{ service.name }}
+              </h4>
               <button
                 type="button"
                 class="btn-close"
@@ -458,7 +460,15 @@
               ></button>
             </div>
             <div class="modal-body">
-              <app-update-service  (serviceUpdated)="onServiceUpdated()" [service_name]="service.name" [category]="service.category" [price_type]="service.price_type" [price_from]="service.price_from" [price_to]="service.price_to" [service_id]="service.id"></app-update-service>
+              <app-update-service
+                (serviceUpdated)="onServiceUpdated()"
+                [service_name]="service.name"
+                [category]="service.category"
+                [price_type]="service.price_type"
+                [price_from]="service.price_from"
+                [price_to]="service.price_to"
+                [service_id]="service.id"
+              ></app-update-service>
             </div>
           </ng-template>
           <button class="btn btn-primary" (click)="open(content)">
@@ -485,10 +495,10 @@
     </div>
     <div class="d-flex justify-content-between p-2" style="margin-left: 1rem">
       <ngb-pagination
-        [collectionSize]="totalItems()"
+        [collectionSize]="totalServiceItems()"
         [page]="page()"
         [pageSize]="pageSize()"
-        (pageChange)="onPageChange($event)"
+        (pageChange)="onServiceListPageChange($event)"
       >
       </ngb-pagination>
     </div>
@@ -716,7 +726,7 @@
 
       }
       <button class="btn btn-primary" (click)="toggleServiceForm()">
-        <i class="fas fa-edit me-2"></i>Edit
+        <i class="fas fa-edit me-2"></i>Add Availability
       </button>
     </div>
     @if(!showServiceForm){
@@ -883,72 +893,6 @@
     } @if(showServiceForm) {
     <!-- Location & Hours Section -->
     <div class="form-section">
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="businessAddress" class="form-label"
-            >Business Address <span class="required">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="businessAddress"
-            placeholder="123 Main Street"
-            required
-          />
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="businessCity" class="form-label"
-            >City <span class="required">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="businessCity"
-            placeholder="New York"
-            required
-          />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4 mb-3">
-          <label for="businessState" class="form-label"
-            >State <span class="required">*</span></label
-          >
-          <select class="form-select" id="businessState" required>
-            <option value="">Select State</option>
-            <option value="NY">New York</option>
-            <option value="CA">California</option>
-            <option value="TX">Texas</option>
-            <!-- Add more states -->
-          </select>
-        </div>
-        <div class="col-md-4 mb-3">
-          <label for="businessZip" class="form-label"
-            >ZIP Code <span class="required">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="businessZip"
-            placeholder="10001"
-            required
-          />
-        </div>
-        <div class="col-md-4 mb-3">
-          <label for="serviceRadius" class="form-label"
-            >Service Radius (miles)</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            id="serviceRadius"
-            placeholder="10"
-            min="1"
-            max="100"
-          />
-        </div>
-      </div>
-      <br />
       <h5 class="mb-3">
         <strong>Business Hours</strong>
       </h5>
@@ -1055,115 +999,219 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      @if(!showServiceForm){
+      @if(!showServiceAreaForm){
       <h2>Service Area</h2>
       }@else {
       <h2>Service Area</h2>
       }
-      <button class="btn btn-primary" (click)="toggleServiceForm()">
-        <i class="fas fa-edit me-2"></i>Edit
+      <button class="btn btn-primary" (click)="toggleServiceAreaForm()">
+        <i class="fas fa-edit me-2"></i>Add Service Area
       </button>
     </div>
-    @if(!showServiceForm){
+    @if(!showServiceAreaForm){
     <div class="map-container">
       <i class="fas fa-map-marked-alt fa-3x"></i>
       <p>Interactive Map Coming Soon</p>
     </div>
-    <h5 class="mb-3">We Serve These Areas:</h5>
+    <!-- <h5 class="mb-3">We Serve These Areas:</h5> -->
     <div class="coverage-list">
+      @if(service_areas.length > 0){ @for(service_area of service_areas; track
+      service_area.id){
       <div class="coverage-item">
         <i class="fas fa-check-circle"></i>
-        <span>Manhattan</span>
+        <span>{{ service_area.area_name }}</span>
       </div>
-      <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Brooklyn</span>
-      </div>
-      <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Queens</span>
-      </div>
-      <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Upper East Side</span>
-      </div>
-      <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Upper West Side</span>
-      </div>
-      <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Midtown</span>
-      </div>
-      <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Financial District</span>
-      </div>
-      <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Williamsburg</span>
-      </div>
+      } }
     </div>
-    } @if(showServiceForm) {
+    <div class="d-flex justify-content-between p-2" style="margin-left: 1rem">
+      <ngb-pagination
+        [collectionSize]="totalServiceAreaItems()"
+        [page]="page()"
+        [pageSize]="pageSize()"
+        (pageChange)="onServiceAreaPageChange($event)"
+      >
+      </ngb-pagination>
+    </div>
+    } @if(showServiceAreaForm) {
     <!-- Service Area Section -->
     <div class="form-section">
-      <div class="mb-3">
-        <label class="form-label">Areas You Serve</label>
-        <textarea
-          class="form-control"
-          rows="3"
-          placeholder="Enter the neighborhoods, cities, or areas you provide service to (one per line)"
-        ></textarea>
-        <div class="info-text">List all areas where you provide services</div>
+      <div class="row">
+        <!-- Areas You Serve -->
+        <div class="col-md-3 mb-3">
+          <label for="businessAddress" class="form-label"
+            >Areas You Serve <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessAddress"
+            [(ngModel)]="area"
+            placeholder="e.g. Nairobi CBD"
+            required
+            name="area"
+          />
+        </div>
+
+        <!-- Physical Address -->
+        <div class="col-md-3 mb-3">
+          <label for="businessCity" class="form-label">Physical Address</label>
+          <input
+            type="text"
+            class="form-control"
+            id="businessCity"
+            [(ngModel)]="physicalAddress"
+            placeholder="e.g. Westlands"
+            required
+            name="physicalAddress"
+          />
+        </div>
+
+        <!-- Service Radius -->
+        <div class="col-md-3 mb-3">
+          <label for="serviceRadius" class="form-label"
+            >Service Radius (km)</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="serviceRadius"
+            [(ngModel)]="radius"
+            placeholder="e.g. 10"
+            required
+            name="radius"
+          />
+        </div>
+
+        <!-- Add Button -->
+        <div class="col-md-3 mb-4 d-flex align-items-end">
+          <button
+            class="btn btn-success"
+            (click)="addServiceArea()"
+            [disabled]="!area || !physicalAddress || !radius"
+          >
+            Add Area
+          </button>
+        </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-check mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="serveManhattan"
-            />
-            <label class="form-check-label" for="serveManhattan"
-              >Manhattan</label
-            >
-          </div>
-          <div class="form-check mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="serveBrooklyn"
-            />
-            <label class="form-check-label" for="serveBrooklyn">Brooklyn</label>
-          </div>
-          <div class="form-check mb-2">
-            <input class="form-check-input" type="checkbox" id="serveQueens" />
-            <label class="form-check-label" for="serveQueens">Queens</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-check mb-2">
-            <input class="form-check-input" type="checkbox" id="serveBronx" />
-            <label class="form-check-label" for="serveBronx">Bronx</label>
-          </div>
-          <div class="form-check mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="serveStatenIsland"
-            />
-            <label class="form-check-label" for="serveStatenIsland"
-              >Staten Island</label
-            >
-          </div>
-          <div class="form-check mb-2">
-            <input class="form-check-input" type="checkbox" id="serveOther" />
-            <label class="form-check-label" for="serveOther">Other Areas</label>
-          </div>
+      <!-- Table for displaying added service areas -->
+      <div class="row mt-4" *ngIf="serviceAreas.length > 0">
+        <div class="col-md-10">
+          <table class="table table-bordered table-hover">
+            <thead class="table-primary">
+              <tr>
+                <th>#</th>
+                <th>Area</th>
+                <th>Physical Address</th>
+                <th>Service Radius (km)</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let service of serviceAreas; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ service.area_name }}</td>
+                <td>{{ service.physical_address }}</td>
+                <td>{{ service.service_radius }}</td>
+                <td class="text-center">
+                  <button
+                    class="btn btn-sm btn-primary me-2"
+                    (click)="editServiceArea(i)"
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-danger"
+                    (click)="removeServiceArea(i)"
+                  >
+                    <i class="bi bi-x-square-fill"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-add" (click)="submitServiceArea()">
+            <i class="fas fa-plus me-2"></i>Save
+          </button>
         </div>
       </div>
     </div>
+
+    <!-- <div class="form-section">
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label for="businessAddress" class="form-label"
+            >Areas You Serve <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessAddress"
+            placeholder="123 Main Street"
+            required
+          />
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="businessCity" class="form-label">Physical Address</label>
+          <input
+            type="text"
+            class="form-control"
+            id="businessCity"
+            placeholder="New York"
+            required
+          />
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="businessCity" class="form-label"
+            >Service Radius (km)</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessCity"
+            placeholder="New York"
+            required
+          />
+        </div>
+        <div class="col-md-3 mb-3">
+          <br />
+          <button class="btn btn-danger">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-x-square-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"
+              />
+            </svg></button
+          >&nbsp;
+          <button class="btn btn-primary">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-pencil-square"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+              />
+              <path
+                fill-rule="evenodd"
+                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="row">
+      </div>
+    </div> -->
     }
   </div>
 
@@ -1173,16 +1221,16 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      @if(!showServiceForm){
+      @if(!showFrequentlyAskedQuestionsForm){
       <h2>Frequently Asked Questions</h2>
       }@else {
       <h2>Frequently Asked Questions</h2>
       }
-      <button class="btn btn-primary" (click)="toggleServiceForm()">
+      <button class="btn btn-primary" (click)="toggleFrequentlyAskedQuestionsForm()">
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>
-    @if(!showServiceForm){
+    @if(!showFrequentlyAskedQuestionsForm){
     <div class="faq-list">
       <div class="faq-list">
         @for (faq of faqs; track faq.question; let i = $index) {
@@ -1207,23 +1255,24 @@
         }
       </div>
     </div>
-    }@if(showServiceForm){
+    }@if(showFrequentlyAskedQuestionsForm){
     <!-- FAQ Section -->
-    <div class="form-section">
+    <form class="form-section" [formGroup]="frequentlyAskedQuestionsForm">
       <div id="faqList">
         <div
           class="faq-item"
           style="background-color: var(--light-gray); padding: 20px"
         >
-          <button type="button" class="remove-btn" onclick="removeFAQ(this)">
+          <!-- <button type="button" class="remove-btn" onclick="removeFAQ(this)">
             <i class="fas fa-times"></i>
-          </button>
+          </button> -->
           <div class="mb-3">
             <label class="form-label">Question</label>
             <input
               type="text"
               class="form-control"
               placeholder="e.g., How quickly can you complete an errand?"
+              formControlName="question"
             />
           </div>
           <div class="mb-3">
@@ -1232,15 +1281,16 @@
               class="form-control"
               rows="2"
               placeholder="Provide a detailed answer..."
+              formControlName="answer"
             ></textarea>
           </div>
         </div>
       </div>
       <br />
-      <button type="button" class="btn btn-add" onclick="addFAQ()">
+      <button type="button" class="btn btn-add" (click)="addFAQ()">
         <i class="fas fa-plus me-2"></i>Add FAQ
       </button>
-    </div>
+    </form>
     }
   </div>
 </div>

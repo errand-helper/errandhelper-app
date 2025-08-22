@@ -15,6 +15,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class BProfileComponent {
   basicInfoForm!: FormGroup;
   serviceInfoForm!: FormGroup;
+  frequentlyAskedQuestionsForm!: FormGroup;
+
   logoPreviewUrl: string | ArrayBuffer | null = null;
   logoInitials: string = 'BN';
   businessId!: string;
@@ -23,20 +25,30 @@ export class BProfileComponent {
   logged_in_user!: any;
   private modalService = inject(NgbModal);
 
+  area: string = '';
+  physicalAddress: string = '';
+  radius: number | null = null;
+
+  serviceAreas: any[] = [];
+  editIndex: number | null = null;
+  service_areas: any[] = [];
+
   // is_logged_in_user = false;
   // my_business_id: any;
   services_list: any;
 
   page = signal(1);
   pageSize = signal(10);
-  totalItems = signal(0);
+  totalServiceItems = signal(0);
+  totalServiceAreaItems = signal(0);
+   faqs:any[] = [];
 
   constructor(
     private _businessService: BusinessService,
     private fb: FormBuilder,
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private confirmationDialogService: ConfirmationServiceDialogService,
+    private confirmationDialogService: ConfirmationServiceDialogService
   ) {}
 
   ngOnInit() {
@@ -67,6 +79,11 @@ export class BProfileComponent {
       price_to: ['', Validators.required],
     });
 
+    this.frequentlyAskedQuestionsForm = this.fb.group({
+      question: ['', Validators.required],
+      answer: ['', Validators.required],
+    })
+
     this.basicInfoForm
       .get('business_name')
       ?.valueChanges.subscribe((name: string) => {
@@ -84,6 +101,9 @@ export class BProfileComponent {
     this.getBusinessInfo();
     this.getCategories();
     this.getServices();
+
+    this.getServiceAreas();
+    this.getFAQS()
   }
 
   addService() {
@@ -106,7 +126,7 @@ export class BProfileComponent {
       .subscribe((res: any) => {
         this.services_list = res.results;
         // Update total items for pagination
-        this.totalItems.set(res.count || res.total || 0);
+        this.totalServiceItems.set(res.count || res.total || 0);
         console.log('getServices', this.services_list);
 
         // this.categories = res;
@@ -114,23 +134,77 @@ export class BProfileComponent {
   }
 
   onServiceUpdated() {
-  this.getServices(); 
-}
+    this.getServices();
+  }
 
   open(content: TemplateRef<any>) {
-      this.modalService
-        .open(content, { ariaLabelledBy: 'modal-basic-title' })
-        .result.then(
-          (result) => {
-            console.log(result);
-          },
-          (reason) => {
-            console.log(reason);
-          }
-        );
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          console.log(result);
+        },
+        (reason) => {
+          console.log(reason);
+        }
+      );
+  }
+
+  // Add new service area or update if editing
+  addServiceArea() {
+    if (this.editIndex !== null) {
+      this.serviceAreas[this.editIndex] = {
+        area_name: this.area,
+        physical_address: this.physicalAddress,
+        service_radius: this.radius,
+        latitude: '',
+        longitude: '',
+      };
+      this.editIndex = null;
+    } else {
+      this.serviceAreas.push({
+        area_name: this.area,
+        physical_address: this.physicalAddress,
+        service_radius: this.radius,
+        latitude: '',
+        longitude: '',
+      });
     }
 
+    this.resetFields();
+  }
 
+  // Edit a service area
+  editServiceArea(index: number) {
+    const service = this.serviceAreas[index];
+    this.area = service.area;
+    this.physicalAddress = service.physicalAddress;
+    this.radius = service.radius;
+    this.editIndex = index;
+  }
+
+  // Remove a service area
+  removeServiceArea(index: number) {
+    this.serviceAreas.splice(index, 1);
+  }
+
+  submitServiceArea() {
+    this._businessService.addServiceArea(this.serviceAreas).subscribe(
+      (res: any) => {
+        this.toastr.success(res.message);
+        this.serviceAreas = [];
+        this.showServiceAreaForm = false;
+      },
+      (err) => this.toastr.error('An error occurred')
+    );
+  }
+
+  // Reset input fields
+  resetFields() {
+    this.area = '';
+    this.physicalAddress = '';
+    this.radius = null;
+  }
 
   deleteService(id: string) {
     this.confirmationDialogService
@@ -155,15 +229,49 @@ export class BProfileComponent {
       });
   }
 
-  onPageChange(newPage: number) {
+  onServiceListPageChange(newPage: number) {
     this.page.set(newPage);
     this.getServices();
+  }
+
+  onServiceAreaPageChange(newPage: number) {
+    this.page.set(newPage);
+    this.getServiceAreas();
+  }
+
+  getServiceAreas() {
+    this._businessService
+      .getServiceAreas(this.page(), this.pageSize())
+      .subscribe((res: any) => {
+        console.log('res', res);
+        this.service_areas = res.results;
+        this.totalServiceAreaItems.set(res.count || res.total || 0);
+      });
   }
 
   getCategories() {
     this._businessService.getCategories().subscribe((res: any) => {
       // console.log(res);
       this.categories = res;
+    });
+  }
+
+  getFAQS() {
+    this._businessService.getFAQS().subscribe((res: any) => {
+      console.log('getFAQS()',res);
+      this.faqs = res.results;
+    });
+  }
+
+  addFAQ(){
+    this._businessService.addFAQS(this.frequentlyAskedQuestionsForm.value).subscribe((res: any) => {
+      this.toastr.success('Question added successfully')
+      this.showFrequentlyAskedQuestionsForm = false
+      this.getFAQS()
+    },err=>{
+      console.log(err);
+      this.toastr.error('An error occurred')
+
     });
   }
 
@@ -272,35 +380,12 @@ export class BProfileComponent {
     this.logoPreviewUrl = null; // go back to initials
   }
 
-  faqs = [
-    {
-      question: 'How quickly can you complete an errand?',
-      answer:
-        'We offer same-day service for most errands. Our typical response time is under 1 hour, and we can usually complete errands within 2-4 hours depending on the complexity and location.',
-      isOpen: false,
-    },
-    {
-      question: 'What payment methods do you accept?',
-      answer:
-        'We accept all major credit cards, debit cards, PayPal, and payments through the ErrandHub platform. For regular clients, we also offer monthly billing options.',
-      isOpen: false,
-    },
-    {
-      question: 'Are your staff background checked?',
-      answer:
-        'Yes, all our team members undergo thorough background checks, including criminal history and reference verification. We are also fully insured and bonded for your peace of mind.',
-      isOpen: false,
-    },
-    {
-      question: 'Can I request the same errand runner?',
-      answer:
-        "Absolutely! Many of our clients prefer working with the same team member. You can request your preferred errand runner when booking, and we'll do our best to accommodate based on availability.",
-      isOpen: false,
-    },
-  ];
+
 
   showForm = false;
   showServiceForm = false;
+  showServiceAreaForm = false;
+  showFrequentlyAskedQuestionsForm = false;
 
   toggleFAQ(index: number) {
     this.faqs[index].isOpen = !this.faqs[index].isOpen;
@@ -312,6 +397,15 @@ export class BProfileComponent {
 
   toggleServiceForm() {
     this.showServiceForm = !this.showServiceForm;
+  }
+
+  toggleFrequentlyAskedQuestionsForm() {
+    this.showFrequentlyAskedQuestionsForm =
+      !this.showFrequentlyAskedQuestionsForm;
+  }
+
+  toggleServiceAreaForm() {
+    this.showServiceAreaForm = !this.showServiceAreaForm;
   }
 
   navigateBack() {
