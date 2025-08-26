@@ -419,7 +419,7 @@
         }
 
         /* Load More Button */
-        .load-more {
+        /* .load-more {
             text-align: center;
             margin-top: 30px;
         }
@@ -437,7 +437,7 @@
         .btn-load-more:hover {
             background-color: var(--primary-blue);
             color: var(--primary-white);
-        }
+        } */
 
         /* Empty State */
         .empty-state {

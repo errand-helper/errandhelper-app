@@ -31,9 +31,27 @@ export class BusinessService {
     });
   }
 
-  getBusinessList() {
+  // getBusinessList() {
+  //   return this.http.get(`${this.baseUrl}business/business-list/`, {
+  //     headers: headers,
+  //   });
+  // }
+
+  getBusinessList(
+    page: number = 1,
+    pageSize: number = 10,
+    search: string = '',
+  ) {
+    const params: any = {
+      page: page,
+      page_size: pageSize,
+      search: search,
+      ordering: 'name',
+    };
+
     return this.http.get(`${this.baseUrl}business/business-list/`, {
-      headers: headers,
+      headers,
+      params,
     });
   }
 

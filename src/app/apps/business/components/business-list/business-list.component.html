@@ -4,7 +4,6 @@
 <div class="main-content">
   <app-navbar></app-navbar>
 
-
   <!-- Page Header with Search -->
   <div class="page-header d-flex align-items-center">
     <button class="mobile-toggle mb-3" (click)="displayFilters()">
@@ -22,132 +21,88 @@
         <!-- Service Categories -->
         <div class="filter-group">
           <div class="filter-title">Service</div>
+          @if(categories?.length > 0){ @for(category of categories; track category.id){
           <label class="filter-checkbox">
-            <input type="checkbox" value="shopping" onchange="applyFilters()" />
-            <span>Shopping & Delivery</span>
+            <input type="checkbox" value="shopping" />
+            <span>{{category.name}}</span>
             <span class="filter-badge">24</span>
           </label>
-          <label class="filter-checkbox">
-            <input type="checkbox" value="cleaning" onchange="applyFilters()" />
+          } }
+
+          <!-- <label class="filter-checkbox">
+            <input type="checkbox" value="cleaning" />
             <span>Cleaning Services</span>
             <span class="filter-badge">18</span>
           </label>
           <label class="filter-checkbox">
-            <input type="checkbox" value="moving" onchange="applyFilters()" />
+            <input type="checkbox" value="moving" />
             <span>Moving & Packing</span>
             <span class="filter-badge">12</span>
           </label>
           <label class="filter-checkbox">
-            <input type="checkbox" value="pet" onchange="applyFilters()" />
+            <input type="checkbox" value="pet" />
             <span>Pet Services</span>
             <span class="filter-badge">15</span>
           </label>
           <label class="filter-checkbox">
-            <input type="checkbox" value="handyman" onchange="applyFilters()" />
+            <input type="checkbox" value="handyman" />
             <span>Handyman</span>
             <span class="filter-badge">20</span>
           </label>
           <label class="filter-checkbox">
-            <input type="checkbox" value="admin" onchange="applyFilters()" />
+            <input type="checkbox" value="admin" />
             <span>Admin & Office</span>
             <span class="filter-badge">10</span>
-          </label>
+          </label> -->
         </div>
 
-         <!-- Location Categories -->
+        <!-- Location Categories -->
         <div class="filter-group">
           <div class="filter-title">Location</div>
           <label class="filter-checkbox">
-            <input type="checkbox" value="shopping" onchange="applyFilters()" />
+            <input type="checkbox" value="shopping" />
             <span>Nairobi</span>
             <span class="filter-badge">24</span>
           </label>
           <label class="filter-checkbox">
-            <input type="checkbox" value="cleaning" onchange="applyFilters()" />
+            <input type="checkbox" value="cleaning" />
             <span>Mombasa</span>
             <span class="filter-badge">18</span>
           </label>
           <label class="filter-checkbox">
-            <input type="checkbox" value="moving" onchange="applyFilters()" />
+            <input type="checkbox" value="moving" />
             <span>Kisumu</span>
             <span class="filter-badge">12</span>
           </label>
           <label class="filter-checkbox">
-            <input type="checkbox" value="pet" onchange="applyFilters()" />
+            <input type="checkbox" value="pet" />
             <span>Nakuru</span>
             <span class="filter-badge">15</span>
           </label>
           <label class="filter-checkbox">
-            <input type="checkbox" value="handyman" onchange="applyFilters()" />
+            <input type="checkbox" value="handyman" />
             <span>Naivasha</span>
             <span class="filter-badge">20</span>
           </label>
         </div>
 
-
-        <!-- Price Range -->
-        <!-- <div class="filter-group">
-          <div class="filter-title">Price Range</div>
-          <label class="filter-checkbox">
-            <input type="checkbox" value="0-25" onchange="applyFilters()" />
-            <span>$0 - $25</span>
-          </label>
-          <label class="filter-checkbox">
-            <input type="checkbox" value="25-50" onchange="applyFilters()" />
-            <span>$25 - $50</span>
-          </label>
-          <label class="filter-checkbox">
-            <input type="checkbox" value="50-100" onchange="applyFilters()" />
-            <span>$50 - $100</span>
-          </label>
-          <label class="filter-checkbox">
-            <input type="checkbox" value="100+" onchange="applyFilters()" />
-            <span>$100+</span>
-          </label>
-        </div> -->
-
         <!-- Rating -->
         <div class="filter-group">
           <div class="filter-title">Minimum Rating</div>
           <label class="filter-checkbox">
-            <input type="checkbox" value="4.5" onchange="applyFilters()" />
+            <input type="checkbox" value="4.5" />
             <span>4.5+ Stars</span>
           </label>
           <label class="filter-checkbox">
-            <input type="checkbox" value="4.0" onchange="applyFilters()" />
+            <input type="checkbox" value="4.0" />
             <span>4.0+ Stars</span>
           </label>
           <label class="filter-checkbox">
-            <input type="checkbox" value="3.5" onchange="applyFilters()" />
+            <input type="checkbox" value="3.5" />
             <span>3.5+ Stars</span>
           </label>
         </div>
-
-        <!-- Other Filters -->
-        <!-- <div class="filter-group">
-          <div class="filter-title">Other</div>
-          <label class="filter-checkbox">
-            <input type="checkbox" value="verified" onchange="applyFilters()" />
-            <span>Verified Only</span>
-          </label>
-          <label class="filter-checkbox">
-            <input
-              type="checkbox"
-              value="available"
-              onchange="applyFilters()"
-            />
-            <span>Available Now</span>
-          </label>
-          <label class="filter-checkbox">
-            <input type="checkbox" value="premium" onchange="applyFilters()" />
-            <span>Premium Providers</span>
-          </label>
-        </div> -->
-
-        <button
-          class="btn btn-sm btn-outline-secondary w-100 mt-3"
-          onclick="clearFilters()"
-        >
+        <button class="btn btn-sm btn-outline-secondary w-100 mt-3">
           Clear All Filters
         </button>
       </div>
@@ -155,7 +110,6 @@
 
     <!-- Results Column -->
     <div class="col-lg-9">
-      <!-- Results Info -->
       <div class="results-info">
         <div class="search-container">
           <div class="search-box">
@@ -165,21 +119,15 @@
               placeholder="Search for services or providers..."
               id="searchInput"
             />
-            <button class="search-button" onclick="performSearch()">
+            <button class="search-button">
               <i class="fas fa-search"></i>
             </button>
           </div>
         </div>
-        <!-- <div class="results-count">
-                        Showing <strong>48</strong> service providers
-                    </div> -->
+
         <div class="sort-dropdown">
           <label class="me-2 text-muted">Sort by:</label>
-          <select
-            class="form-select form-select-sm"
-            style="width: auto"
-            onchange="sortResults()"
-          >
+          <select class="form-select form-select-sm" style="width: auto">
             <option value="recommended">Recommended</option>
             <option value="rating">Highest Rated</option>
             <option value="price-low">Price: Low to High</option>
@@ -192,15 +140,13 @@
 
       <!-- Business Listings -->
       <div id="businessList">
-        <!-- Business Card 1 -->
-
         <div class="business-card" *ngFor="let business of business_list">
           <div class="business-header">
             <div class="business-logo">
-              <img src="{{business.business_logo}}" alt="">
+              <img src="{{ business.business_logo }}" alt="" />
             </div>
             <div class="business-info">
-              <h4 class="business-name">{{business.business_name}}</h4>
+              <h4 class="business-name">{{ business.business_name }}</h4>
               <div class="business-rating">
                 <span class="rating-stars">
                   <i class="fas fa-star"></i>
@@ -216,25 +162,14 @@
                 <i class="fas fa-map-marker-alt"></i>
                 <span>2.5 miles away • New York, NY</span>
               </div>
-              <!-- <div class="business-badges">
-                <span class="badge-verified">
-                  <i class="fas fa-check-circle"></i>
-                  Verified
-                </span>
-                <span class="badge-premium">
-                  <i class="fas fa-crown"></i>
-                  Premium
-                </span>
-              </div> -->
             </div>
           </div>
           <div class="business-services">
-            <span class="service-tag active">Shopping & Delivery</span>
-            <span class="service-tag">Grocery Shopping</span>
-            <span class="service-tag">Package Pickup</span>
-            <span class="service-tag">Same-Day Delivery</span>
+            <span class="service-tag"  *ngFor="let category of business?.category">{{category}}</span>
           </div>
-          <p class="business-description">{{business.business_description}}</p>
+          <p class="business-description">
+            {{ business.business_description }}
+          </p>
           <div class="business-footer">
             <div class="business-stats">
               <div class="stat-item">
@@ -245,9 +180,6 @@
                 <i class="fas fa-clock"></i>
                 <span> 1hr response</span>
               </div>
-              <!-- <div class="stat-item">
-                <span class="price-range">$25-$50/hour</span>
-              </div> -->
             </div>
             <div class="business-actions">
               <button
@@ -262,12 +194,15 @@
         </div>
       </div>
 
-      <!-- Load More Button -->
-      <div class="load-more">
-        <button class="btn btn-load-more" onclick="loadMore()">
-          Load More Providers
-        </button>
-      </div>
+      <div class="d-flex justify-content-between p-2" style="margin-left: 1rem">
+      <ngb-pagination
+        [collectionSize]="totalServiceItems()"
+        [page]="page()"
+        [pageSize]="pageSize()"
+        (pageChange)="onServiceListPageChange($event)"
+      >
+      </ngb-pagination>
+    </div>
     </div>
   </div>
 </div>
