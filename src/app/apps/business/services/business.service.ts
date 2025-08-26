@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 
@@ -31,23 +31,26 @@ export class BusinessService {
     });
   }
 
-  // getBusinessList() {
-  //   return this.http.get(`${this.baseUrl}business/business-list/`, {
-  //     headers: headers,
-  //   });
-  // }
 
   getBusinessList(
     page: number = 1,
     pageSize: number = 10,
-    search: string = '',
+    categories: string[] = [],
   ) {
-    const params: any = {
-      page: page,
-      page_size: pageSize,
-      search: search,
-      ordering: 'name',
-    };
+    const token = localStorage.getItem('access_token')?.replace(/^"|"$/g, '');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    let params = new HttpParams().set('page', page).set('page_size', pageSize);
+
+    if (status) params = params.set('status', status);
+
+    // Ensure unique categories
+    const uniqueCategories = [...new Set(categories)];
+    uniqueCategories.forEach((id) => {
+      params = params.append('categories', id.toString());
+    });
 
     return this.http.get(`${this.baseUrl}business/business-list/`, {
       headers,

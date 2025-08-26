@@ -20,43 +20,25 @@
 
         <!-- Service Categories -->
         <div class="filter-group">
-          <div class="filter-title">Service</div>
-          @if(categories?.length > 0){ @for(category of categories; track category.id){
+          <div class="filter-title">Service Category</div>
+          @if(categories?.length > 0){ @for(category of categories; track
+          $index){
           <label class="filter-checkbox">
-            <input type="checkbox" value="shopping" />
-            <span>{{category.name}}</span>
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [id]="'subject' + category.id"
+              [value]="category.id"
+              [checked]="selectedCategories.includes(category.id)"
+              (change)="onServiceCategoryChange($event, category.id)"
+            />
+            <span>{{ category.name }}</span>
             <span class="filter-badge">24</span>
           </label>
           } }
-
-          <!-- <label class="filter-checkbox">
-            <input type="checkbox" value="cleaning" />
-            <span>Cleaning Services</span>
-            <span class="filter-badge">18</span>
-          </label>
-          <label class="filter-checkbox">
-            <input type="checkbox" value="moving" />
-            <span>Moving & Packing</span>
-            <span class="filter-badge">12</span>
-          </label>
-          <label class="filter-checkbox">
-            <input type="checkbox" value="pet" />
-            <span>Pet Services</span>
-            <span class="filter-badge">15</span>
-          </label>
-          <label class="filter-checkbox">
-            <input type="checkbox" value="handyman" />
-            <span>Handyman</span>
-            <span class="filter-badge">20</span>
-          </label>
-          <label class="filter-checkbox">
-            <input type="checkbox" value="admin" />
-            <span>Admin & Office</span>
-            <span class="filter-badge">10</span>
-          </label> -->
         </div>
 
-        <!-- Location Categories -->
+        <!-- Location  -->
         <div class="filter-group">
           <div class="filter-title">Location</div>
           <label class="filter-checkbox">
@@ -165,7 +147,11 @@
             </div>
           </div>
           <div class="business-services">
-            <span class="service-tag"  *ngFor="let category of business?.category">{{category}}</span>
+            <span
+              class="service-tag"
+              *ngFor="let category of business?.category"
+              >{{ category }}</span
+            >
           </div>
           <p class="business-description">
             {{ business.business_description }}
@@ -195,14 +181,14 @@
       </div>
 
       <div class="d-flex justify-content-between p-2" style="margin-left: 1rem">
-      <ngb-pagination
-        [collectionSize]="totalServiceItems()"
-        [page]="page()"
-        [pageSize]="pageSize()"
-        (pageChange)="onServiceListPageChange($event)"
-      >
-      </ngb-pagination>
-    </div>
+        <ngb-pagination
+          [collectionSize]="totalServiceItems()"
+          [page]="page()"
+          [pageSize]="pageSize()"
+          (pageChange)="onServiceListPageChange($event)"
+        >
+        </ngb-pagination>
+      </div>
     </div>
   </div>
 </div>

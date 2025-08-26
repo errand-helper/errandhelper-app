@@ -14,6 +14,9 @@ export class BusinessListComponent implements OnInit {
   pageSize = signal(2);
   totalServiceItems = signal(0);
   totalServiceAreaItems = signal(0);
+  subjects: { id: string; name: string }[] = [];
+  selectedCategories: string[] = [];
+
 
   constructor(private _businessService: BusinessService) {}
 
@@ -22,12 +25,25 @@ export class BusinessListComponent implements OnInit {
     this.getCategories();
   }
 
+  onServiceCategoryChange(event: any, subjectId: string) {
+    const checked = event.target.checked;
+    console.log(checked);
+
+    if (checked) {
+      if (!this.selectedCategories.includes(subjectId)) {
+        this.selectedCategories = [...this.selectedCategories, subjectId];
+      }
+    } else {
+      this.selectedCategories = this.selectedCategories.filter(id => id !== subjectId);
+    }
+    this.getBusinessList();
+  }
+
   getBusinessList() {
-      this._businessService.getBusinessList(
-        this.page(),
-        this.pageSize(),
-      ).subscribe({
-        next: (res:any) => {
+    this._businessService
+      .getBusinessList(this.page(), this.pageSize(),this.selectedCategories)
+      .subscribe({
+        next: (res: any) => {
           this.business_list = res.results;
           console.log(this.business_list);
 
@@ -35,14 +51,8 @@ export class BusinessListComponent implements OnInit {
         },
         error: (err) => console.error('Error loading tutors:', err),
       });
-    }
+  }
 
-  // getBusinessList() {
-  //   this._businessService.getBusinessList(this.page(),
-  //       this.pageSize(),).subscribe((res: any) => {
-  //     this.business_list = res.results;
-  //   });
-  // }
 
   onServiceListPageChange(newPage: number) {
     this.page.set(newPage);
