@@ -31,11 +31,11 @@ export class BusinessService {
     });
   }
 
-
   getBusinessList(
     page: number = 1,
     pageSize: number = 10,
     categories: string[] = [],
+    locations: string[] = []
   ) {
     const token = localStorage.getItem('access_token')?.replace(/^"|"$/g, '');
     const headers = new HttpHeaders({
@@ -44,19 +44,81 @@ export class BusinessService {
 
     let params = new HttpParams().set('page', page).set('page_size', pageSize);
 
-    if (status) params = params.set('status', status);
+    if (categories.length > 0) {
+      params = params.set('categories', categories.join(','));
+    }
 
-    // Ensure unique categories
-    const uniqueCategories = [...new Set(categories)];
-    uniqueCategories.forEach((id) => {
-      params = params.append('categories', id.toString());
-    });
+    if (locations.length > 0) {
+      params = params.set('service_areas', locations.join(','));
+    }
 
     return this.http.get(`${this.baseUrl}business/business-list/`, {
       headers,
       params,
     });
   }
+
+  getBusinessStats() {
+  return this.http.get(`${this.baseUrl}business/stats/`);
+}
+
+
+  //   getBusinessList(
+  //   page: number = 1,
+  //   pageSize: number = 10,
+  //   categories: string[] = [],
+  //   locations: string[] = [] // <-- add this
+  // ) {
+  //   const token = localStorage.getItem('access_token')?.replace(/^"|"$/g, '');
+  //   const headers = new HttpHeaders({
+  //     Authorization: `Bearer ${token}`,
+  //   });
+
+  //   let params = new HttpParams().set('page', page).set('page_size', pageSize);
+
+  //   // Append selected categories
+  //   const uniqueCategories = [...new Set(categories)];
+  //   uniqueCategories.forEach((id) => {
+  //     params = params.append('categories', id.toString());
+  //   });
+
+  //   // Append selected locations
+  //   const uniqueLocations = [...new Set(locations)];
+  //   uniqueLocations.forEach((location) => {
+  //     params = params.append('service_areas', location);
+  //   });
+
+  //   return this.http.get(`${this.baseUrl}business/business-list/`, {
+  //     headers,
+  //     params,
+  //   });
+  // }
+
+  // getBusinessList(
+  //   page: number = 1,
+  //   pageSize: number = 10,
+  //   categories: string[] = [],
+  // ) {
+  //   const token = localStorage.getItem('access_token')?.replace(/^"|"$/g, '');
+  //   const headers = new HttpHeaders({
+  //     Authorization: `Bearer ${token}`,
+  //   });
+
+  //   let params = new HttpParams().set('page', page).set('page_size', pageSize);
+
+  //   if (status) params = params.set('status', status);
+
+  //   // Ensure unique categories
+  //   const uniqueCategories = [...new Set(categories)];
+  //   uniqueCategories.forEach((id) => {
+  //     params = params.append('categories', id.toString());
+  //   });
+
+  //   return this.http.get(`${this.baseUrl}business/business-list/`, {
+  //     headers,
+  //     params,
+  //   });
+  // }
 
   getBusinessDetail(id: string) {
     return this.http.get(`${this.baseUrl}business/business-list/${id}`, {
