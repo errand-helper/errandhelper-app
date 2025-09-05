@@ -211,4 +211,21 @@ export class BusinessService {
       headers: headers,
     });
   }
+
+
+  getLocations() {
+    return this.http.get(`${this.baseUrl}service/location/`, {
+      headers: headers,
+    });
+  }
+
+
+
+
+
+
+
 }
+
+
+

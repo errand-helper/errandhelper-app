@@ -719,17 +719,17 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      @if(!showServiceForm){
+      @if(!showAvailabilityForm){
       <h2>Availability</h2>
       }@else {
       <h2>Location & Business Hours</h2>
 
       }
-      <button class="btn btn-primary" (click)="toggleServiceForm()">
+      <button class="btn btn-primary" (click)="toggleAvailabilityForm()">
         <i class="fas fa-edit me-2"></i>Add Availability
       </button>
     </div>
-    @if(!showServiceForm){
+    @if(!showAvailabilityForm){
     <div
       class="d-md-flex d-lg-flex d-sm-block justify-content-between items-center"
     >
@@ -890,7 +890,7 @@
       </div>
     </div>
 
-    } @if(showServiceForm) {
+    } @if(showAvailabilityForm) {
     <!-- Location & Hours Section -->
     <div class="form-section">
       <h5 class="mb-3">

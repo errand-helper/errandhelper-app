@@ -19,9 +19,9 @@
     <div class="provider-info">
       <div class="provider-logo">QE</div>
       <div class="provider-details">
-        <h1 class="provider-name">{{business_details?.business_name}}</h1>
+        <h1 class="provider-name">{{ business_details?.business_name }}</h1>
         <p class="provider-tagline">
-          {{business_details?.business_tagline}}
+          {{ business_details?.business_tagline }}
         </p>
         <div class="provider-badges">
           <span class="badge-item badge-verified">
@@ -81,13 +81,12 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      <h2>About {{business_details?.business_name}}</h2>
+      <h2>About {{ business_details?.business_name }}</h2>
     </div>
-
 
     <div>
       <p class="mb-3">
-        {{business_details?.business_description}}
+        {{ business_details?.business_description }}
       </p>
     </div>
   </div>
@@ -100,30 +99,19 @@
       <h2>Our Services</h2>
     </div>
     <div class="services-grid">
+      @for(service of business_details?.services; track service; let i = $index)
+      {
       <div class="service-card">
-        <h5 class="service-name">Grocery Shopping</h5>
-        <div class="service-price">$25-$35/hour</div>
+        <h5 class="service-name">{{ service.name }}</h5>
+        <div class="service-price">
+          ${{ service.price_from }}-${{ service.price_to }}/{{
+            service.price_type
+          }}
+        </div>
       </div>
-      <div class="service-card">
-        <h5 class="service-name">Package Delivery</h5>
-        <div class="service-description">$15-$45 per delivery</div>
-      </div>
-      <div class="service-card">
-        <h5 class="service-name">Personal Shopping</h5>
-        <div class="service-price">$35-$50/hour</div>
-      </div>
-      <div class="service-card">
-        <h5 class="service-name">Administrative Tasks</h5>
-        <div class="service-price">$30-$40/hour</div>
-      </div>
-      <div class="service-card">
-        <h5 class="service-name">Pharmacy Runs</h5>
-        <div class="service-price">$20-$30 per trip</div>
-      </div>
-      <div class="service-card">
-        <h5 class="service-name">Food Delivery</h5>
-        <div class="service-price">$15-$25 + meal cost</div>
-      </div>
+      }@empty {
+      <h5 class="service-name">No Services</h5>
+      }
     </div>
   </div>
 
@@ -383,64 +371,51 @@
 
   <!-- Service Area Section -->
   <div class="profile-section">
-    <div
-      class="section-title"
-      style="display: flex; justify-content: space-between; align-items: center"
-    >
-      <h2>Service Area</h2>
-    </div>
-    <div class="map-container">
-      <i class="fas fa-map-marked-alt fa-3x"></i>
-      <p>Interactive Map Coming Soon</p>
-    </div>
-    <h5 class="mb-3">We Serve These Areas:</h5>
     <div class="coverage-list">
+      @for(area of business_details?.service_areas; track area; let i = $index){
+      <div
+        class="section-title"
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <h2>Service Area</h2>
+      </div>
+      <div class="map-container">
+        <i class="fas fa-map-marked-alt fa-3x"></i>
+        <p>Interactive Map Coming Soon</p>
+      </div>
+      <h5 class="mb-3">We Serve These Areas:</h5>
       <div class="coverage-item">
         <i class="fas fa-check-circle"></i>
-        <span>Manhattan</span>
+        <span>{{ area }}</span>
       </div>
+      }@empty{
       <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Brooklyn</span>
+        <h5 class="service-name">No Service Areas</h5>
       </div>
-      <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Queens</span>
-      </div>
-      <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Upper East Side</span>
-      </div>
-      <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Upper West Side</span>
-      </div>
-      <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Midtown</span>
-      </div>
-      <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Financial District</span>
-      </div>
-      <div class="coverage-item">
-        <i class="fas fa-check-circle"></i>
-        <span>Williamsburg</span>
-      </div>
+      }
     </div>
   </div>
 
   <!-- FAQ Section -->
   <div class="profile-section">
-    <div
-      class="section-title"
-      style="display: flex; justify-content: space-between; align-items: center"
-    >
-      <h2>Frequently Asked Questions</h2>
-    </div>
     <div class="faq-list">
       <div class="faq-list">
-        @for (faq of faqs; track faq.question; let i = $index) {
+        @for (faq of business_details?.frequently_asked_questions; track faq.id;
+        let i = $index) {
+        <div
+          class="section-title"
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <h2>Frequently Asked Questions</h2>
+        </div>
         <div class="faq-item">
           <div
             class="faq-question"
@@ -459,6 +434,8 @@
           </div>
           }
         </div>
+        }@empty{
+        <h5 class="service-name">No Frequently Asked Questions</h5>
         }
       </div>
     </div>

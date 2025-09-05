@@ -43,6 +43,14 @@ export class BProfileComponent {
   totalServiceAreaItems = signal(0);
    faqs:any[] = [];
 
+
+
+  showForm = false;
+  showServiceForm = false;
+  showServiceAreaForm = false;
+  showFrequentlyAskedQuestionsForm = false;
+  showAvailabilityForm = false;
+
   constructor(
     private _businessService: BusinessService,
     private fb: FormBuilder,
@@ -382,11 +390,6 @@ export class BProfileComponent {
 
 
 
-  showForm = false;
-  showServiceForm = false;
-  showServiceAreaForm = false;
-  showFrequentlyAskedQuestionsForm = false;
-
   toggleFAQ(index: number) {
     this.faqs[index].isOpen = !this.faqs[index].isOpen;
   }
@@ -397,6 +400,10 @@ export class BProfileComponent {
 
   toggleServiceForm() {
     this.showServiceForm = !this.showServiceForm;
+  }
+
+  toggleAvailabilityForm(){
+    this.showAvailabilityForm = !this.showAvailabilityForm;
   }
 
   toggleFrequentlyAskedQuestionsForm() {

@@ -85,7 +85,7 @@ export class BusinessListComponent implements OnInit {
    getBusinessStats() {
     this._businessService.getBusinessStats().subscribe((res: any) => {
       this.categories = res.categories;
-      this.serviceAreas = res.service_areas;
+      // this.serviceAreas = res.service_areas;
 
       console.log(res,'resees');
 
@@ -93,8 +93,11 @@ export class BusinessListComponent implements OnInit {
   }
 
   getServiceAreas() {
-    this._businessService.getServiceAreas().subscribe((res: any) => {
+    this._businessService.getLocations().subscribe((res: any) => {
       this.serviceAreas = res;
+
+      console.log('service areas', this.serviceAreas);
+
     });
   }
 
