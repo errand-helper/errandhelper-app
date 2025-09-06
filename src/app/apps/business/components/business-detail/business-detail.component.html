@@ -92,12 +92,14 @@
   </div>
 
   <div class="profile-section">
+    @if(business_details?.services?.length > 0){
     <div
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
       <h2>Our Services</h2>
     </div>
+  }
     <div class="services-grid">
       @for(service of business_details?.services; track service; let i = $index)
       {
@@ -371,23 +373,22 @@
 
   <!-- Service Area Section -->
   <div class="profile-section">
+    @if(business_details?.service_areas?.length > 0){
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      <h2>Service Area</h2>
+    </div>
+    <div class="map-container">
+      <i class="fas fa-map-marked-alt fa-3x"></i>
+      <p>Interactive Map Coming Soon</p>
+    </div>
+    <h5 class="mb-3">We Serve These Areas:</h5>
+    }
+
     <div class="coverage-list">
       @for(area of business_details?.service_areas; track area; let i = $index){
-      <div
-        class="section-title"
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        "
-      >
-        <h2>Service Area</h2>
-      </div>
-      <div class="map-container">
-        <i class="fas fa-map-marked-alt fa-3x"></i>
-        <p>Interactive Map Coming Soon</p>
-      </div>
-      <h5 class="mb-3">We Serve These Areas:</h5>
       <div class="coverage-item">
         <i class="fas fa-check-circle"></i>
         <span>{{ area }}</span>
@@ -404,8 +405,7 @@
   <div class="profile-section">
     <div class="faq-list">
       <div class="faq-list">
-        @for (faq of business_details?.frequently_asked_questions; track faq.id;
-        let i = $index) {
+        @if(business_details?.frequently_asked_questions?.length > 0){
         <div
           class="section-title"
           style="
@@ -416,6 +416,10 @@
         >
           <h2>Frequently Asked Questions</h2>
         </div>
+      }
+        @for (faq of business_details?.frequently_asked_questions; track faq.id;
+        let i = $index) {
+
         <div class="faq-item">
           <div
             class="faq-question"
