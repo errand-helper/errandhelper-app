@@ -3,6 +3,9 @@ import { AuthService } from './../../services/auth.service';
 import { Component, inject, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { ApiError, RegisterData, RegisterResponse } from '../../interfaces/auth';
+
+
 
 @Component({
   selector: 'app-register',
@@ -41,7 +44,7 @@ export class RegisterComponent implements OnInit {
       this.toastr.error('Passwords do not match');
       return;
     }
-    const data = {
+    const data:RegisterData = {
         first_name: this.registerForm.value.first_name,
         last_name: this.registerForm.value.last_name,
         phone: this.registerForm.value.phone,
@@ -51,13 +54,13 @@ export class RegisterComponent implements OnInit {
         confirm_password: this.registerForm.value.confirm_password,
       };
     this.authService.signup(data).subscribe(
-      (res: any) => {
+      (res: RegisterResponse) => {
         console.log(res);
         this.registerForm.reset();
         this.toastr.success(res.message);
         this.route.navigate(['/login']);
       },
-      (error: any) => {
+      (error: ApiError) => {
         console.log(error);
         this.toastr.error(error.error.message);
       }
