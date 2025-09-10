@@ -21,7 +21,7 @@
               <i class="fas fa-download me-2"></i>Withdraw
             </button>
             <button class="btn btn-light w-100 bg-success" [routerLink]="['/business/profile', business_id]">
-              <i class="fas fa-download me-2"></i>My Business
+              <i class="fas fa-download me-2"></i>{{ has_business ? 'View Profile' : 'Add Business' }}
             </button>
           </div>
         </div>

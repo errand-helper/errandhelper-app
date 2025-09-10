@@ -6,6 +6,15 @@ import { BusinessService } from '../../services/business.service';
 import { ConfirmationServiceDialogService } from '../../../sharedmodule/services/confirmation-service-dialog.service';
 import { UpdateServiceComponent } from '../modals/update-service/update-service.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  BusinessDetail,
+  FrequentlyAskedQuestion,
+  FrequentlyAskedResult,
+  ServiceArea,
+  ServiceAreaResult,
+  ServiceResult,
+} from '../../models/business.model';
+import { Category } from '../../../sharedmodule/models/category';
 
 @Component({
   selector: 'app-b-profile',
@@ -20,30 +29,25 @@ export class BProfileComponent {
   logoPreviewUrl: string | ArrayBuffer | null = null;
   logoInitials: string = 'BN';
   businessId!: string;
-  business_details: any;
-  categories: any;
-  logged_in_user!: any;
+  business_details: BusinessDetail | null = null;
+  categories: Category[] = [];
+  logged_in_user!: string | null;
   private modalService = inject(NgbModal);
 
   area: string = '';
   physicalAddress: string = '';
   radius: number | null = null;
 
-  serviceAreas: any[] = [];
+  serviceAreas: ServiceArea[] = [];
   editIndex: number | null = null;
-  service_areas: any[] = [];
-
-  // is_logged_in_user = false;
-  // my_business_id: any;
+  service_areas: ServiceArea[] = [];
   services_list: any;
 
   page = signal(1);
   pageSize = signal(10);
   totalServiceItems = signal(0);
   totalServiceAreaItems = signal(0);
-   faqs:any[] = [];
-
-
+  faqs: FrequentlyAskedQuestion[] = [];
 
   showForm = false;
   showServiceForm = false;
@@ -90,7 +94,7 @@ export class BProfileComponent {
     this.frequentlyAskedQuestionsForm = this.fb.group({
       question: ['', Validators.required],
       answer: ['', Validators.required],
-    })
+    });
 
     this.basicInfoForm
       .get('business_name')
@@ -111,7 +115,7 @@ export class BProfileComponent {
     this.getServices();
 
     this.getServiceAreas();
-    this.getFAQS()
+    // this.getFAQS();
   }
 
   addService() {
@@ -131,10 +135,10 @@ export class BProfileComponent {
     // Example: fetch first page, 10 items per page, no search, no category filter
     this._businessService
       .getServices(this.page(), this.pageSize())
-      .subscribe((res: any) => {
+      .subscribe((res: ServiceResult) => {
         this.services_list = res.results;
         // Update total items for pagination
-        this.totalServiceItems.set(res.count || res.total || 0);
+        this.totalServiceItems.set(res.count || 0);
         console.log('getServices', this.services_list);
 
         // this.categories = res;
@@ -185,9 +189,9 @@ export class BProfileComponent {
   // Edit a service area
   editServiceArea(index: number) {
     const service = this.serviceAreas[index];
-    this.area = service.area;
-    this.physicalAddress = service.physicalAddress;
-    this.radius = service.radius;
+    this.area = 'service.area to update';
+    this.physicalAddress = service.physical_address;
+    this.radius = service.service_radius;
     this.editIndex = index;
   }
 
@@ -250,46 +254,49 @@ export class BProfileComponent {
   getServiceAreas() {
     this._businessService
       .getServiceAreas(this.page(), this.pageSize())
-      .subscribe((res: any) => {
+      .subscribe((res: ServiceAreaResult) => {
         console.log('res', res);
         this.service_areas = res.results;
-        this.totalServiceAreaItems.set(res.count || res.total || 0);
+        this.totalServiceAreaItems.set(res.count || 0);
       });
   }
 
   getCategories() {
-    this._businessService.getCategories().subscribe((res: any) => {
-      // console.log(res);
-      this.categories = res;
+    this._businessService.getCategories().subscribe((res: Category) => {
+      this.categories = Array.isArray(res) ? res : [res];
     });
   }
 
-  getFAQS() {
-    this._businessService.getFAQS().subscribe((res: any) => {
-      console.log('getFAQS()',res);
-      this.faqs = res.results;
-    });
-  }
+  // getFAQS() {
+  //   this._businessService.getFAQS().subscribe((res: Result) => {
+  //     console.log('getFAQS()', res);
+  //     this.faqs = res.results;
+  //   });
+  // }
 
-  addFAQ(){
-    this._businessService.addFAQS(this.frequentlyAskedQuestionsForm.value).subscribe((res: any) => {
-      this.toastr.success('Question added successfully')
-      this.showFrequentlyAskedQuestionsForm = false
-      this.getFAQS()
-    },err=>{
-      console.log(err);
-      this.toastr.error('An error occurred')
-
-    });
+  addFAQ() {
+    this._businessService
+      .addFAQS(this.frequentlyAskedQuestionsForm.value)
+      .subscribe(
+        (res: FrequentlyAskedQuestion) => {
+          this.toastr.success('Question added successfully');
+          this.showFrequentlyAskedQuestionsForm = false;
+          // this.getFAQS();
+        },
+        (err) => {
+          console.log(err);
+          this.toastr.error('An error occurred');
+        }
+      );
   }
 
   getBusinessInfo() {
     this._businessService
       .getBusinessDetail(this.businessId)
-      .subscribe((res: any) => {
+      .subscribe((res: BusinessDetail) => {
         this.business_details = res;
-        console.log('business_details', this.business_details, res);
-
+        this.faqs = this.business_details.frequently_asked_questions || [];
+      
         if (this.business_details) {
           // ✅ Prefill form with fetched data
           this.basicInfoForm.patchValue({
@@ -301,21 +308,16 @@ export class BProfileComponent {
             business_description: this.business_details.business_description,
             registration_number: this.business_details.registration_number,
             kra_pin: this.business_details.kra_pin,
-            facebook: this.business_details.social_links.facebook,
-            twitter: this.business_details.social_links.twitter,
-            linkedin: this.business_details.social_links.linkedin,
-            instagram: this.business_details.social_links.instagram,
-            website: this.business_details.social_links.website,
+            facebook: this.business_details.social_links?.facebook,
+            twitter: this.business_details.social_links?.twitter,
+            linkedin: this.business_details.social_links?.linkedin,
+            instagram: this.business_details.social_links?.instagram,
+            website: this.business_details.social_links?.website,
           });
         }
         if (this.business_details.business_logo) {
           this.logoPreviewUrl = this.business_details.business_logo;
         }
-        console.log(this.logged_in_user, this.business_details.user);
-
-        // if (this.logged_in_user === this.business_details.user) {
-        //   this.is_logged_in_user = true;
-        // }
       });
   }
 
@@ -346,7 +348,6 @@ export class BProfileComponent {
         .subscribe({
           next: (res) => {
             this.toastr.success('Business information updated successfully!');
-            // this.route.navigate(['/dashboard']); // adjust route as needed
           },
           error: (err) => {
             this.toastr.error('Failed to update business information.');
@@ -357,7 +358,6 @@ export class BProfileComponent {
       this._businessService.addBusiness(formData).subscribe({
         next: (res) => {
           this.toastr.success('Business information added successfully!');
-          // this.route.navigate(['/dashboard']); // adjust route as needed
         },
         error: (err) => {
           this.toastr.error('Failed to add business information.');
@@ -388,8 +388,6 @@ export class BProfileComponent {
     this.logoPreviewUrl = null; // go back to initials
   }
 
-
-
   toggleFAQ(index: number) {
     this.faqs[index].isOpen = !this.faqs[index].isOpen;
   }
@@ -402,7 +400,7 @@ export class BProfileComponent {
     this.showServiceForm = !this.showServiceForm;
   }
 
-  toggleAvailabilityForm(){
+  toggleAvailabilityForm() {
     this.showAvailabilityForm = !this.showAvailabilityForm;
   }
 

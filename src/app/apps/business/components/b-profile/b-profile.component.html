@@ -1233,7 +1233,7 @@
     @if(!showFrequentlyAskedQuestionsForm){
     <div class="faq-list">
       <div class="faq-list">
-        @for (faq of faqs; track faq.question; let i = $index) {
+        @for (faq of faqs; track faq.id; let i = $index) {
         <div class="faq-item">
           <div
             class="faq-question"

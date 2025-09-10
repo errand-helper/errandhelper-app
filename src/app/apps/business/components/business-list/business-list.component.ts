@@ -1,12 +1,13 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { BusinessService } from '../../services/business.service';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-business-list',
   templateUrl: './business-list.component.html',
   styleUrl: './business-list.component.css',
 })
-export class BusinessListComponent implements OnInit {
+export class BusinessListComponent implements OnInit, OnDestroy {
   business_list: any;
   categories: any;
   serviceAreas: any = []; // <-- dynamic locations fetched from API if needed
@@ -19,14 +20,33 @@ export class BusinessListComponent implements OnInit {
 
   selectedCategories: string[] = [];
   selectedLocations: string[] = []; // <-- track selected locations
+  searchTerm: string = '';
+  private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
 
   constructor(private _businessService: BusinessService,) {}
 
   ngOnInit() {
+    this.searchSubject
+      .pipe(
+        debounceTime(400), // wait 400ms after user stops typing
+        distinctUntilChanged(), // only emit if value is different from last one
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.page.set(1); // Reset to first page
+        this.getBusinessList();
+      });
+
     this.getBusinessList();
     this.getCategories();
     this.getServiceAreas();
     this.getBusinessStats();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onServiceCategoryChange(event: any, categoryId: string) {
@@ -71,7 +91,8 @@ export class BusinessListComponent implements OnInit {
         this.page(),
         this.pageSize(),
         this.selectedCategories,
-        this.selectedLocations
+        this.selectedLocations,
+        this.searchTerm
       )
       .subscribe({
         next: (res: any) => {
@@ -112,6 +133,16 @@ export class BusinessListComponent implements OnInit {
   onServiceListPageChange(newPage: number) {
     this.page.set(newPage);
     this.getBusinessList();
+  }
+
+//   onSearchChange() {
+//   this.page.set(1); // Reset to first page when searching
+//   this.getBusinessList();
+// }
+
+onSearchChange(value: string) {
+    this.searchTerm = value;
+    this.searchSubject.next(value);
   }
 
   displayFilters() {

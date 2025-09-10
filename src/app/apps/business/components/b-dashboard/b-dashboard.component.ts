@@ -11,13 +11,14 @@ import { BusinessService } from '../../services/business.service';
 })
 export class BDashboardComponent {
 
-  business_id:any;
+  business_id!:string;
+  has_business:boolean = false;
 
   constructor(
       private _businessService: BusinessService,
-      private fb: FormBuilder,
-      private toastr: ToastrService,
-      private route: ActivatedRoute,
+      // private fb: FormBuilder,
+      // private toastr: ToastrService,
+      // private route: ActivatedRoute,
     ) {
       this.getBusinessList()
     }
@@ -26,7 +27,10 @@ export class BDashboardComponent {
   getBusinessList(){
     this._businessService.getLoggedInUserBusinessList().subscribe((res:any)=>{
       console.log('res',res);
-      this.business_id = res.results[0].id;
+      if(res.results.length > 0){
+        this.business_id = res.results[0].id;
+        this.has_business = true;
+      }
       console.log(this.business_id);
 
     })

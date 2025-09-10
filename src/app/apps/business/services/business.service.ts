@@ -1,6 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
+import { BusinessDetail, FrequentlyAskedQuestion, FrequentlyAskedResult, ServiceAreaResult, ServiceResult } from '../models/business.model';
+import { Observable } from 'rxjs';
+import { Category } from '../../sharedmodule/models/category';
 
 const authToken = localStorage.getItem('access_token');
 const headers = new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
@@ -35,7 +38,8 @@ export class BusinessService {
     page: number = 1,
     pageSize: number = 10,
     categories: string[] = [],
-    locations: string[] = []
+    locations: string[] = [],
+    search: string = ''
   ) {
     const token = localStorage.getItem('access_token')?.replace(/^"|"$/g, '');
     const headers = new HttpHeaders({
@@ -51,6 +55,9 @@ export class BusinessService {
     if (locations.length > 0) {
       params = params.set('service_areas', locations.join(','));
     }
+    if (search.trim() !== '') {
+    params = params.set('search', search.trim());
+  }
 
     return this.http.get(`${this.baseUrl}business/business-list/`, {
       headers,
@@ -120,26 +127,26 @@ export class BusinessService {
   //   });
   // }
 
-  getBusinessDetail(id: string) {
-    return this.http.get(`${this.baseUrl}business/business-list/${id}`, {
+  getBusinessDetail(id: string): Observable<BusinessDetail> {
+    return this.http.get<BusinessDetail>(`${this.baseUrl}business/business-list/${id}`, {
       headers: headers,
     });
   }
 
-  getCategories() {
-    return this.http.get(`${this.baseUrl}service/category/`, {
+  getCategories(): Observable<Category> {
+    return this.http.get<Category>(`${this.baseUrl}service/category/`, {
       headers: headers,
     });
   }
 
-  getFAQS() {
-    return this.http.get(`${this.baseUrl}business/frequently-asked-question/`, {
+  getFAQS(): Observable<FrequentlyAskedResult> {
+    return this.http.get<FrequentlyAskedResult>(`${this.baseUrl}business/frequently-asked-question/`, {
       headers: headers,
     });
   }
 
-  addFAQS(data: FormData) {
-    return this.http.post(
+  addFAQS(data: FormData): Observable<FrequentlyAskedQuestion> {
+    return this.http.post<FrequentlyAskedQuestion>(
       `${this.baseUrl}/business/frequently-asked-question/`,
       data,
       {
@@ -165,7 +172,7 @@ export class BusinessService {
     pageSize: number = 10,
     search: string = '',
     category?: number
-  ) {
+  ): Observable<ServiceResult> {
     const params: any = {
       page: page,
       page_size: pageSize,
@@ -177,7 +184,7 @@ export class BusinessService {
       params.category = category;
     }
 
-    return this.http.get(`${this.baseUrl}business/services/`, {
+    return this.http.get<ServiceResult>(`${this.baseUrl}business/services/`, {
       headers,
       params,
     });
@@ -187,14 +194,14 @@ export class BusinessService {
     page: number = 1,
     pageSize: number = 10,
     search: string = ''
-  ) {
+  ): Observable<ServiceAreaResult> {
     const params: any = {
       page: page,
       page_size: pageSize,
       search: search,
     };
 
-    return this.http.get(`${this.baseUrl}business/service-areas/`, {
+    return this.http.get<ServiceAreaResult>(`${this.baseUrl}business/service-areas/`, {
       headers,
       params,
     });

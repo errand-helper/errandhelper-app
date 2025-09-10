@@ -39,25 +39,23 @@
         </div>
 
         <!-- Location  -->
-         <!-- Location -->
-<div class="filter-group">
-  <div class="filter-title">Location</div>
-  @if(serviceAreas?.length > 0){
-    @for(area of serviceAreas; track $index){
-      <label class="filter-checkbox">
-        <input
-          type="checkbox"
-          [value]="area.area_name"
-          [checked]="selectedLocations.includes(area.area_name)"
-          (change)="onLocationChange($event, area.area_name)"
-        />
-        <span>{{ area.area_name }}</span>
-        <span class="filter-badge">{{ area.business_count }}</span>
-      </label>
-    }
-  }
-</div>
-
+        <!-- Location -->
+        <div class="filter-group">
+          <div class="filter-title">Location</div>
+          @if(serviceAreas?.length > 0){ @for(area of serviceAreas; track
+          $index){
+          <label class="filter-checkbox">
+            <input
+              type="checkbox"
+              [value]="area.area_name"
+              [checked]="selectedLocations.includes(area.area_name)"
+              (change)="onLocationChange($event, area.area_name)"
+            />
+            <span>{{ area.area_name }}</span>
+            <span class="filter-badge">{{ area.business_count }}</span>
+          </label>
+          } }
+        </div>
 
         <!-- <div class="filter-group">
           <div class="filter-title">Location</div>
@@ -120,23 +118,13 @@
               class="search-input"
               placeholder="Search for services or providers..."
               id="searchInput"
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="onSearchChange($event)"
             />
-            <button class="search-button">
+            <button class="search-button" disabled>
               <i class="fas fa-search"></i>
             </button>
           </div>
-        </div>
-
-        <div class="sort-dropdown">
-          <label class="me-2 text-muted">Sort by:</label>
-          <select class="form-select form-select-sm" style="width: auto">
-            <option value="recommended">Recommended</option>
-            <option value="rating">Highest Rated</option>
-            <option value="price-low">Price: Low to High</option>
-            <option value="price-high">Price: High to Low</option>
-            <option value="distance">Nearest First</option>
-            <option value="jobs">Most Jobs Completed</option>
-          </select>
         </div>
       </div>
 
