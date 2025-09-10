@@ -69,64 +69,6 @@ export class BusinessService {
   return this.http.get(`${this.baseUrl}business/stats/`);
 }
 
-
-  //   getBusinessList(
-  //   page: number = 1,
-  //   pageSize: number = 10,
-  //   categories: string[] = [],
-  //   locations: string[] = [] // <-- add this
-  // ) {
-  //   const token = localStorage.getItem('access_token')?.replace(/^"|"$/g, '');
-  //   const headers = new HttpHeaders({
-  //     Authorization: `Bearer ${token}`,
-  //   });
-
-  //   let params = new HttpParams().set('page', page).set('page_size', pageSize);
-
-  //   // Append selected categories
-  //   const uniqueCategories = [...new Set(categories)];
-  //   uniqueCategories.forEach((id) => {
-  //     params = params.append('categories', id.toString());
-  //   });
-
-  //   // Append selected locations
-  //   const uniqueLocations = [...new Set(locations)];
-  //   uniqueLocations.forEach((location) => {
-  //     params = params.append('service_areas', location);
-  //   });
-
-  //   return this.http.get(`${this.baseUrl}business/business-list/`, {
-  //     headers,
-  //     params,
-  //   });
-  // }
-
-  // getBusinessList(
-  //   page: number = 1,
-  //   pageSize: number = 10,
-  //   categories: string[] = [],
-  // ) {
-  //   const token = localStorage.getItem('access_token')?.replace(/^"|"$/g, '');
-  //   const headers = new HttpHeaders({
-  //     Authorization: `Bearer ${token}`,
-  //   });
-
-  //   let params = new HttpParams().set('page', page).set('page_size', pageSize);
-
-  //   if (status) params = params.set('status', status);
-
-  //   // Ensure unique categories
-  //   const uniqueCategories = [...new Set(categories)];
-  //   uniqueCategories.forEach((id) => {
-  //     params = params.append('categories', id.toString());
-  //   });
-
-  //   return this.http.get(`${this.baseUrl}business/business-list/`, {
-  //     headers,
-  //     params,
-  //   });
-  // }
-
   getBusinessDetail(id: string): Observable<BusinessDetail> {
     return this.http.get<BusinessDetail>(`${this.baseUrl}business/business-list/${id}`, {
       headers: headers,
