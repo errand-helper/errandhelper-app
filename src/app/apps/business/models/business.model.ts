@@ -16,6 +16,7 @@ export interface BusinessDetail {
   registration_number: string;
   kra_pin: string;
   social_links: SocialLink;
+  available:Boolean;
 }
 
 export interface FrequentlyAskedQuestion {

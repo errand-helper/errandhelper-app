@@ -30,9 +30,20 @@
           {{ business_details?.business_tagline }}
         </p>
         <div class="provider-badges">
-          <span class="badge-item badge-verified">
+          <span class="badge-item badge-licensed">
             <i class="fas fa-check-circle"></i>
-            Verified Business
+            Verified
+          </span>
+          <span
+          class="badge-item"
+          [ngClass]="{
+                'badge-verified': business_details?.available === true,
+                'day-busy': business_details?.available === false
+              }"
+          >
+            <i class="fas fa-check-circle"></i>
+            <span *ngIf="!business_details?.available">UnAvailable</span>
+            <span *ngIf="business_details?.available">Available</span>
           </span>
         </div>
       </div>
@@ -650,61 +661,8 @@
         <p class="review-content">
           Excellent service! Quick Errands Co. has been handling my weekly
           grocery shopping for the past 3 months, and I couldn't be happier.
-          They always get exactly what I need and even suggest alternatives when
-          items are out of stock. Highly recommended!
         </p>
         <span class="review-service">Grocery Shopping</span>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header">
-          <div class="reviewer-info">
-            <div class="reviewer-avatar">SJ</div>
-            <div>
-              <div class="reviewer-name">Sarah Johnson</div>
-              <div class="review-date">1 week ago</div>
-            </div>
-          </div>
-          <div class="review-rating">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-          </div>
-        </div>
-        <p class="review-content">
-          I needed urgent document delivery to multiple locations, and Quick
-          Errands Co. saved the day! They were professional, fast, and kept me
-          updated throughout the entire process. Will definitely use their
-          services again.
-        </p>
-        <span class="review-service">Package Delivery</span>
-      </div>
-
-      <div class="review-item">
-        <div class="review-header">
-          <div class="reviewer-info">
-            <div class="reviewer-avatar">MS</div>
-            <div>
-              <div class="reviewer-name">Mike Smith</div>
-              <div class="review-date">2 weeks ago</div>
-            </div>
-          </div>
-          <div class="review-rating">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-          </div>
-        </div>
-        <p class="review-content">
-          As a busy professional, I don't have time for errands. Quick Errands
-          Co. has been a lifesaver! From pharmacy runs to banking tasks, they
-          handle everything efficiently. Great communication and always on time.
-        </p>
-        <span class="review-service">Administrative Tasks</span>
       </div>
     </div>
 
@@ -719,18 +677,25 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      @if(!showAvailabilityForm){
+      <!-- @if(!showAvailabilityForm){ -->
       <h2>Availability</h2>
-      }@else {
-      <h2>Location & Business Hours</h2>
+      <!-- } -->
+      <!-- @else {
+      <h2>Set Availability</h2>
+      } -->
+      <!-- <div class="d-flex justify-content-between align-items-center mb-3">
+        <button
+          class="btn btn-sm rounded-pill px-3 btn-primary"
+          (click)="toggleAvailabilityForm()"
+        >
+          <i class="bi bi-pencil-square me-1"></i>
+          Set Availability
+        </button>
+      </div> -->
 
-      }
-      <button class="btn btn-primary" (click)="toggleAvailabilityForm()">
-        <i class="fas fa-edit me-2"></i>Add Availability
-      </button>
     </div>
-    @if(!showAvailabilityForm){
-    <div
+    <!-- @if(!showAvailabilityForm){ -->
+    <!-- <div
       class="d-md-flex d-lg-flex d-sm-block justify-content-between items-center"
     >
       <div class="w-50 p-2">
@@ -740,12 +705,8 @@
             <span>Available</span>
           </div>
           <div class="legend-item">
-            <div class="legend-color legend-limited"></div>
-            <span>Limited Availability</span>
-          </div>
-          <div class="legend-item">
             <div class="legend-color legend-busy"></div>
-            <span>Fully Booked</span>
+            <span>UnAvailable</span>
           </div>
         </div>
         <div class="calendar-widget">
@@ -766,7 +727,6 @@
             <div class="text-muted small">T</div>
             <div class="text-muted small">F</div>
             <div class="text-muted small">S</div>
-
             <div class="calendar-day">1</div>
             <div class="calendar-day">2</div>
             <div class="calendar-day">3</div>
@@ -800,197 +760,135 @@
             <div class="calendar-day">31</div>
           </div>
         </div>
-        <div class="mt-3">
-          <p class="text-muted mb-2">
-            Next available slot: <strong>Today at 2:00 PM</strong>
-          </p>
-          <button class="btn btn-primary">Book Now</button>
-        </div>
       </div>
       <div class="w-50 p-2">
         <h5 class="mb-3">
-          <strong>Business Hours</strong>
+          <strong>Slots Available</strong>
         </h5>
-        <div class="row">
-          <!-- <div class="col-md-6">
-            <div class="mb-2">
-              <label class="form-label">Monday - Friday</label>
-              <div class="d-flex gap-2">
-                <input
-                  type="time"
-                  class="form-control"
-                  id="weekdayOpen"
-                  value="07:00"
-                />
-                <span class="align-self-center">to</span>
-                <input
-                  type="time"
-                  class="form-control"
-                  id="weekdayClose"
-                  value="21:00"
-                />
-              </div>
-            </div>
-            <div class="mb-2">
-              <label class="form-label">Saturday</label>
-              <div class="d-flex gap-2">
-                <input
-                  type="time"
-                  class="form-control"
-                  id="saturdayOpen"
-                  value="08:00"
-                />
-                <span class="align-self-center">to</span>
-                <input
-                  type="time"
-                  class="form-control"
-                  id="saturdayClose"
-                  value="20:00"
-                />
-              </div>
-            </div>
-            <div class="mb-2">
-              <label class="form-label">Sunday</label>
-              <div class="d-flex gap-2">
-                <input
-                  type="time"
-                  class="form-control"
-                  id="sundayOpen"
-                  value="09:00"
-                />
-                <span class="align-self-center">to</span>
-                <input
-                  type="time"
-                  class="form-control"
-                  id="sundayClose"
-                  value="18:00"
-                />
-              </div>
-            </div>
-          </div> -->
-          <div class="col-md-6">
-            <h5 class="mb-3">Business Hours</h5>
+        <div class="">
+          <div class="">
             <ul class="list-unstyled">
-              <li class="mb-2">Monday - Friday: 7:00 AM - 9:00 PM</li>
-              <li class="mb-2">Saturday: 8:00 AM - 8:00 PM</li>
-              <li class="mb-2">Sunday: 9:00 AM - 6:00 PM</li>
-              <li class="mb-2 text-success">
-                <i class="fas fa-bolt me-2"></i>Emergency services available
-                24/7
-              </li>
-              <li class="mb-2 text-warning">
-                <i class="fas fa-bolt me-2"></i>Available on weekends
-              </li>
-              <li class="mb-2 text-danger">
-                <i class="fas fa-bolt me-2"></i>Available on holidays
+              <li class="mb-2">
+                <span>2025-09-10: </span>
+                <span>
+                  <span>From</span> &nbsp;
+                  <input type="time" />
+                </span>
+                -
+                <span>
+                  <span>To</span> &nbsp;
+                  <input type="time" />
+                </span>
               </li>
             </ul>
+          </div>
+        </div>
+        <div class="mt-3">
+          <button class="btn btn-primary">Book Now</button>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- } -->
+    <!-- @if(showAvailabilityForm) { -->
+    <div class="">
+      <div class="">
+        <div class="availability-card fade-in">
+          <div
+            class="selection-feedback text-center"
+            [ngClass]="{ show: showFeedback }"
+          >
+            <div
+              class="alert border-0 rounded-3 mb-3"
+              [ngClass]="{
+                'alert-success': business_details?.available === true,
+                'alert-danger': business_details?.available === false
+              }"
+              role="alert"
+            >
+              <ng-container *ngIf="business_details?.available === true">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                You're now marked as <strong>Available</strong>
+              </ng-container>
+              <ng-container *ngIf="business_details?.available === false">
+                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                You're now marked as <strong>Unavailable</strong>
+              </ng-container>
+            </div>
+          </div>
+
+          <p class="mb-2 opacity-90 fw-bold">Update your availability status</p>
+          <span *ngIf="!selectedStatus">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            Please select your availability status
+          </span>
+          <!-- Main Content -->
+          <div>
+            <div class="row w-50 mb-4">
+              <div class="col-6">
+                <div
+                  class="availability-option available p-4 h-100 text-center"
+                  [ngClass]="{
+                    selected: selectedStatus === 'available',
+                    'pulse-animation':
+                      selectedStatus === 'available' && showPulse
+                  }"
+                  (click)="selectOption('available')"
+                >
+                  <div class="status-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                  </div>
+                  <h5 class="fw-bold text-success mb-2">Available</h5>
+                  <p class="text-muted small mb-0">
+                    Ready to take on new tasks and meetings
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div
+                  class="availability-option unavailable p-4 h-100 text-center"
+                  [ngClass]="{
+                    selected: selectedStatus === 'unavailable',
+                    'pulse-animation':
+                      selectedStatus === 'unavailable' && showPulse
+                  }"
+                  (click)="selectOption('unavailable')"
+                >
+                  <div class="status-icon">
+                    <i class="bi bi-x-circle-fill"></i>
+                  </div>
+                  <h5 class="fw-bold text-danger mb-2">Unavailable</h5>
+                  <p class="text-muted small mb-0">
+                    Currently busy or away from work
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Selection Feedback -->
+            <div
+              class="selection-feedback"
+              [ngClass]="{ show: showFeedback }"
+            >
+
+              <button
+                class="btn btn-set-availability btn-primary"
+                (click)="saveAvailability()"
+                [disabled]="!selectedStatus"
+              >
+                <ng-container>
+                  <i class="bi bi-check-lg me-2"></i>
+                  Save
+                </ng-container>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    } @if(showAvailabilityForm) {
-    <!-- Location & Hours Section -->
-    <div class="form-section">
-      <h5 class="mb-3">
-        <strong>Business Hours</strong>
-      </h5>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="mb-2">
-            <label class="form-label">Monday - Friday</label>
-            <div class="d-flex gap-2">
-              <input
-                type="time"
-                class="form-control"
-                id="weekdayOpen"
-                value="07:00"
-              />
-              <span class="align-self-center">to</span>
-              <input
-                type="time"
-                class="form-control"
-                id="weekdayClose"
-                value="21:00"
-              />
-            </div>
-          </div>
-          <div class="mb-2">
-            <label class="form-label">Saturday</label>
-            <div class="d-flex gap-2">
-              <input
-                type="time"
-                class="form-control"
-                id="saturdayOpen"
-                value="08:00"
-              />
-              <span class="align-self-center">to</span>
-              <input
-                type="time"
-                class="form-control"
-                id="saturdayClose"
-                value="20:00"
-              />
-            </div>
-          </div>
-          <div class="mb-2">
-            <label class="form-label">Sunday</label>
-            <div class="d-flex gap-2">
-              <input
-                type="time"
-                class="form-control"
-                id="sundayOpen"
-                value="09:00"
-              />
-              <span class="align-self-center">to</span>
-              <input
-                type="time"
-                class="form-control"
-                id="sundayClose"
-                value="18:00"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-check mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="emergencyService"
-            />
-            <label class="form-check-label" for="emergencyService">
-              Emergency services available 24/7
-            </label>
-          </div>
-          <div class="form-check mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="weekendAvailable"
-            />
-            <label class="form-check-label" for="weekendAvailable">
-              Available on weekends
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="holidayAvailable"
-            />
-            <label class="form-check-label" for="holidayAvailable">
-              Available on holidays
-            </label>
-          </div>
-        </div>
-      </div>
-      <button type="button" class="btn btn-add">
-        <i class="fas fa-plus me-2"></i>Save
-      </button>
-    </div>
-    }
+    <!-- } -->
   </div>
 
   <!-- Service Area Section -->
@@ -1130,7 +1028,11 @@
               </tr>
             </tbody>
           </table>
-          <button type="button" class="btn btn-add" (click)="submitServiceArea()">
+          <button
+            type="button"
+            class="btn btn-add"
+            (click)="submitServiceArea()"
+          >
             <i class="fas fa-plus me-2"></i>Save
           </button>
         </div>
@@ -1226,7 +1128,10 @@
       }@else {
       <h2>Frequently Asked Questions</h2>
       }
-      <button class="btn btn-primary" (click)="toggleFrequentlyAskedQuestionsForm()">
+      <button
+        class="btn btn-primary"
+        (click)="toggleFrequentlyAskedQuestionsForm()"
+      >
         <i class="fas fa-edit me-2"></i>Edit
       </button>
     </div>

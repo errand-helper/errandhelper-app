@@ -16,6 +16,11 @@ import {
 } from '../../models/business.model';
 import { Category } from '../../../sharedmodule/models/category';
 
+interface StatusHistoryItem {
+  status: 'available' | 'unavailable';
+  timestamp: Date;
+}
+
 @Component({
   selector: 'app-b-profile',
   templateUrl: './b-profile.component.html',
@@ -54,6 +59,14 @@ export class BProfileComponent {
   showServiceAreaForm = false;
   showFrequentlyAskedQuestionsForm = false;
   showAvailabilityForm = false;
+
+  selectedStatus: 'available' | 'unavailable' | null = null;
+  showFeedback = false;
+  showPulse = false;
+  isSaving = false;
+  savedStatus = false;
+  editMode = true;
+  // statusHistory: StatusHistoryItem[] = [];
 
   constructor(
     private _businessService: BusinessService,
@@ -110,6 +123,21 @@ export class BProfileComponent {
           this.logoInitials = 'BN';
         }
       });
+
+    setTimeout(() => {
+      this.showFeedback = true;
+    }, 500);
+
+    // Load from localStorage
+    // const savedData = localStorage.getItem('availabilityStatus');
+    // if (savedData) {
+    //   const data = JSON.parse(savedData);
+    //   this.selectedStatus = data.status;
+    //   this.statusHistory = data.history.map((h: any) => ({
+    //     status: h.status,
+    //     timestamp: new Date(h.timestamp)
+    //   }));
+    // }
     this.getBusinessInfo();
     this.getCategories();
     this.getServices();
@@ -296,7 +324,7 @@ export class BProfileComponent {
       .subscribe((res: BusinessDetail) => {
         this.business_details = res;
         this.faqs = this.business_details.frequently_asked_questions || [];
-      
+
         if (this.business_details) {
           // ✅ Prefill form with fetched data
           this.basicInfoForm.patchValue({
@@ -400,9 +428,9 @@ export class BProfileComponent {
     this.showServiceForm = !this.showServiceForm;
   }
 
-  toggleAvailabilityForm() {
-    this.showAvailabilityForm = !this.showAvailabilityForm;
-  }
+  // toggleAvailabilityForm() {
+  //   this.showAvailabilityForm = !this.showAvailabilityForm;
+  // }
 
   toggleFrequentlyAskedQuestionsForm() {
     this.showFrequentlyAskedQuestionsForm =
@@ -416,4 +444,53 @@ export class BProfileComponent {
   navigateBack() {
     window.history.back();
   }
+
+
+  selectOption(status: 'available' | 'unavailable'): void {
+    // if (!this.editMode) return;
+    this.selectedStatus = status;
+    this.showPulse = true;
+    this.savedStatus = false;
+
+    // console.log(this.savedStatus);
+
+
+    // setTimeout(() => {
+    //   this.showPulse = false;
+    // }, 2000);
+  }
+
+  saveAvailability(): void {
+    if (!this.selectedStatus) {
+      alert('Please select an availability status first');
+      return;
+    }
+    // true if available, false if unavailable
+    const isAvailable = this.selectedStatus === 'available';
+    // console.log(isAvailable);
+    this.isSaving = true;
+    const data = {
+      "available":isAvailable
+    }
+    console.log(data);
+    // this.isSaving = false
+    this.savedStatus = true
+    // return
+    this._businessService.updateAvailability(data).subscribe((res:any)=>{
+      // console.log(res);
+      this.getBusinessInfo()
+
+    })
+
+  }
+
+  // toggleEditMode(): void {
+  //   this.editMode = !this.editMode;
+  // }
+
+  // capitalize(word: string): string {
+  //   return word ? word.charAt(0).toUpperCase() + word.slice(1) : '';
+  // }
 }
+
+// }

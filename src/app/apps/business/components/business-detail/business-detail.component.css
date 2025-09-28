@@ -446,6 +446,8 @@
   background-color: var(--light-gray);
   border-radius: 10px;
   padding: 20px;
+    width: fit-content;
+
 }
 
 .calendar-header {
@@ -964,3 +966,6 @@ button:disabled {
 .remove-logo-btn:hover {
   background: rgba(255, 0, 0, 0.8);
 }
+
+
+

@@ -250,6 +250,7 @@
   background-color: var(--light-gray);
   border-radius: 8px;
   padding: 20px;
+  width: fit-content;
 }
 
 .calendar-header {

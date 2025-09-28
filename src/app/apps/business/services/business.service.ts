@@ -169,6 +169,11 @@ export class BusinessService {
   }
 
 
+  updateAvailability(data:any){
+    return this.http.patch(`${this.baseUrl}business/availability/`,data, {
+      headers: headers
+    })
+  }
 
 
 
