@@ -31,13 +31,15 @@ export class BusinessDetailComponent implements OnInit {
   getBusinessInfo() {
     this._businessService.getBusinessDetail(this.businessId).subscribe((res:any)=>{
       this.business_details = res;
-      this.faqs = res.frequently_asked_questions;
+      this.faqs = res.frequently_asked_question;
     })
   }
 
 
 
   toggleFAQ(index: number) {
+    console.log('index',index);
+
     this.faqs[index].isOpen = !this.faqs[index].isOpen;
   }
 

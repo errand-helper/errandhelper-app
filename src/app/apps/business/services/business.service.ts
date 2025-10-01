@@ -70,7 +70,7 @@ export class BusinessService {
 }
 
   getBusinessDetail(id: string): Observable<BusinessDetail> {
-    return this.http.get<BusinessDetail>(`${this.baseUrl}business/business-list/${id}`, {
+    return this.http.get<BusinessDetail>(`${this.baseUrl}business/business-details/${id}`, {
       headers: headers,
     });
   }
@@ -103,7 +103,7 @@ export class BusinessService {
     });
   }
 
-  updateService(data: FormData, id: string) {
+  updateService(data: FormData, id: string | undefined) {
     return this.http.put(`${this.baseUrl}/business/services/${id}/`, data, {
       headers: headers,
     });

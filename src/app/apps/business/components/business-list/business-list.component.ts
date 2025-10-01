@@ -24,6 +24,12 @@ export class BusinessListComponent implements OnInit, OnDestroy {
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
 
+  showAllCategories = false;
+
+  toggleCategories() {
+    this.showAllCategories = !this.showAllCategories;
+  }
+
   constructor(private _businessService: BusinessService,) {}
 
   ngOnInit() {

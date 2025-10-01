@@ -30,11 +30,11 @@ export class UpdateServiceComponent implements OnInit {
   private toastr = inject(ToastrService);
 
   @Input() service_name!: string;
-  @Input() category!: string;
-  @Input() price_type!: string;
-  @Input() price_from!: string;
-  @Input() price_to!: string;
-  @Input() service_id!:string;
+  @Input() category!: string | undefined;
+  @Input() price_type!: string | undefined;
+  @Input() price_from!: string | undefined;
+  @Input() price_to!: string | undefined;
+  @Input() service_id!:string | undefined;
   @Output() serviceUpdated = new EventEmitter<void>();
 
   serviceInfoForm!: FormGroup;

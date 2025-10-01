@@ -36,7 +36,7 @@ export class BProfileComponent {
   businessId!: string;
   business_details: BusinessDetail | null = null;
   categories: Category[] = [];
-  logged_in_user!: string | null;
+  // logged_in_user!: string | null;
   private modalService = inject(NgbModal);
 
   area: string = '';
@@ -87,14 +87,14 @@ export class BProfileComponent {
       business_description: ['', Validators.required],
       registration_number: ['', Validators.required],
       kra_pin: ['', Validators.required],
-      facebook: [''],
-      twitter: [''],
-      linkedin: [''],
-      instagram: [''],
-      website: [''],
+      facebook: ['',Validators.pattern(/https?:\/\/.+/)],
+      twitter: ['',Validators.pattern(/https?:\/\/.+/)],
+      linkedin: ['',Validators.pattern(/https?:\/\/.+/)],
+      instagram: ['',Validators.pattern(/https?:\/\/.+/)],
+      website: ['',Validators.pattern(/https?:\/\/.+/)],
     });
 
-    this.logged_in_user = JSON.parse(localStorage.getItem('user_id') || 'null');
+    // this.logged_in_user = JSON.parse(localStorage.getItem('user_id') || 'null');
 
     this.serviceInfoForm = this.fb.group({
       name: ['', Validators.required],
@@ -128,16 +128,7 @@ export class BProfileComponent {
       this.showFeedback = true;
     }, 500);
 
-    // Load from localStorage
-    // const savedData = localStorage.getItem('availabilityStatus');
-    // if (savedData) {
-    //   const data = JSON.parse(savedData);
-    //   this.selectedStatus = data.status;
-    //   this.statusHistory = data.history.map((h: any) => ({
-    //     status: h.status,
-    //     timestamp: new Date(h.timestamp)
-    //   }));
-    // }
+
     this.getBusinessInfo();
     this.getCategories();
     this.getServices();
@@ -295,10 +286,22 @@ export class BProfileComponent {
     });
   }
 
+//   getFAQS() {
+//   this._businessService.getFAQS().subscribe((res: any) => {
+//     console.log('API response:', res);
+//     this.faqs = res.results || []; // ensure array
+//     console.log('faqs set:', this.faqs.length);
+//   });
+// }
+// trackByFaqId(index: number, faq: any) {
+//   return faq.id;  // helps Angular efficiently render lists
+// }
+
   // getFAQS() {
-  //   this._businessService.getFAQS().subscribe((res: Result) => {
-  //     console.log('getFAQS()', res);
+  //   this._businessService.getFAQS().subscribe((res: any) => {
   //     this.faqs = res.results;
+  //     console.log('getFAQS()', this.faqs.length);
+
   //   });
   // }
 
@@ -323,7 +326,7 @@ export class BProfileComponent {
       .getBusinessDetail(this.businessId)
       .subscribe((res: BusinessDetail) => {
         this.business_details = res;
-        this.faqs = this.business_details.frequently_asked_questions || [];
+        this.faqs = this.business_details.frequently_asked_question || [];
 
         if (this.business_details) {
           // ✅ Prefill form with fetched data

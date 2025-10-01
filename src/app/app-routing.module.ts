@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'profile', loadChildren: () => import('./apps/profile/profile.module').then(m => m.ProfileModule),canActivate: [authGuard] },
   { path: 'business', loadChildren: () => import('./apps/business/business.module').then(m => m.BusinessModule),canActivate: [authGuard] },
   { path: 'client', loadChildren: () => import('./apps/customer/customer.module').then(m => m.CustomerModule),canActivate: [authGuard] },
+  { path: 'errands', loadChildren: () => import('./apps/errand/errand.module').then(m => m.ErrandModule),canActivate: [authGuard] },
   {path:'messages',component:MessagesComponent},
   {path:'homepage',component:HomepageComponent},
   {path:'**',redirectTo:'/homepage'}

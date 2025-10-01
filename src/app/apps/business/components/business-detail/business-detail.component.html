@@ -9,7 +9,7 @@
         (click)="navigateBack()"
         class="btn btn-link text-decoration-none badge-item badge-insured"
       >
-        <i class="fas fa-arrow-left me-2"></i>Back to Providers
+        <i class="fas fa-arrow-left me-2"></i>Back
       </button>
     </div>
   </div>
@@ -17,18 +17,42 @@
   <!-- Profile Header -->
   <div class="profile-header">
     <div class="provider-info">
-      <div class="provider-logo">QE</div>
+      <div class="provider-logo">
+        <img
+          [src]="business_details?.business_logo"
+          alt="Business Logo"
+          style="width: 100%; height: 100%; border-radius: 15px"
+        />
+      </div>
       <div class="provider-details">
         <h1 class="provider-name">{{ business_details?.business_name }}</h1>
         <p class="provider-tagline">
           {{ business_details?.business_tagline }}
         </p>
         <div class="provider-badges">
+          <span class="badge-item badge-licensed">
+            <i class="fas fa-check-circle"></i>
+             <span *ngIf="!business_details?.is_verified">Not Verified</span>
+            <span *ngIf="business_details?.is_verified">Verified</span>
+          </span>
+          <span
+            class="badge-item"
+            [ngClass]="{
+              'badge-verified': business_details?.available === true,
+              'day-busy': business_details?.available === false
+            }"
+          >
+            <i class="fas fa-check-circle"></i>
+            <span *ngIf="!business_details?.available">UnAvailable</span>
+            <span *ngIf="business_details?.available">Available</span>
+          </span>
+        </div>
+        <!-- <div class="provider-badges">
           <span class="badge-item badge-verified">
             <i class="fas fa-check-circle"></i>
             Verified Business
           </span>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -63,7 +87,10 @@
     </div>
 
     <div class="profile-actions mt-4">
-      <button class="btn btn-hire-now">
+      <button
+        class="btn btn-hire-now"
+        [routerLink]="['/errands/create', business_details?.id]"
+      >
         <i class="fas fa-briefcase me-2"></i>Hire Now
       </button>
       <button class="btn btn-message">
@@ -99,7 +126,7 @@
     >
       <h2>Our Services</h2>
     </div>
-  }
+    }
     <div class="services-grid">
       @for(service of business_details?.services; track service; let i = $index)
       {
@@ -313,10 +340,10 @@
     }
 
     <div class="coverage-list">
-      @for(area of business_details?.service_areas; track area; let i = $index){
+      @for(area of business_details?.service_area; track area; let i = $index){
       <div class="coverage-item">
         <i class="fas fa-check-circle"></i>
-        <span>{{ area }}</span>
+        <span>{{ area.area_name }}</span>
       </div>
       }@empty{
       <div class="coverage-item">
@@ -330,7 +357,6 @@
   <div class="profile-section">
     <div class="faq-list">
       <div class="faq-list">
-        @if(business_details?.frequently_asked_questions?.length > 0){
         <div
           class="section-title"
           style="
@@ -341,31 +367,35 @@
         >
           <h2>Frequently Asked Questions</h2>
         </div>
-      }
-        @for (faq of business_details?.frequently_asked_questions; track faq.id;
-        let i = $index) {
-
-        <div class="faq-item">
-          <div
-            class="faq-question"
-            (click)="toggleFAQ(i)"
-            [class.active]="faq.isOpen"
-          >
-            <span>{{ faq.question }}</span>
-            <i
-              class="fas"
-              [ngClass]="faq.isOpen ? 'fa-chevron-up' : 'fa-chevron-down'"
-            ></i>
+        <!-- } -->
+        <!-- @if(business_details?.frequently_asked_question?.length > 0){ @for (faq
+        of business_details?.frequently_asked_question; track faq.id; let i =
+        $index) { -->
+        <div *ngIf="business_details?.frequently_asked_question?.length > 0">
+          <div class="faq-item" *ngFor="let faq of business_details?.frequently_asked_question; let i = index">
+            <div
+              class="faq-question"
+              (click)="toggleFAQ(i)"
+              [class.active]="faq.isOpen"
+            >
+              <span>{{ faq.question }}</span>
+              <i
+                class="fas"
+                [ngClass]="faq.isOpen ? 'fa-chevron-up' : 'fa-chevron-down'"
+              ></i>
+            </div>
+            @if (faq.isOpen) {
+            <div class="faq-answer">
+              <p>{{ faq.answer }}</p>
+            </div>
+            }
           </div>
-          @if (faq.isOpen) {
-          <div class="faq-answer">
-            <p>{{ faq.answer }}</p>
-          </div>
-          }
         </div>
-        }@empty{
+
+        <!-- }} -->
+        <!-- @empty{
         <h5 class="service-name">No Frequently Asked Questions</h5>
-        }
+        } -->
       </div>
     </div>
   </div>

@@ -9,7 +9,7 @@ export interface BusinessDetail {
   category: Category[];
   service_areas: ServiceArea[];
   services: Service[];
-  frequently_asked_questions: FrequentlyAskedQuestion[];
+  frequently_asked_question: FrequentlyAskedQuestion[];
   business_logo: string;
   business_email: string;
   business_phone: string;
@@ -17,6 +17,7 @@ export interface BusinessDetail {
   kra_pin: string;
   social_links: SocialLink;
   available:Boolean;
+  is_verified:Boolean;
 }
 
 export interface FrequentlyAskedQuestion {

@@ -133,7 +133,11 @@
         <div class="business-card" *ngFor="let business of business_list">
           <div class="business-header">
             <div class="business-logo">
-              <img src="{{ business.business_logo }}" alt="" />
+              <img
+                src="{{ business.business_logo }}"
+                alt="Business logo"
+                style="width: 100%; height: 100%; border-radius: 15px"
+              />
             </div>
             <div class="business-info">
               <h4 class="business-name">{{ business.business_name }}</h4>
@@ -155,14 +159,36 @@
             </div>
           </div>
           <div class="business-services">
+            <!-- Categories -->
             <span
+              class="service-tag"
+              *ngFor="
+                let category of showAllCategories
+                  ? business?.category
+                  : (business?.category | slice : 0 : 5)
+              "
+            >
+              {{ category }}
+            </span>
+
+            <!-- Toggle link -->
+            <span
+              class="service-tag more"
+              *ngIf="business?.category?.length > 5"
+              (click)="toggleCategories()"
+              style="cursor: pointer; font-weight: bold;color: blue;"
+            >
+              {{ showAllCategories ? "show less" : "... more services" }}
+            </span>
+
+            <!-- <span
               class="service-tag"
               *ngFor="let category of business?.category"
               >{{ category }}</span
-            >
+            > -->
           </div>
           <p class="business-description">
-            {{ business.business_description }}
+            {{ business.business_tagline }}
           </p>
           <div class="business-footer">
             <div class="business-stats">
@@ -182,7 +208,12 @@
               >
                 View Profile
               </button>
-              <button class="btn btn-hire">Hire Now</button>
+              <button
+                class="btn btn-hire"
+                [routerLink]="['/errands/create', business.id]"
+              >
+                Hire Now
+              </button>
             </div>
           </div>
         </div>

@@ -15,7 +15,7 @@
         (click)="navigateBack()"
         class="btn btn-link text-decoration-none badge-item badge-insured"
       >
-        <i class="fas fa-arrow-left me-2"></i>Back to Providers
+        <i class="fas fa-arrow-left me-2"></i>Back
       </button>
     </div>
   </div>
@@ -23,7 +23,13 @@
   <!-- Profile Header -->
   <div class="profile-header">
     <div class="provider-info">
-      <div class="provider-logo">QE</div>
+      <div class="provider-logo">
+        <img
+          [src]="business_details?.business_logo"
+          alt="Business Logo"
+          style="width: 100%; height: 100%; border-radius: 15px"
+        />
+      </div>
       <div class="provider-details">
         <h1 class="provider-name">{{ business_details?.business_name }}</h1>
         <p class="provider-tagline">
@@ -32,14 +38,15 @@
         <div class="provider-badges">
           <span class="badge-item badge-licensed">
             <i class="fas fa-check-circle"></i>
-            Verified
+             <span *ngIf="!business_details?.is_verified">Not Verified</span>
+            <span *ngIf="business_details?.is_verified">Verified</span>
           </span>
           <span
-          class="badge-item"
-          [ngClass]="{
-                'badge-verified': business_details?.available === true,
-                'day-busy': business_details?.available === false
-              }"
+            class="badge-item"
+            [ngClass]="{
+              'badge-verified': business_details?.available === true,
+              'day-busy': business_details?.available === false
+            }"
           >
             <i class="fas fa-check-circle"></i>
             <span *ngIf="!business_details?.available">UnAvailable</span>
@@ -692,7 +699,6 @@
           Set Availability
         </button>
       </div> -->
-
     </div>
     <!-- @if(!showAvailabilityForm){ -->
     <!-- <div
@@ -867,11 +873,7 @@
             </div>
 
             <!-- Selection Feedback -->
-            <div
-              class="selection-feedback"
-              [ngClass]="{ show: showFeedback }"
-            >
-
+            <div class="selection-feedback" [ngClass]="{ show: showFeedback }">
               <button
                 class="btn btn-set-availability btn-primary"
                 (click)="saveAvailability()"
@@ -1123,11 +1125,11 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      @if(!showFrequentlyAskedQuestionsForm){
+      <!-- @if(!showFrequentlyAskedQuestionsForm){
       <h2>Frequently Asked Questions</h2>
-      }@else {
+      }@else { -->
       <h2>Frequently Asked Questions</h2>
-      }
+      <!-- } -->
       <button
         class="btn btn-primary"
         (click)="toggleFrequentlyAskedQuestionsForm()"
@@ -1137,8 +1139,38 @@
     </div>
     @if(!showFrequentlyAskedQuestionsForm){
     <div class="faq-list">
+      <div *ngIf="faqs.length > 0; else noFaqs">
+        <div
+          class="faq-item"
+          *ngFor="let faq of faqs; let i = index;"
+        >
+          <div
+            class="faq-question"
+            (click)="toggleFAQ(i)"
+            [class.active]="faq.isOpen"
+          >
+            <span>{{ faq.question }}</span>
+            <i
+              class="fas"
+              [ngClass]="faq.isOpen ? 'fa-chevron-up' : 'fa-chevron-down'"
+            ></i>
+          </div>
+
+          <div class="faq-answer" *ngIf="faq.isOpen">
+            <p>{{ faq.answer }}</p>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noFaqs>
+        <div>No faqs</div>
+      </ng-template>
+    </div>
+
+    <!-- <div class="faq-list">
       <div class="faq-list">
-        @for (faq of faqs; track faq.id; let i = $index) {
+        @if(faqs.length > 0){
+           @for (faq of faqs; track faq.id; let i = $index) {
         <div class="faq-item">
           <div
             class="faq-question"
@@ -1158,8 +1190,12 @@
           }
         </div>
         }
+        }@else{
+          <div>No faqs</div>
+        }
+
       </div>
-    </div>
+    </div> -->
     }@if(showFrequentlyAskedQuestionsForm){
     <!-- FAQ Section -->
     <form class="form-section" [formGroup]="frequentlyAskedQuestionsForm">
