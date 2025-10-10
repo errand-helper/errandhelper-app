@@ -1,6 +1,5 @@
 <app-sidebar></app-sidebar>
 
-<!-- Main Content -->
 <div class="main-content">
   <!-- Header -->
   <app-navbar></app-navbar>
@@ -16,15 +15,522 @@
     </div>
   </div>
 
-  <form action="/action_page.php">
-  <label for="fname">First name:</label><br>
-  <input type="text" id="fname" name="fname" value="John"><br>
-  <label for="lname">Last name:</label><br>
-  <input type="text" id="lname" name="lname" value="Doe"><br><br>
-  <input type="submit" value="Submit">
-</form>
+  <div>
+    <!-- Selected Provider Card -->
+    <div class="provider-card">
+      <div class="provider-info">
+        <div class="provider-logo">QE</div>
+        <div class="provider-details">
+          <div class="provider-name">Quick Errands Co.</div>
+          <div class="provider-rating">
+            <span class="rating-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </span>
+            <span>5.0 (127 reviews)</span>
+          </div>
+        </div>
+        <button class="change-provider" routerLink="/business/list">
+          <i class="fas fa-exchange-alt me-2"></i>Change Provider
+        </button>
+      </div>
+    </div>
 
-<p>If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php".</p>
+    <form id="createErrandForm">
+      <div class="row">
+        <!-- Left Column - Form Fields -->
+        <div class="col-lg-8">
+          <!-- Basic Information Section -->
+          <div class="form-section">
+            <h2 class="section-title">
+              <div class="section-icon">
+                <i class="fas fa-clipboard-list"></i>
+              </div>
+              Errand Details
+            </h2>
 
+            <div class="mb-3">
+              <label for="errandTitle" class="form-label"
+                >Errand Title <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="errandTitle"
+                placeholder="e.g., Weekly Grocery Shopping"
+                required
+              />
+              <div class="info-text">
+                Give your errand a clear, descriptive title
+              </div>
+            </div>
 
+            <div class="mb-3">
+              <label for="errandDescription" class="form-label"
+                >Detailed Description <span class="required">*</span></label
+              >
+              <textarea
+                class="form-control"
+                id="errandDescription"
+                placeholder="Describe what you need done, include specific requirements, preferences, and any important details..."
+                required
+              ></textarea>
+              <div class="info-text">
+                The more details you provide, the better the service provider
+                can assist you
+              </div>
+            </div>
+          </div>
+
+          <!-- Location & Schedule Section -->
+          <div class="form-section">
+            <h2 class="section-title">
+              <div class="section-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              Location & Schedule
+            </h2>
+
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label for="errandAddress" class="form-label"
+                  >Service Address <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="errandAddress"
+                  placeholder="Where should the errand be performed?"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="errandDate" class="form-label"
+                  >Preferred Date <span class="required">*</span></label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="errandDate"
+                  required
+                />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="errandTime" class="form-label"
+                  >Preferred Time <span class="required">*</span></label
+                >
+                <input
+                  type="time"
+                  class="form-control"
+                  id="errandTime"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Flexibility</label>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="flexibleSchedule"
+                />
+                <label class="form-check-label" for="flexibleSchedule">
+                  I'm flexible with the schedule
+                </label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label"
+                >Priority Level <span class="required">*</span></label
+              >
+              <div class="priority-options">
+                <div
+                  class="priority-option priority-normal"
+                  [class.selected]="selectedPriority === 'normal'"
+                  (click)="selectPriority('normal')"
+                >
+                  <div class="priority-badge">Normal</div>
+                  <div>Standard service</div>
+                  <small class="text-muted">1–2 business days</small>
+                </div>
+
+                <div
+                  class="priority-option priority-urgent"
+                  [class.selected]="selectedPriority === 'urgent'"
+                  (click)="selectPriority('urgent')"
+                >
+                  <div class="priority-badge">Urgent</div>
+                  <div>Same day service</div>
+                  <small class="text-muted">Within 24 hours</small>
+                </div>
+
+                <div
+                  class="priority-option priority-emergency"
+                  [class.selected]="selectedPriority === 'emergency'"
+                  (click)="selectPriority('emergency')"
+                >
+                  <div class="priority-badge">Emergency</div>
+                  <div>Immediate service</div>
+                  <small class="text-muted">ASAP</small>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Budget Section -->
+          <div class="form-section">
+            <h2 class="section-title">
+              <div class="section-icon">
+                <i class="fas fa-dollar-sign"></i>
+              </div>
+              Budget & Payment
+            </h2>
+
+            <div class="mb-3">
+              <label class="form-label">
+                Budget Type <span class="required">*</span>
+              </label>
+
+              <div class="budget-options">
+                <!-- Fixed Price -->
+                <div
+                  class="budget-type"
+                  [class.selected]="selectedBudgetType === 'fixed'"
+                  (click)="selectBudgetType('fixed')"
+                >
+                  <i
+                    class="fas fa-tag fa-2x mb-2"
+                    style="color: var(--primary-blue)"
+                  ></i>
+                  <div class="fw-semibold">Fixed Price</div>
+                  <small class="text-muted">Set a specific amount</small>
+                </div>
+
+                <!-- Hourly -->
+                <div
+                  class="budget-type"
+                  [class.selected]="selectedBudgetType === 'hourly'"
+                  (click)="selectBudgetType('hourly')"
+                >
+                  <i
+                    class="fas fa-clock fa-2x mb-2"
+                    style="color: var(--primary-blue)"
+                  ></i>
+                  <div class="fw-semibold">Hourly Rate</div>
+                  <small class="text-muted">Pay per hour</small>
+                </div>
+
+                <!-- Quote -->
+                <div
+                  class="budget-type"
+                  [class.selected]="selectedBudgetType === 'quote'"
+                  (click)="selectBudgetType('quote')"
+                >
+                  <i
+                    class="fas fa-file-invoice-dollar fa-2x mb-2"
+                    style="color: var(--primary-blue)"
+                  ></i>
+                  <div class="fw-semibold">Request Quote</div>
+                  <small class="text-muted">Get provider estimate</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Budget input section -->
+            <div
+              id="budgetAmountSection"
+              *ngIf="selectedBudgetType !== 'quote'"
+            >
+              <label>Budget Amount</label>
+              <input
+                type="number"
+                [(ngModel)]="budgetAmount"
+                class="form-control"
+                placeholder="Enter budget amount"
+              />
+            </div>
+
+            <!-- Estimated hours (only for hourly) -->
+            <div
+              id="estimatedHoursSection"
+              *ngIf="selectedBudgetType === 'hourly'"
+            >
+              <label>Estimated Hours</label>
+              <input
+                type="number"
+                [(ngModel)]="estimatedHours"
+                class="form-control"
+                placeholder="Enter estimated hours"
+              />
+            </div>
+
+            <!-- Milestone payments -->
+            <div class="mb-3">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="useMilestones"
+                  [(ngModel)]="useMilestones"
+                />
+                <label class="form-check-label" for="useMilestones">
+                  Use milestone payments
+                </label>
+              </div>
+              <div class="info-text">
+                Break down the payment into stages based on task completion
+              </div>
+            </div>
+
+            <!-- Milestone section -->
+            <div *ngIf="useMilestones" id="milestonesSection">
+              <label class="form-label">Milestones</label>
+
+              <div
+                *ngFor="let milestone of milestones; let i = index"
+                class="milestone-item mb-3"
+              >
+                <div class="row">
+                  <div class="col-md-8">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Milestone description"
+                      [(ngModel)]="milestone.description"
+                      name="milestoneDesc{{ i }}"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <div class="input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        placeholder="Amount ($)"
+                        min="0"
+                        step="0.01"
+                        [(ngModel)]="milestone.amount"
+                        name="milestoneAmt{{ i }}"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                      <button
+                        type="button"
+                        class="btn btn-outline-danger"
+                        (click)="removeMilestone(i)"
+                      >
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary"
+                (click)="addMilestone()"
+              >
+                <i class="fas fa-plus me-2"></i>Add Milestone
+              </button>
+            </div>
+
+            <!-- Payment Method Section -->
+            <div class="mb-3 mt-4">
+              <label class="form-label">
+                Payment Method <span class="required">*</span>
+              </label>
+
+              <div class="payment-methods">
+                <div
+                  class="payment-card"
+                  *ngFor="let method of paymentMethods"
+                  [class.selected]="selectedPayment === method.id"
+                  (click)="selectPayment(method.id)"
+                >
+                  <div class="payment-icon">
+                    <i [class]="method.icon" [style.color]="method.color"></i>
+                  </div>
+                  <div class="payment-label">{{ method.label }}</div>
+                  <div class="payment-detail">{{ method.detail }}</div>
+                </div>
+              </div>
+
+              <!-- Hidden field for form binding -->
+              <input
+                type="hidden"
+                name="selectedPayment"
+                [(ngModel)]="selectedPayment"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Additional Information Section -->
+          <div class="form-section">
+            <h2 class="section-title">
+              <div class="section-icon">
+                <i class="fas fa-info-circle"></i>
+              </div>
+              Additional Information
+            </h2>
+
+            <div class="mb-3">
+              <label for="specialInstructions" class="form-label"
+                >Special Instructions</label
+              >
+              <textarea
+                class="form-control"
+                id="specialInstructions"
+                rows="3"
+                placeholder="Any special requirements, access codes, parking instructions, etc."
+              ></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Attachments</label>
+              <div
+                class="file-upload-area"
+                onclick="document.getElementById('fileInput').click()"
+              >
+                <i
+                  class="fas fa-cloud-upload-alt fa-3x mb-3"
+                  style="color: var(--primary-cyan)"
+                ></i>
+                <h6>Upload Files</h6>
+                <p class="text-muted mb-0">Click to upload or drag and drop</p>
+                <small class="text-muted"
+                  >Images, PDFs, or documents up to 10MB</small
+                >
+                <input
+                  type="file"
+                  id="fileInput"
+                  multiple
+                  style="display: none"
+                />
+              </div>
+              <div class="file-list" id="fileList"></div>
+            </div>
+
+            <div class="mb-3">
+              <label for="contactPreference" class="form-label"
+                >Preferred Contact Method</label
+              >
+              <select class="form-select" id="contactPreference">
+                <option value="platform">ErrandHub Messages</option>
+                <option value="phone">Phone</option>
+                <option value="email">Email</option>
+                <option value="sms">SMS</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Terms & Conditions -->
+          <div class="form-section">
+            <div class="form-check mb-3">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="agreeTerms"
+                required
+              />
+              <label class="form-check-label" for="agreeTerms">
+                I agree to the
+                <a href="#" class="text-decoration-none">Terms & Conditions</a>
+                and
+                <a href="#" class="text-decoration-none">Cancellation Policy</a>
+                <span class="required">*</span>
+              </label>
+            </div>
+
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="agreeEscrow"
+                required
+              />
+              <label class="form-check-label" for="agreeEscrow">
+                I understand that payment will be held in escrow until the
+                errand is completed <span class="required">*</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Summary -->
+        <div class="col-lg-4">
+          <div class="cost-summary">
+            <div class="summary-title">Cost Summary</div>
+
+            <div class="summary-row">
+              <span>Service Fee</span>
+              <span id="serviceFee">$0.00</span>
+            </div>
+
+            <div class="summary-row">
+              <span>Platform Fee (5%)</span>
+              <span id="platformFee">$0.00</span>
+            </div>
+
+            <div class="summary-row" id="urgencyFeeRow" style="display: none">
+              <span>Urgency Fee</span>
+              <span id="urgencyFee">$0.00</span>
+            </div>
+
+            <div class="summary-row total">
+              <span>Total Amount</span>
+              <span id="totalAmount">$0.00</span>
+            </div>
+
+            <div class="escrow-info">
+              <i class="fas fa-shield-alt me-2"></i>
+              <strong>Secure Payment:</strong> Your payment is held safely in
+              escrow and only released when you confirm the errand is complete.
+            </div>
+
+            <div class="info-box mt-3">
+              <i class="fas fa-info-circle"></i>
+              <small
+                >You can communicate with the provider before confirming to
+                discuss any details.</small
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn btn-outline-custom"
+          onclick="saveDraft()"
+        >
+          <i class="fas fa-save me-2"></i>Save as Draft
+        </button>
+        <div class="d-flex gap-2">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            onclick="window.history.back()"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary-custom">
+            <i class="fas fa-paper-plane me-2"></i>Submit Errand Request
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

@@ -26,3 +26,19 @@
   color: var(--primary-white);
   font-weight: 600;
 }
+
+/* Page Header */
+.page-header {
+  background-color: var(--primary-white);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+}
+
+h1{
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--primary-dark);
+  margin: 0;
+}

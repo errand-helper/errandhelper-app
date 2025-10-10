@@ -2,7 +2,7 @@
    <nav class="sidebar" id="sidebar" [class.active]="sidebarActive">
     <div class="sidebar-header">
         <a routerLink="/homepage" class="sidebar-brand">
-            <i class="fas fa-running me-2"></i>ErrandHub
+            <i class="fas fa-running me-2"></i>ErrandHelpers
         </a>
         <div class="provider-badge">
             <i class="fas fa-briefcase me-1"></i>{{user_type | titlecase}} Account
@@ -42,24 +42,24 @@
                 <span class="badge bg-danger ms-auto">5</span>
             </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link" href="#">
                 <i class="fas fa-users"></i>
                 My Clients
             </a>
         </li>
-        <!-- <li class="nav-item">
+        <li class="nav-item">
             <a class="nav-link" href="#">
                 <i class="fas fa-calendar-alt"></i>
                 Schedule
             </a>
-        </li> -->
+        </li>
         <li class="nav-item">
             <a class="nav-link" href="#">
                 <i class="fas fa-star"></i>
                 Reviews
             </a>
-        </li>
+        </li> -->
 
         <li class="nav-item">
             <a class="nav-link" routerLink="/business/list" routerLinkActive="active">
@@ -67,12 +67,12 @@
                 Businesses
             </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link" routerLink="/payments" routerLinkActive="active">
                 <i class="fas fa-wallet"></i>
                 Payments
             </a>
-        </li>
+        </li> -->
         <!-- <li class="nav-item">
             <a class="nav-link" routerLink="/contracts" routerLinkActive="active">
                 <i class="fas fa-file-contract"></i>
@@ -85,12 +85,12 @@
                 Profile
             </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link" routerLink="/settings" routerLinkActive="active">
                 <i class="fas fa-cog"></i>
                 Settings
             </a>
-        </li>
+        </li> -->
         <li class="nav-item mt-4">
             <a class="nav-link" (click)="logout()" style="cursor: pointer;">
                 <i class="fas fa-sign-out-alt"></i>
