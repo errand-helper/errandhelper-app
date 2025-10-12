@@ -626,3 +626,117 @@ textarea.form-control {
     }
   }
 }
+
+
+/* .label-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+} */
+
+.required {
+  color: #e74c3c;
+}
+
+.counter {
+  /* background: #5cd6ff; */
+  background-color: var(--primary-blue);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.description-list {
+  background: #f8f9fa;
+  border: 2px solid #e0e6ed;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.description-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.description-item:last-child {
+  margin-bottom: 0;
+}
+
+.description-input {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 15px;
+  border: 2px solid #e0e6ed;
+  border-radius: 10px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.description-input:focus {
+  outline: none;
+  /* border-color: #00c8ff; */
+  /* background-color: var(--primary-blue); */
+  box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.1);
+}
+
+.remove-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  width: 38px;
+  height: 38px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+  background: #c0392b;
+  transform: scale(1.05);
+}
+
+.add-btn {
+  /* background: #5cd6ff; */
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  /* padding: 12px 24px; */
+  padding: 7px 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+  /* background: #00b8e6; */
+  background-color: var(--primary-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+}
+
+.help-text {
+  font-size: 13px;
+  color: #7f8c8d;
+  margin-top: 8px;
+}
+
+.empty-state {
+  text-align: center;
+  color: #95a5a6;
+  /* padding: 20px; */
+}

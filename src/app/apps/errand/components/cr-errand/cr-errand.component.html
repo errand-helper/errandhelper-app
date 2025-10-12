@@ -39,11 +39,13 @@
       </div>
     </div>
 
-    <form id="createErrandForm">
+    <form
+      [formGroup]="createErrandForm"
+      (ngSubmit)="onSubmit()"
+      id="createErrandForm"
+    >
       <div class="row">
-        <!-- Left Column - Form Fields -->
         <div class="col-lg-8">
-          <!-- Basic Information Section -->
           <div class="form-section">
             <h2 class="section-title">
               <div class="section-icon">
@@ -60,32 +62,76 @@
                 type="text"
                 class="form-control"
                 id="errandTitle"
-                placeholder="e.g., Weekly Grocery Shopping"
-                required
+                placeholder="e.g., Grocery Shopping"
+                formControlName="errandTitle"
               />
               <div class="info-text">
                 Give your errand a clear, descriptive title
               </div>
             </div>
 
-            <div class="mb-3">
+            <div class="form-group">
+              <label class="label-title">
+                Add Instructions <span class="required">*</span>
+                <span class="counter"
+                  >{{ itemCount }} Instruction{{ itemCount !== 1 ? "s" : "" }}</span
+                >
+              </label>
+
+              <div class="description-list">
+                <div *ngIf="itemCount === 0" class="empty-state">
+                  <p>No Instructions yet. Click “Add Instruction” to begin.</p>
+                </div>
+
+                <div
+                  class="description-item"
+                  *ngFor="let item of descriptions.controls; let i = index"
+                >
+                  <input
+                    type="text"
+                    class="description-input"
+                    [formControl]="asFormControl(item)"
+                    placeholder="Type your item here..."
+                  />
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    (click)="removeItem(i)"
+                    aria-label="Remove item"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+
+              <button type="button" class="add-btn" (click)="addItem()">
+                <span>+</span> Add Instruction
+              </button>
+
+              <p class="help-text">
+                Add specific requirements, preferences, and important details as
+                separate items
+              </p>
+            </div>
+
+            <!-- <div class="mb-3">
               <label for="errandDescription" class="form-label"
-                >Detailed Description <span class="required">*</span></label
+                >Add Instructions <span class="required">*</span></label
               >
               <textarea
                 class="form-control"
                 id="errandDescription"
                 placeholder="Describe what you need done, include specific requirements, preferences, and any important details..."
-                required
+                rows="4"
+                formControlName="errandDescription"
               ></textarea>
               <div class="info-text">
                 The more details you provide, the better the service provider
                 can assist you
               </div>
-            </div>
+            </div> -->
           </div>
 
-          <!-- Location & Schedule Section -->
           <div class="form-section">
             <h2 class="section-title">
               <div class="section-icon">
@@ -104,7 +150,7 @@
                   class="form-control"
                   id="errandAddress"
                   placeholder="Where should the errand be performed?"
-                  required
+                  formControlName="errandAddress"
                 />
               </div>
             </div>
@@ -118,7 +164,7 @@
                   type="date"
                   class="form-control"
                   id="errandDate"
-                  required
+                  formControlName="errandDate"
                 />
               </div>
               <div class="col-md-6 mb-3">
@@ -129,7 +175,7 @@
                   type="time"
                   class="form-control"
                   id="errandTime"
-                  required
+                  formControlName="errandTime"
                 />
               </div>
             </div>
@@ -141,6 +187,7 @@
                   class="form-check-input"
                   type="checkbox"
                   id="flexibleSchedule"
+                  formControlName="flexibleSchedule"
                 />
                 <label class="form-check-label" for="flexibleSchedule">
                   I'm flexible with the schedule
@@ -183,11 +230,9 @@
                   <small class="text-muted">ASAP</small>
                 </div>
               </div>
-
             </div>
           </div>
 
-          <!-- Budget Section -->
           <div class="form-section">
             <h2 class="section-title">
               <div class="section-icon">
@@ -202,7 +247,6 @@
               </label>
 
               <div class="budget-options">
-                <!-- Fixed Price -->
                 <div
                   class="budget-type"
                   [class.selected]="selectedBudgetType === 'fixed'"
@@ -216,7 +260,6 @@
                   <small class="text-muted">Set a specific amount</small>
                 </div>
 
-                <!-- Hourly -->
                 <div
                   class="budget-type"
                   [class.selected]="selectedBudgetType === 'hourly'"
@@ -230,7 +273,6 @@
                   <small class="text-muted">Pay per hour</small>
                 </div>
 
-                <!-- Quote -->
                 <div
                   class="budget-type"
                   [class.selected]="selectedBudgetType === 'quote'"
@@ -246,7 +288,6 @@
               </div>
             </div>
 
-            <!-- Budget input section -->
             <div
               id="budgetAmountSection"
               *ngIf="selectedBudgetType !== 'quote'"
@@ -257,10 +298,10 @@
                 [(ngModel)]="budgetAmount"
                 class="form-control"
                 placeholder="Enter budget amount"
+                formControlName="budgetAmount"
               />
             </div>
 
-            <!-- Estimated hours (only for hourly) -->
             <div
               id="estimatedHoursSection"
               *ngIf="selectedBudgetType === 'hourly'"
@@ -271,17 +312,17 @@
                 [(ngModel)]="estimatedHours"
                 class="form-control"
                 placeholder="Enter estimated hours"
+                formControlName="estimatedHours"
               />
             </div>
 
-            <!-- Milestone payments -->
             <div class="mb-3">
               <div class="form-check">
                 <input
                   class="form-check-input"
                   type="checkbox"
                   id="useMilestones"
-                  [(ngModel)]="useMilestones"
+                  (change)="toggleMilestones()"
                 />
                 <label class="form-check-label" for="useMilestones">
                   Use milestone payments
@@ -292,36 +333,27 @@
               </div>
             </div>
 
-            <!-- Milestone section -->
-            <div *ngIf="useMilestones" id="milestonesSection">
-              <label class="form-label">Milestones</label>
-
+            <div *ngIf="useMilestones">
               <div
-                *ngFor="let milestone of milestones; let i = index"
-                class="milestone-item mb-3"
+                formArrayName="milestones"
+                *ngFor="let milestone of milestones.controls; let i = index"
               >
-                <div class="row">
+                <div [formGroupName]="i" class="row mb-2">
                   <div class="col-md-8">
                     <input
+                      formControlName="description"
                       type="text"
                       class="form-control"
                       placeholder="Milestone description"
-                      [(ngModel)]="milestone.description"
-                      name="milestoneDesc{{ i }}"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </div>
                   <div class="col-md-4">
                     <div class="input-group">
                       <input
+                        formControlName="amount"
                         type="number"
                         class="form-control"
                         placeholder="Amount ($)"
-                        min="0"
-                        step="0.01"
-                        [(ngModel)]="milestone.amount"
-                        name="milestoneAmt{{ i }}"
-                        [ngModelOptions]="{ standalone: true }"
                       />
                       <button
                         type="button"
@@ -334,48 +366,37 @@
                   </div>
                 </div>
               </div>
-
               <button
                 type="button"
-                class="btn btn-sm btn-outline-primary"
+                class="btn btn-outline-primary btn-sm"
                 (click)="addMilestone()"
               >
                 <i class="fas fa-plus me-2"></i>Add Milestone
               </button>
             </div>
 
-            <!-- Payment Method Section -->
             <div class="mb-3 mt-4">
-              <label class="form-label">
-                Payment Method <span class="required">*</span>
-              </label>
-
+              <label class="form-label"
+                >Payment Method <span class="required">*</span></label
+              >
               <div class="payment-methods">
                 <div
-                  class="payment-card"
                   *ngFor="let method of paymentMethods"
+                  class="payment-card"
                   [class.selected]="selectedPayment === method.id"
                   (click)="selectPayment(method.id)"
                 >
-                  <div class="payment-icon">
-                    <i [class]="method.icon" [style.color]="method.color"></i>
-                  </div>
-                  <div class="payment-label">{{ method.label }}</div>
-                  <div class="payment-detail">{{ method.detail }}</div>
+                  <i [class]="method.icon" [style.color]="method.color"></i>
+                  <div>{{ method.label }}</div>
+                  <small>{{ method.detail }}</small>
                 </div>
-              </div>
 
-              <!-- Hidden field for form binding -->
-              <input
-                type="hidden"
-                name="selectedPayment"
-                [(ngModel)]="selectedPayment"
-                required
-              />
+                <!-- Only one binding here -->
+                <input type="hidden" formControlName="paymentMethod" />
+              </div>
             </div>
           </div>
 
-          <!-- Additional Information Section -->
           <div class="form-section">
             <h2 class="section-title">
               <div class="section-icon">
@@ -392,15 +413,19 @@
                 class="form-control"
                 id="specialInstructions"
                 rows="3"
+                formControlName="specialInstructions"
                 placeholder="Any special requirements, access codes, parking instructions, etc."
               ></textarea>
             </div>
 
             <div class="mb-3">
               <label class="form-label">Attachments</label>
+
               <div
                 class="file-upload-area"
-                onclick="document.getElementById('fileInput').click()"
+                (click)="triggerFileInput()"
+                (drop)="onDrop($event)"
+                (dragover)="onDragOver($event)"
               >
                 <i
                   class="fas fa-cloud-upload-alt fa-3x mb-3"
@@ -411,21 +436,50 @@
                 <small class="text-muted"
                   >Images, PDFs, or documents up to 10MB</small
                 >
+
                 <input
                   type="file"
-                  id="fileInput"
+                  #fileInput
                   multiple
                   style="display: none"
+                  (change)="onFilesSelected($event)"
                 />
               </div>
-              <div class="file-list" id="fileList"></div>
+
+              <div class="file-list mt-3">
+                <div
+                  class="file-item"
+                  *ngFor="let file of uploadedFiles; let i = index"
+                >
+                  <div class="file-info">
+                    <i class="fas fa-file file-icon"></i>
+                    <div>
+                      <div class="fw-semibold">{{ file.name }}</div>
+                      <small class="text-muted"
+                        >{{ (file.size / 1024).toFixed(2) }} KB</small
+                      >
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="remove-file"
+                    (click)="removeFile(i)"
+                  >
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div class="mb-3">
               <label for="contactPreference" class="form-label"
                 >Preferred Contact Method</label
               >
-              <select class="form-select" id="contactPreference">
+              <select
+                formControlName="contactPreference"
+                class="form-select"
+                id="contactPreference"
+              >
                 <option value="platform">ErrandHub Messages</option>
                 <option value="phone">Phone</option>
                 <option value="email">Email</option>
@@ -434,14 +488,13 @@
             </div>
           </div>
 
-          <!-- Terms & Conditions -->
           <div class="form-section">
             <div class="form-check mb-3">
               <input
                 class="form-check-input"
                 type="checkbox"
                 id="agreeTerms"
-                required
+                formControlName="agreeTerms"
               />
               <label class="form-check-label" for="agreeTerms">
                 I agree to the
@@ -457,7 +510,7 @@
                 class="form-check-input"
                 type="checkbox"
                 id="agreeEscrow"
-                required
+                formControlName="agreeEscrow"
               />
               <label class="form-check-label" for="agreeEscrow">
                 I understand that payment will be held in escrow until the
@@ -467,9 +520,8 @@
           </div>
         </div>
 
-        <!-- Right Column - Summary -->
         <div class="col-lg-4">
-          <div class="cost-summary">
+          <div class="cost-summary" style="background-color: #ffff">
             <div class="summary-title">Cost Summary</div>
 
             <div class="summary-row">
@@ -509,12 +561,11 @@
         </div>
       </div>
 
-      <!-- Form Actions -->
       <div class="form-actions">
         <button
           type="button"
           class="btn btn-outline-custom"
-          onclick="saveDraft()"
+          (click)="saveDraft()"
         >
           <i class="fas fa-save me-2"></i>Save as Draft
         </button>
@@ -522,7 +573,7 @@
           <button
             type="button"
             class="btn btn-outline-secondary"
-            onclick="window.history.back()"
+            (click)="navigateBack()"
           >
             Cancel
           </button>

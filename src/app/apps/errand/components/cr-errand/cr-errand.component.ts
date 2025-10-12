@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-cr-errand',
@@ -11,15 +12,18 @@ export class CrErrandComponent implements OnInit {
   selectedBudgetType: string = '';
   estimatedHours: number = 0;
 
+  createErrandForm!:FormGroup;
+
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  uploadedFiles: File[] = [];
+
   serviceFee = 0;
   platformFee = 0;
   urgencyFee = 0;
   totalAmount = 0;
 
   useMilestones = false;
-  milestones = [
-    { description: '', amount: null }
-  ];
+  // milestones:any;
 
   selectedPayment: string = '';
 
@@ -49,12 +53,109 @@ export class CrErrandComponent implements OnInit {
 
   selectPayment(method: string) {
     this.selectedPayment = method;
+    this.createErrandForm.patchValue({ paymentMethod: method });
+    // console.log(this.selectedPayment);
+
   }
+
+    constructor(private fb: FormBuilder) {}
+
 
 
   ngOnInit(): void {
     this.updateCostSummary();
+
+     this.createErrandForm = this.fb.group({
+      errandTitle: ['', Validators.required],
+      descriptions: this.fb.array([]),
+      // errandDescription: ['', Validators.required],
+      errandAddress: ['', Validators.required],
+      errandDate: ['', Validators.required],
+      errandTime: ['', Validators.required],
+      flexibleSchedule: [false],
+      priority: ['normal', Validators.required],
+      budgetType: ['fixed', Validators.required],
+      budgetAmount: [null],
+      estimatedHours: [null],
+      milestones: this.fb.array([]),
+      useMilestones: [false],
+      paymentMethod: ['', Validators.required],
+      specialInstructions: [''],
+      contactPreference: ['platform'],
+      agreeTerms: [false, Validators.requiredTrue],
+      agreeEscrow: [false, Validators.requiredTrue]
+    });
   }
+
+  get milestones(): FormArray {
+    return this.createErrandForm.get('milestones') as FormArray;
+  }
+
+  //  get descriptions(): FormArray {
+  //   return this.createErrandForm.get('descriptions') as FormArray;
+  // }
+
+   addMilestone(): void {
+    const milestoneGroup = this.fb.group({
+      description: [''],
+      amount: [0]
+    });
+    this.milestones.push(milestoneGroup);
+  }
+
+  removeMilestone(index: number): void {
+    this.milestones.removeAt(index);
+  }
+
+get descriptions(): FormArray {
+    return this.createErrandForm.get('descriptions') as FormArray;
+  }
+
+  addItem() {
+    this.descriptions.push(new FormControl(''));
+  }
+
+  removeItem(index: number) {
+    this.descriptions.removeAt(index);
+  }
+
+  get itemCount(): number {
+    return this.descriptions.length;
+  }
+
+  asFormControl(control: any): FormControl {
+    return control as FormControl;
+  }
+
+
+
+
+
+
+  triggerFileInput() {
+    this.fileInput.nativeElement.click();
+  }
+
+  onFilesSelected(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const files = target.files ? Array.from(target.files) : [];
+    this.uploadedFiles.push(...files);
+  }
+
+  removeFile(index: number) {
+    this.uploadedFiles.splice(index, 1);
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    const files = event.dataTransfer ? Array.from(event.dataTransfer.files) : [];
+    this.uploadedFiles.push(...files);
+  }
+
 
   selectPriority(priority: string) {
     this.selectedPriority = priority;
@@ -62,13 +163,15 @@ export class CrErrandComponent implements OnInit {
   }
 
 
-  addMilestone() {
-    this.milestones.push({ description: '', amount: null });
-  }
 
-  removeMilestone(index: number) {
-    this.milestones.splice(index, 1);
-  }
+
+  // addMilestone() {
+  //   this.milestones.push({ description: '', amount: null });
+  // }
+
+  // removeMilestone(index: number) {
+  //   this.milestones.splice(index, 1);
+  // }
 
 
 
@@ -108,7 +211,38 @@ export class CrErrandComponent implements OnInit {
     // Here you’d send data to your API
   }
 
+  //  removeMilestone(index: number): void {
+  //   this.milestones.removeAt(index);
+  // }
+
+
+
+  toggleMilestones(): void {
+    this.useMilestones = !this.useMilestones;
+    this.createErrandForm.patchValue({ useMilestones: this.useMilestones });
+  }
+
+
+  /** Submit form */
+  onSubmit(): void {
+    if (this.createErrandForm.valid) {
+      console.log('Form submitted:', this.createErrandForm.value);
+      // alert('Errand submitted successfully!');
+    } else {
+      this.createErrandForm.markAllAsTouched();
+            console.log('Form submitted:', this.createErrandForm.value);
+
+      // alert('Please complete all required fields.');
+    }
+  }
+
+  saveDraft(): void {
+    console.log('Draft saved:', this.createErrandForm.value);
+    alert('Draft saved successfully!');
+  }
+
   navigateBack() {
     window.history.back();
   }
 }
+
