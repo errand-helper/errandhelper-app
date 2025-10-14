@@ -19,9 +19,17 @@
     <!-- Selected Provider Card -->
     <div class="provider-card">
       <div class="provider-info">
-        <div class="provider-logo">QE</div>
+        <div class="provider-logo">
+          <img
+            src="{{ business_details?.business_logo }}"
+            alt="Business logo"
+            style="width: 100%; height: 100%; border-radius: 10px"
+          />
+        </div>
         <div class="provider-details">
-          <div class="provider-name">Quick Errands Co.</div>
+          <div class="provider-name">
+            {{ business_details?.business_name }}
+          </div>
           <div class="provider-rating">
             <span class="rating-stars">
               <i class="fas fa-star"></i>
@@ -55,9 +63,7 @@
             </h2>
 
             <div class="mb-3">
-              <label for="errandTitle" class="form-label"
-                >Errand Title <span class="required">*</span></label
-              >
+              <label for="errandTitle" class="form-label">Errand Title</label>
               <input
                 type="text"
                 class="form-control"
@@ -70,11 +76,62 @@
               </div>
             </div>
 
+            <div class="services-section">
+              <div class="header">
+                <label for="errandTitle" class="form-label"
+                  >Services Required <span class="required">*</span></label
+                >
+                <span class="badge">{{ selectedCount }} selected</span>
+              </div>
+              <!-- Search -->
+              <input
+                type="text"
+                placeholder="Search services..."
+                class="search-input"
+                [(ngModel)]="searchTerm"
+                [ngModelOptions]="{ standalone: true }"
+              />
+
+              <!-- Categories -->
+              <!-- <div class="categories">
+                <button
+                  *ngFor="let category of business_details?.services"
+                  class="category-btn"
+                  [class.active]="category === selectedCategory"
+                  (click)="toggleCategory(category)"
+                >
+                  {{ category.category }}
+                </button>
+              </div> -->
+
+              <!-- Services Grid -->
+              <div class="services-grid">
+                <div
+                  *ngFor="let service of filteredServices"
+                  class="service-card"
+                  [class.selected]="service.selected"
+                  (click)="toggleSelection(service)"
+                >
+                  <div class="text">
+                    <h4 style="font-size: 16px">Service: {{ service.name }}</h4>
+                    <p>Category: {{ service.category }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <p class="hint">
+                Search or filter to find services, then select all that apply to
+                your errand
+              </p>
+            </div>
+
             <div class="form-group">
               <label class="label-title">
                 Add Instructions <span class="required">*</span>
                 <span class="counter"
-                  >{{ itemCount }} Instruction{{ itemCount !== 1 ? "s" : "" }}</span
+                  >{{ itemCount }} Instruction{{
+                    itemCount !== 1 ? "s" : ""
+                  }}</span
                 >
               </label>
 
@@ -139,17 +196,273 @@
               </div>
               Location & Schedule
             </h2>
+            <div>
+              <label class="form-label"
+                >Errand Locations <span class="required">*</span>
+                <span *ngIf="locations.controls.length > 0">{{
+                  locations.controls.length
+                }}</span>
+              </label>
+              <div class="info-text">
+                Add one or more locations for your errand. You can specify
+                different addresses and times for each stop.
+              </div>
+            </div>
+            <div formArrayName="locations" class="mb-1">
+              <div
+                *ngFor="let location of locations.controls; let i = index"
+                [formGroupName]="i"
+                class="location-card mb-3 p-3 border rounded"
+              >
+                <div
+                  class="d-flex justify-content-between align-items-center mb-2"
+                >
+                  <h6>
+                    <!-- Location {{ i + 1 }} -->
+                    <span class="badge bg-info text-white ms-2"
+                      >Stop {{ i + 1 }}</span
+                    >
+                  </h6>
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-sm"
+                    (click)="removeLocation(i)"
+                  >
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
 
-            <div class="row">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">City</label>
+                    <input
+                      formControlName="city"
+                      type="text"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          location.get('city')?.invalid &&
+                          location.get('city')?.touched
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        location.get('city')?.invalid &&
+                        location.get('city')?.touched
+                      "
+                      class="invalid-feedback"
+                    >
+                      City is required
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label">Town/Area</label>
+                    <input
+                      formControlName="town"
+                      type="text"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          location.get('town')?.invalid &&
+                          location.get('town')?.touched
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        location.get('town')?.invalid &&
+                        location.get('town')?.touched
+                      "
+                      class="invalid-feedback"
+                    >
+                      Town is required
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label class="form-label"
+                      >Street Address <span class="text-danger">*</span></label
+                    >
+                    <input
+                      formControlName="streetAddress"
+                      type="text"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          location.get('streetAddress')?.invalid &&
+                          location.get('streetAddress')?.touched
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        location.get('streetAddress')?.invalid &&
+                        location.get('streetAddress')?.touched
+                      "
+                      class="invalid-feedback"
+                    >
+                      Street address is required
+                    </div>
+                  </div>
+
+                  <!-- <div class="col-md-6">
+                    <label class="form-label"
+                      >Start Date and Time
+                      <span class="text-danger">*</span></label
+                    >
+                    <input
+                      formControlName="startDate"
+                      type="datetime-local"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          location.get('startDate')?.invalid &&
+                          location.get('startDate')?.touched
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        location.get('startDate')?.invalid &&
+                        location.get('startDate')?.touched
+                      "
+                      class="invalid-feedback"
+                    >
+                      Start date is required
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label"
+                      >Stop Date and Time
+                      <span class="text-danger">*</span></label
+                    >
+                    <input
+                      formControlName="stopDate"
+                      type="datetime-local"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid':
+                          location.get('stopDate')?.invalid &&
+                          location.get('stopDate')?.touched
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        location.get('stopDate')?.invalid &&
+                        location.get('stopDate')?.touched
+                      "
+                      class="invalid-feedback"
+                    >
+                      Stop date is required
+                    </div>
+                  </div> -->
+                </div>
+
+                <div
+                  *ngIf="locations.errors?.['required'] && createErrandForm.touched"
+                  class="text-danger mt-2"
+                >
+                  At least one location is required.
+                </div>
+                <div
+                  *ngIf="
+                    locations.errors?.['invalidLocation'] &&
+                    createErrandForm.touched
+                  "
+                  class="text-danger mt-2"
+                >
+                  Please complete all required fields in each location.
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="btn btn-primary mt-2"
+                (click)="addLocation()"
+              >
+                <i class="fas fa-plus"></i> Add Location
+              </button>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label"
+                  >Start Date and Time <span class="text-danger">*</span></label
+                >
+                <input
+                  formControlName="startDate"
+                  type="datetime-local"
+                  class="form-control"
+                  [ngClass]="{
+                    'is-invalid':
+                      createErrandForm.get('startDate')?.invalid &&
+                      createErrandForm.get('startDate')?.touched
+                  }"
+                />
+                <div
+                  *ngIf="
+                    createErrandForm.get('startDate')?.invalid &&
+                    createErrandForm.get('startDate')?.touched
+                  "
+                  class="invalid-feedback"
+                >
+                  Start date is required
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label"
+                  >Stop Date and Time <span class="text-danger">*</span></label
+                >
+                <input
+                  formControlName="stopDate"
+                  type="datetime-local"
+                  class="form-control"
+                  [ngClass]="{
+                    'is-invalid':
+                      createErrandForm.get('stopDate')?.invalid &&
+                      createErrandForm.get('stopDate')?.touched
+                  }"
+                />
+                <div
+                  *ngIf="
+                    createErrandForm.get('stopDate')?.invalid &&
+                    createErrandForm.get('stopDate')?.touched
+                  "
+                  class="invalid-feedback"
+                >
+                  Stop date is required
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="">City</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="City"
+                  formControlName="city"
+                />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="">Town/Area</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Town or Area"
+                  formControlName="town"
+                />
+              </div>
               <div class="col-md-12 mb-3">
                 <label for="errandAddress" class="form-label"
-                  >Service Address <span class="required">*</span></label
+                  >Street Address <span class="required">*</span></label
                 >
                 <input
                   type="text"
                   class="form-control"
                   id="errandAddress"
-                  placeholder="Where should the errand be performed?"
+                  placeholder="Street Address (e.g., 123 Main Street, Building A, Apt 4B)"
                   formControlName="errandAddress"
                 />
               </div>
@@ -157,45 +470,30 @@
 
             <div class="row">
               <div class="col-md-6 mb-3">
-                <label for="errandDate" class="form-label"
-                  >Preferred Date <span class="required">*</span></label
+                <label for="startDate" class="form-label"
+                  >Start Date and Time<span class="required">*</span></label
                 >
                 <input
-                  type="date"
+                  type="datetime-local"
                   class="form-control"
-                  id="errandDate"
-                  formControlName="errandDate"
+                  id="startDate"
+                  formControlName="startDate"
                 />
               </div>
               <div class="col-md-6 mb-3">
-                <label for="errandTime" class="form-label"
-                  >Preferred Time <span class="required">*</span></label
+                <label for="stopDate" class="form-label"
+                  >Stop Time and Time<span class="required">*</span></label
                 >
                 <input
-                  type="time"
+                  type="datetime-local"
                   class="form-control"
-                  id="errandTime"
-                  formControlName="errandTime"
+                  id="stopDate"
+                  formControlName="stopDate"
                 />
               </div>
-            </div>
+            </div> -->
 
-            <div class="mb-3">
-              <label class="form-label">Flexibility</label>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="flexibleSchedule"
-                  formControlName="flexibleSchedule"
-                />
-                <label class="form-check-label" for="flexibleSchedule">
-                  I'm flexible with the schedule
-                </label>
-              </div>
-            </div>
-
-            <div class="mb-3">
+            <div class="mt-3">
               <label class="form-label"
                 >Priority Level <span class="required">*</span></label
               >
@@ -217,7 +515,9 @@
                 >
                   <div class="priority-badge">Urgent</div>
                   <div>Same day service</div>
-                  <small class="text-muted">Within 24 hours</small>
+                  <small class="text-muted"
+                    >Within 24 hours <br />(+5% of service fee)</small
+                  >
                 </div>
 
                 <div
@@ -227,7 +527,9 @@
                 >
                   <div class="priority-badge">Emergency</div>
                   <div>Immediate service</div>
-                  <small class="text-muted">ASAP</small>
+                  <small class="text-muted"
+                    >ASAP <br />(+10% of service fee)</small
+                  >
                 </div>
               </div>
             </div>
@@ -526,22 +828,28 @@
 
             <div class="summary-row">
               <span>Service Fee</span>
-              <span id="serviceFee">$0.00</span>
+              <span id="serviceFee">{{
+                createErrandForm.value.budgetAmount || 0 | currency : "KES"
+              }}</span>
             </div>
 
             <div class="summary-row">
               <span>Platform Fee (5%)</span>
-              <span id="platformFee">$0.00</span>
+              <span id="platformFee"
+                >${{ platformFee | number : "1.2-2" }}</span
+              >
             </div>
 
-            <div class="summary-row" id="urgencyFeeRow" style="display: none">
-              <span>Urgency Fee</span>
-              <span id="urgencyFee">$0.00</span>
+            <div class="summary-row" id="urgencyFeeRow">
+              <span>Urgency Fee (5%)</span>
+              <span id="urgencyFee">${{ urgencyFee | number : "1.2-2" }}</span>
             </div>
 
             <div class="summary-row total">
               <span>Total Amount</span>
-              <span id="totalAmount">$0.00</span>
+              <span id="totalAmount"
+                >${{ totalAmount | number : "1.2-2" }}</span
+              >
             </div>
 
             <div class="escrow-info">

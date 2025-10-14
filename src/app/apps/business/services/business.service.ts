@@ -75,6 +75,12 @@ export class BusinessService {
     });
   }
 
+  getBusinessLiteDetail(id: string): Observable<BusinessDetail> {
+    return this.http.get<BusinessDetail>(`${this.baseUrl}business/business-lite-details/${id}`, {
+      headers: headers,
+    });
+  }
+
   getCategories(): Observable<Category> {
     return this.http.get<Category>(`${this.baseUrl}service/category/`, {
       headers: headers,
