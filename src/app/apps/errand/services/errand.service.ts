@@ -13,7 +13,7 @@ export class ErrandService {
   baseUrl = environment.baseUrl;
   constructor(private http: HttpClient) {}
 
-  createNewErrand(data: FormData) {
+  createNewErrand(data: any) {
     return this.http.post(`${this.baseUrl}/order/errands/`, data, {
       headers: headers,
     });

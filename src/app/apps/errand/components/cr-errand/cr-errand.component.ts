@@ -40,7 +40,7 @@ export class CrErrandComponent implements OnInit {
   createErrandForm!: FormGroup;
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-  uploadedFiles: File[] = [];
+  uploadedFiles: any;
 
   serviceFee = 0;
   platformFee = 0;
@@ -135,12 +135,23 @@ export class CrErrandComponent implements OnInit {
       agreeEscrow: [false, Validators.requiredTrue],
       startDate: ['', Validators.required],
       stopDate: ['', Validators.required],
+      images: this.fb.array([])
     });
 
     this.createErrandForm.valueChanges.subscribe(() => {
       this.updateCostSummary();
     });
   }
+
+  convertToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file); // this gives the "data:image/png;base64,..." format
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+}
+
 
   getBusinessInfo() {
     this._businessService
@@ -237,15 +248,33 @@ export class CrErrandComponent implements OnInit {
     this.fileInput.nativeElement.click();
   }
 
-  onFilesSelected(event: Event) {
-    const target = event.target as HTMLInputElement;
-    const files = target.files ? Array.from(target.files) : [];
-    this.uploadedFiles.push(...files);
-  }
 
-  removeFile(index: number) {
-    this.uploadedFiles.splice(index, 1);
-  }
+  onFilesSelected(event: any): void {
+    const files: FileList = event.target.files;
+    if (!files || files.length === 0) return;
+    this.uploadedFiles = this.createErrandForm.get('images') as FormArray;
+    Array.from(files).forEach(async (file) => {
+      const base64 = await this.convertToBase64(file);
+      this.uploadedFiles.push(
+        this.fb.group({
+          image_base64: base64,
+          name: file.name,
+          size: file.size,
+          type: file.type,
+        })
+  );
+      // this.uploadedFiles.push(this.fb.group({ image_base64: base64 }));
+  });
+}
+
+removeFile(index: number) {
+  this.uploadedFiles.removeAt(index);
+}
+
+
+  // removeFile(index: number) {
+  //   this.uploadedFiles.splice(index, 1);
+  // }
 
   onDragOver(event: DragEvent) {
     event.preventDefault();
@@ -274,7 +303,7 @@ export class CrErrandComponent implements OnInit {
     this.serviceFee = budget;
     this.platformFee = budget * 0.05;
 
-    console.log(budget);
+    // console.log(budget);
 
     if (this.selectedPriority === 'urgent') {
       this.urgencyFee = budget * 0.05;
@@ -294,55 +323,36 @@ export class CrErrandComponent implements OnInit {
 
   /** Submit form */
   onSubmit(): void {
+    console.log(this.createErrandForm.value);
+
     if (this.createErrandForm.valid) {
-      const formData = new FormData();
-      const formValue = this.createErrandForm.value;
-
-      formData.append('errand_title', this.createErrandForm.value.errandTitle);
-      formData.append('priority', this.createErrandForm.value.priority);
-      formData.append('budget_type', this.createErrandForm.value.budgetType);
-      formData.append('business', this.business_details.user);
-      formData.append(
-        'budget_amount',
-        this.createErrandForm.value.budgetAmount || 0
-      );
-      formData.append(
-        'estimated_hours',
-        this.createErrandForm.value.estimatedHours
-      );
-      formData.append(
-        'use_milestones',
-        this.createErrandForm.value.useMilestones
-      );
-      formData.append(
-        'payment_method',
-        this.createErrandForm.value.paymentMethod
-      );
-      formData.append(
-        'special_instructions',
-        this.createErrandForm.value.specialInstructions || ''
-      );
-      formData.append(
-        'contact_preference',
-        this.createErrandForm.value.contactPreference
-      );
-      formData.append('agree_terms', this.createErrandForm.value.agreeTerms);
-      formData.append('agree_escrow', this.createErrandForm.value.agreeEscrow);
-      formData.append(
-        'estimated_hours',
-        this.createErrandForm.value.estimatedHours || 0
-      );
-      formData.append(`start_date`, this.createErrandForm.value.startDate);
-      formData.append(`stop_date`, this.createErrandForm.value.stopDate);
-
-      formData.append('descriptions', JSON.stringify(formValue.descriptions));
-      formData.append('locations', JSON.stringify(formValue.locations));
-      formData.append('milestones', JSON.stringify(formValue.milestones));
-
-      this.uploadedFiles.forEach((file: File) => {
-        formData.append('images', file);
-      });
-      this._errandService.createNewErrand(formData).subscribe((res: any) => {
+      // const formData = new FormData();
+      // const formValue = this.createErrandForm.value;
+      // this.uploadedFiles.forEach((file: File) => {
+      //   this.createErrandForm.value.append('images', file);
+      // });L!SfV9X}
+      const data = {
+        errand_title: this.createErrandForm.value.errandTitle,
+        priority: this.createErrandForm.value.priority,
+        budget_type: this.createErrandForm.value.budgetType,
+        business: this.business_details.user,
+        budget_amount: this.createErrandForm.value.budgetAmount || 0,
+        estimated_hours: this.createErrandForm.value.estimatedHours,
+        use_milestones: this.createErrandForm.value.useMilestones,
+        payment_method: this.createErrandForm.value.paymentMethod,
+        special_instructions: this.createErrandForm.value.specialInstructions || '',
+        contact_preference: this.createErrandForm.value.contactPreference,
+        agree_terms: this.createErrandForm.value.agreeTerms,
+        agree_escrow: this.createErrandForm.value.agreeEscrow,
+        start_date: this.createErrandForm.value.startDate,
+        stop_date: this.createErrandForm.value.stopDate,
+        descriptions: this.descriptions?.value || this.descriptions,
+        locations: this.locations?.value || this.locations,
+        milestones: this.milestones?.value || this.milestones,
+        images: this.createErrandForm.get('images')?.value || []
+      };
+      // console.log('Data before send', JSON.parse(JSON.stringify(data)));
+      this._errandService.createNewErrand(data).subscribe((res: any) => {
         console.log(res);
       });
     } else {

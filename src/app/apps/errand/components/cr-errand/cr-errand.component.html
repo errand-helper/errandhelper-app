@@ -751,7 +751,7 @@
               <div class="file-list mt-3">
                 <div
                   class="file-item"
-                  *ngFor="let file of uploadedFiles; let i = index"
+                  *ngFor="let file of createErrandForm.get('images')?.value; let i = index"
                 >
                   <div class="file-info">
                     <i class="fas fa-file file-icon"></i>
