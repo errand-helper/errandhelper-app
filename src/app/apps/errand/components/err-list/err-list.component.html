@@ -9,19 +9,26 @@
           type="text"
           id="searchInput"
           placeholder="Search by reference number, client name, or location..."
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange($event)"
         />
       </div>
 
       <div class="filter-group">
-        <select id="statusFilter">
+        <select
+          id="statusFilter"
+          [(ngModel)]="status"
+          (change)="onStatusChange()"
+        >
           <option value="">All Status</option>
           <option value="pending">Pending</option>
           <option value="active">Active</option>
           <option value="completed">Completed</option>
         </select>
 
-
-        <button class="btn-primary" routerLink="/business/list">Select Business</button>
+        <button class="btn-primary" routerLink="/business/list">
+          Select Business
+        </button>
       </div>
     </div>
   </div>
@@ -33,8 +40,8 @@
           <th>#</th>
           <th>Reference Number</th>
           <th>
-            <span *ngIf="isClient==='client'">Business Name</span>
-            <span *ngIf="isClient==='business'">Client Name</span>
+            <span *ngIf="isClient === 'client'">Business Name</span>
+            <span *ngIf="isClient === 'business'">Client Name</span>
           </th>
           <th>Date Created</th>
           <th>Status</th>
@@ -42,33 +49,41 @@
         </tr>
       </thead>
       <tbody id="tableBody">
-        <tr *ngFor="let errand of errands; let i=index">
-          <td>{{i+1}}</td>
-          <td>{{errand.reference_number}}</td>
+        <tr *ngFor="let errand of errands; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ errand.reference_number }}</td>
           <td>
-            <span *ngIf="isClient==='client'">{{errand.business_name}}</span>
-            <span *ngIf="isClient==='business'">{{errand.client_name}}</span>
+            <span *ngIf="isClient === 'client'">{{
+              errand.business_name
+            }}</span>
+            <span *ngIf="isClient === 'business'">{{
+              errand.client_name
+            }}</span>
           </td>
-          <td>{{errand.created_at | date:'longDate'}}</td>
-          <td><span class="status-badge status-pending">{{errand.status}}</span></td>
+          <td>{{ errand.created_at | date : "longDate" }}</td>
+          <td>
+            <span class="status-badge status-pending">{{ errand.status }}</span>
+          </td>
           <td>
             <div class="action-buttons">
-              <button class="btn btn-view">
-                View
-              </button>
-              <button class="btn btn-accept">
-                Accept
-              </button>
-              <button class="btn btn-reject">
-                Reject
-              </button>
-              <button class="btn btn-delete">
-                Delete
-              </button>
+              <button class="btn btn-secondary">View</button>
+              <button class="btn btn-accept" *ngIf="isClient === 'business'">Accept</button>
+              <button class="btn btn-reject" *ngIf="isClient === 'business'">Reject</button>
+              <button class="btn btn-delete" *ngIf="isClient === 'client'">Delete</button>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <div class="d-flex justify-content-between p-2" style="margin-left: 1rem">
+      <ngb-pagination
+        [collectionSize]="totalErrandListItems()"
+        [page]="page()"
+        [pageSize]="pageSize()"
+        (pageChange)="onErrandListPageChange($event)"
+      >
+      </ngb-pagination>
+    </div>
   </div>
 </div>

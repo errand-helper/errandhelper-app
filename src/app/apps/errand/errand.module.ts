@@ -6,6 +6,7 @@ import { ErrListComponent } from './components/err-list/err-list.component';
 import { SharedModule } from '../sharedmodule/sharedmodule.module';
 import { CrErrandComponent } from './components/cr-errand/cr-errand.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbAlertModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ErrandRoutingModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbPaginationModule, NgbAlertModule
   ]
 })
 export class ErrandModule { }
