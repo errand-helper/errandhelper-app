@@ -1,0 +1,218 @@
+<app-sidebar></app-sidebar>
+<div class="main-content">
+  <app-navbar></app-navbar>
+
+
+<div class="errand-details-container">
+  <div class="content-wrapper">
+
+    <div class="header-card">
+      <div class="header-content">
+        <div class="header-left">
+          <div class="title-row">
+            <h1 class="errand-title">{{ errand.errand_title }}</h1>
+            <span class="status-badge" [ngClass]="getStatusClass(errand.status)">
+              {{ capitalizeFirst(errand.status) }}
+            </span>
+          </div>
+          <p class="reference-number">
+            Reference: <span class="reference-code">{{ errand.reference_number }}</span>
+          </p>
+          <div class="badges-row">
+            <span class="badge" [ngClass]="getPriorityClass(errand.priority)">
+              {{ capitalizeFirst(errand.priority) }} Priority
+            </span>
+            <span class="badge badge-purple">
+              {{ errand.budget_type === 'fixed' ? 'Fixed Budget' : 'Hourly Rate' }}
+            </span>
+            <span *ngIf="errand.use_milestones" class="badge badge-indigo">
+              Milestone-Based
+            </span>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="budget-label">Total Budget</div>
+          <div class="budget-amount">KSh {{ formatCurrency(errand.budget_amount) }}</div>
+          <div class="payment-method">
+            <i class="icon-credit-card"></i>
+            Payment via {{ errand.payment_method }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-layout">
+
+      <div class="main-content">
+
+        <div *ngIf="errand.images.length > 0" class="card">
+          <div class="card-header">
+            <i class="icon-image"></i>
+            <h2>Attachments</h2>
+          </div>
+          <div class="image-gallery">
+            <div class="main-image">
+              <img [src]="errand.images[selectedImageIndex].image_url"
+                   [alt]="'Attachment ' + (selectedImageIndex + 1)" />
+            </div>
+            <div class="thumbnail-row">
+              <button *ngFor="let img of errand.images; let i = index"
+                      class="thumbnail"
+                      [class.active]="selectedImageIndex === i"
+                      (click)="selectImage(i)">
+                <img [src]="img.image_url" [alt]="'Thumbnail ' + (i + 1)" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <i class="icon-file"></i>
+            <h2>Instructions</h2>
+          </div>
+          <div class="instructions-list">
+            <div *ngFor="let desc of errand.descriptions; let i = index" class="instruction-item">
+              <i class="icon-check"></i>
+              <p>{{ desc }}</p>
+            </div>
+          </div>
+          <div *ngIf="errand.special_instructions" class="special-instructions">
+            <i class="icon-alert"></i>
+            <div>
+              <p class="special-title">Special Instructions</p>
+              <p class="special-text">{{ errand.special_instructions }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <i class="icon-package"></i>
+            <h2>Services Required</h2>
+          </div>
+          <div class="services-grid">
+            <div *ngFor="let service of errand.services" class="service-item">
+              <div class="service-header">
+                <h3>{{ service.name }}</h3>
+                <span class="service-category">{{ service.category }}</span>
+              </div>
+              <p class="service-description">{{ service.description }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="errand.use_milestones && errand.milestones.length > 0" class="card">
+          <div class="card-header">
+            <i class="icon-dollar"></i>
+            <h2>Payment Milestones</h2>
+          </div>
+          <div class="milestones-list">
+            <div *ngFor="let milestone of errand.milestones; let i = index" class="milestone-item">
+              <div class="milestone-left">
+                <div class="milestone-number">{{ i + 1 }}</div>
+                <span class="milestone-desc">{{ milestone.description }}</span>
+              </div>
+              <span class="milestone-amount">KSh {{ formatCurrency(milestone.amount) }}</span>
+            </div>
+            <div class="milestone-total">
+              <span>Total</span>
+              <span class="total-amount">KSh {{ formatCurrency(getTotalMilestones()) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <i class="icon-map"></i>
+            <h2>Locations</h2>
+          </div>
+          <div class="locations-list">
+            <div *ngFor="let loc of errand.locations; let i = index" class="location-item">
+              <div class="location-number">{{ i + 1 }}</div>
+              <div>
+                <p class="location-town">{{ loc.town }}</p>
+                <p class="location-city">{{ loc.city }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="">
+
+        <div class="card">
+          <div class="card-header">
+            <i class="icon-calendar"></i>
+            <h2>Timeline</h2>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-item">
+              <p class="timeline-label">Start Date</p>
+              <p class="timeline-value">{{ formatDate(errand.start_date) }}</p>
+            </div>
+            <div class="timeline-item">
+              <p class="timeline-label">End Date</p>
+              <p class="timeline-value">{{ formatDate(errand.stop_date) }}</p>
+            </div>
+            <div class="timeline-duration">
+              <i class="icon-clock"></i>
+              <span>{{ duration }} day{{ duration !== 1 ? 's' : '' }} duration</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <i class="icon-clock"></i>
+            <h2>Time Estimate</h2>
+          </div>
+          <div class="time-estimate">
+            <p class="estimate-hours">{{ errand.estimated_hours }}</p>
+            <p class="estimate-label">Estimated Hours</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <i class="icon-shield"></i>
+            <h2>Security</h2>
+          </div>
+          <div class="security-list">
+            <div class="security-item">
+              <i class="icon-check-circle"></i>
+              <span>Terms & Conditions Accepted</span>
+            </div>
+            <div class="security-item">
+              <i class="icon-check-circle"></i>
+              <span>Escrow Protection Enabled</span>
+            </div>
+            <div class="security-item">
+              <i class="icon-check-circle"></i>
+              <span>Platform Communication</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Details</h2>
+          <div class="details-list">
+            <div class="detail-item">
+              <p class="detail-label">Created</p>
+              <p class="detail-value">{{ formatDate(errand.created_at) }}</p>
+            </div>
+            <div class="detail-item">
+              <p class="detail-label">Last Updated</p>
+              <p class="detail-value">{{ formatDate(errand.updated_at) }}</p>
+            </div>
+            <div class="detail-item">
+              <p class="detail-label">Contact Preference</p>
+              <p class="detail-value">{{ capitalizeFirst(errand.contact_preference) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

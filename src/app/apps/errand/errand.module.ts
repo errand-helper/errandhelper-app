@@ -7,12 +7,14 @@ import { SharedModule } from '../sharedmodule/sharedmodule.module';
 import { CrErrandComponent } from './components/cr-errand/cr-errand.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbAlertModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { ErrDetailsComponent } from './components/err-details/err-details.component';
 
 
 @NgModule({
   declarations: [
     ErrListComponent,
-    CrErrandComponent
+    CrErrandComponent,
+    ErrDetailsComponent
   ],
   imports: [
     CommonModule,
