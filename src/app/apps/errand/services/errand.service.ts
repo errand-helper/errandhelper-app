@@ -19,4 +19,8 @@ export class ErrandService {
     });
   }
 
+  getErrands(){
+    return this.http.get(`${this.baseUrl}/order/errand-list/`)
+  }
+
 }
