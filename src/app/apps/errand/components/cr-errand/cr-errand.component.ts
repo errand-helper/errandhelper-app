@@ -10,7 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { BusinessService } from '../../../business/services/business.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ErrandService } from '../../services/errand.service';
 
 interface Service {
@@ -77,18 +77,25 @@ export class CrErrandComponent implements OnInit {
       icon: 'fas fa-university',
       color: 'var(--primary-blue)',
     },
+    {
+      id: 'platform',
+      label: 'Platform',
+      detail: '•••• 5678',
+      icon: 'fas fa-university',
+      color: 'var(--primary-blue)',
+    },
   ];
 
   selectPayment(method: string) {
     this.selectedPayment = method;
     this.createErrandForm.patchValue({ paymentMethod: method });
-    // console.log(this.selectedPayment);
   }
 
   constructor(
     private fb: FormBuilder,
     private _businessService: BusinessService,
     private route: ActivatedRoute,
+    private _router: Router,
     private _errandService: ErrandService
   ) {}
 
@@ -113,7 +120,6 @@ export class CrErrandComponent implements OnInit {
   ngOnInit(): void {
     this.businessId = this.route.snapshot.paramMap.get('business_id')!;
 
-    // this.updateCostSummary();
     this.getBusinessInfo();
 
     this.createErrandForm = this.fb.group({
@@ -146,7 +152,7 @@ export class CrErrandComponent implements OnInit {
   convertToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.readAsDataURL(file); // this gives the "data:image/png;base64,..." format
+    reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = (error) => reject(error);
   });
@@ -159,7 +165,6 @@ export class CrErrandComponent implements OnInit {
       .subscribe((res: any) => {
         this.business_details = res;
         this.services = this.business_details?.services || [];
-        // this.categories = ['All Services', ...new Set(this.services.map((s) => s.category))];
         console.log('this.business_details', this.business_details);
       });
   }
@@ -263,18 +268,12 @@ export class CrErrandComponent implements OnInit {
           type: file.type,
         })
   );
-      // this.uploadedFiles.push(this.fb.group({ image_base64: base64 }));
   });
 }
 
 removeFile(index: number) {
   this.uploadedFiles.removeAt(index);
 }
-
-
-  // removeFile(index: number) {
-  //   this.uploadedFiles.splice(index, 1);
-  // }
 
   onDragOver(event: DragEvent) {
     event.preventDefault();
@@ -298,13 +297,9 @@ removeFile(index: number) {
   }
 
   updateCostSummary() {
-    // const budget = Number(this.budgetAmount) || 0;
     const budget = Number(this.createErrandForm.value.budgetAmount) || 0;
     this.serviceFee = budget;
     this.platformFee = budget * 0.05;
-
-    // console.log(budget);
-
     if (this.selectedPriority === 'urgent') {
       this.urgencyFee = budget * 0.05;
     } else if (this.selectedPriority === 'emergency') {
@@ -326,11 +321,6 @@ removeFile(index: number) {
     console.log(this.createErrandForm.value);
 
     if (this.createErrandForm.valid) {
-      // const formData = new FormData();
-      // const formValue = this.createErrandForm.value;
-      // this.uploadedFiles.forEach((file: File) => {
-      //   this.createErrandForm.value.append('images', file);
-      // });L!SfV9X}
       const data = {
         errand_title: this.createErrandForm.value.errandTitle,
         priority: this.createErrandForm.value.priority,
@@ -351,9 +341,9 @@ removeFile(index: number) {
         milestones: this.milestones?.value || this.milestones,
         images: this.createErrandForm.get('images')?.value || []
       };
-      // console.log('Data before send', JSON.parse(JSON.stringify(data)));
       this._errandService.createNewErrand(data).subscribe((res: any) => {
         console.log(res);
+        this._router.navigate(['errands']);
       });
     } else {
       this.createErrandForm.markAllAsTouched();
