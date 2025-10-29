@@ -29,13 +29,8 @@ export class LoginComponent {
    this.authService.loginUser(data).subscribe((res:LoginResponse)=>{
     localStorage.setItem('access_token', res.access);
     localStorage.setItem('user_type', JSON.stringify(res.role));
-    // localStorage.setItem('user_id', JSON.stringify(res.id));
-
     const userTypeString = localStorage.getItem('user_type');
     const userType = userTypeString ? JSON.parse(userTypeString) : null;
-    console.log('userType',userType);
-
-    // localStorage.setItem('user_type', res.role);
     this.toastr.success('Login successful');
     if(userType === 'business'){
       this.route.navigate(['/business']);
@@ -45,7 +40,6 @@ export class LoginComponent {
     },(error)=>{
       this.toastr.error('An error occurred, please try again')
     })
-
   }
 
 }
