@@ -1,32 +1,27 @@
-import { Component, inject, signal, TemplateRef } from '@angular/core';
+import { Component, inject, OnInit, signal, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BusinessService } from '../../services/business.service';
 import { ConfirmationServiceDialogService } from '../../../sharedmodule/services/confirmation-service-dialog.service';
-import { UpdateServiceComponent } from '../modals/update-service/update-service.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   BusinessDetail,
   FrequentlyAskedQuestion,
-  FrequentlyAskedResult,
   ServiceArea,
   ServiceAreaResult,
   ServiceResult,
 } from '../../models/business.model';
 import { Category } from '../../../sharedmodule/models/category';
 
-interface StatusHistoryItem {
-  status: 'available' | 'unavailable';
-  timestamp: Date;
-}
+
 
 @Component({
   selector: 'app-b-profile',
   templateUrl: './b-profile.component.html',
   styleUrl: './b-profile.component.css',
 })
-export class BProfileComponent {
+export class BProfileComponent implements OnInit {
   basicInfoForm!: FormGroup;
   serviceInfoForm!: FormGroup;
   frequentlyAskedQuestionsForm!: FormGroup;
@@ -36,7 +31,6 @@ export class BProfileComponent {
   businessId!: string;
   business_details: BusinessDetail | null = null;
   categories: Category[] = [];
-  // logged_in_user!: string | null;
   private modalService = inject(NgbModal);
 
   area: string = '';
@@ -66,7 +60,6 @@ export class BProfileComponent {
   isSaving = false;
   savedStatus = false;
   editMode = true;
-  // statusHistory: StatusHistoryItem[] = [];
 
   constructor(
     private _businessService: BusinessService,
@@ -94,7 +87,6 @@ export class BProfileComponent {
       website: ['',Validators.pattern(/https?:\/\/.+/)],
     });
 
-    // this.logged_in_user = JSON.parse(localStorage.getItem('user_id') || 'null');
 
     this.serviceInfoForm = this.fb.group({
       name: ['', Validators.required],
@@ -134,7 +126,6 @@ export class BProfileComponent {
     this.getServices();
 
     this.getServiceAreas();
-    // this.getFAQS();
   }
 
   addService() {
@@ -151,16 +142,11 @@ export class BProfileComponent {
   }
 
   getServices() {
-    // Example: fetch first page, 10 items per page, no search, no category filter
     this._businessService
       .getServices(this.page(), this.pageSize())
       .subscribe((res: ServiceResult) => {
         this.services_list = res.results;
-        // Update total items for pagination
         this.totalServiceItems.set(res.count || 0);
-        console.log('getServices', this.services_list);
-
-        // this.categories = res;
       });
   }
 
@@ -244,12 +230,10 @@ export class BProfileComponent {
         if (confirmed) {
           this._businessService.deleteService(id).subscribe({
             next: (res: any) => {
-              // console.log(res);
               this.toastr.success('Service deleted successfully!');
               this.getServices();
             },
             error: (err) => {
-              // console.error(err);
               this.toastr.error('Failed to delete service. Please try again.');
             },
           });
@@ -286,24 +270,6 @@ export class BProfileComponent {
     });
   }
 
-//   getFAQS() {
-//   this._businessService.getFAQS().subscribe((res: any) => {
-//     console.log('API response:', res);
-//     this.faqs = res.results || []; // ensure array
-//     console.log('faqs set:', this.faqs.length);
-//   });
-// }
-// trackByFaqId(index: number, faq: any) {
-//   return faq.id;  // helps Angular efficiently render lists
-// }
-
-  // getFAQS() {
-  //   this._businessService.getFAQS().subscribe((res: any) => {
-  //     this.faqs = res.results;
-  //     console.log('getFAQS()', this.faqs.length);
-
-  //   });
-  // }
 
   addFAQ() {
     this._businessService
@@ -329,7 +295,6 @@ export class BProfileComponent {
         this.faqs = this.business_details.frequently_asked_question || [];
 
         if (this.business_details) {
-          // ✅ Prefill form with fetched data
           this.basicInfoForm.patchValue({
             business_name: this.business_details.business_name,
             business_logo: this.business_details.business_logo,
@@ -361,11 +326,10 @@ export class BProfileComponent {
 
     const formData = new FormData();
 
-    // Loop through all controls and append to FormData
     Object.keys(this.basicInfoForm.controls).forEach((key) => {
       const controlValue = this.basicInfoForm.get(key)?.value;
       if (key === 'business_logo' && controlValue instanceof File) {
-        formData.append(key, controlValue); // append file
+        formData.append(key, controlValue);
       } else {
         formData.append(key, controlValue);
       }
@@ -379,6 +343,7 @@ export class BProfileComponent {
         .subscribe({
           next: (res) => {
             this.toastr.success('Business information updated successfully!');
+            this.getBusinessInfo()
           },
           error: (err) => {
             this.toastr.error('Failed to update business information.');
@@ -389,6 +354,7 @@ export class BProfileComponent {
       this._businessService.addBusiness(formData).subscribe({
         next: (res) => {
           this.toastr.success('Business information added successfully!');
+          this.getBusinessInfo()
         },
         error: (err) => {
           this.toastr.error('Failed to add business information.');
@@ -404,7 +370,6 @@ export class BProfileComponent {
       const file = input.files[0];
       this.basicInfoForm.patchValue({ business_logo: file });
       this.basicInfoForm.get('business_logo')?.updateValueAndValidity();
-      // generate preview
       const reader = new FileReader();
       reader.onload = () => {
         this.logoPreviewUrl = reader.result;
@@ -416,7 +381,7 @@ export class BProfileComponent {
   removeLogo() {
     this.basicInfoForm.patchValue({ business_logo: null });
     this.basicInfoForm.get('business_logo')?.updateValueAndValidity();
-    this.logoPreviewUrl = null; // go back to initials
+    this.logoPreviewUrl = null;
   }
 
   toggleFAQ(index: number) {
@@ -430,10 +395,6 @@ export class BProfileComponent {
   toggleServiceForm() {
     this.showServiceForm = !this.showServiceForm;
   }
-
-  // toggleAvailabilityForm() {
-  //   this.showAvailabilityForm = !this.showAvailabilityForm;
-  // }
 
   toggleFrequentlyAskedQuestionsForm() {
     this.showFrequentlyAskedQuestionsForm =
@@ -450,17 +411,9 @@ export class BProfileComponent {
 
 
   selectOption(status: 'available' | 'unavailable'): void {
-    // if (!this.editMode) return;
     this.selectedStatus = status;
     this.showPulse = true;
     this.savedStatus = false;
-
-    // console.log(this.savedStatus);
-
-
-    // setTimeout(() => {
-    //   this.showPulse = false;
-    // }, 2000);
   }
 
   saveAvailability(): void {
@@ -468,32 +421,21 @@ export class BProfileComponent {
       alert('Please select an availability status first');
       return;
     }
-    // true if available, false if unavailable
     const isAvailable = this.selectedStatus === 'available';
-    // console.log(isAvailable);
     this.isSaving = true;
     const data = {
       "available":isAvailable
     }
-    console.log(data);
-    // this.isSaving = false
+
     this.savedStatus = true
-    // return
     this._businessService.updateAvailability(data).subscribe((res:any)=>{
-      // console.log(res);
       this.getBusinessInfo()
 
     })
 
   }
 
-  // toggleEditMode(): void {
-  //   this.editMode = !this.editMode;
-  // }
 
-  // capitalize(word: string): string {
-  //   return word ? word.charAt(0).toUpperCase() + word.slice(1) : '';
-  // }
 }
 
-// }
+

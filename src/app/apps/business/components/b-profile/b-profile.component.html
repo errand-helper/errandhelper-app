@@ -1,15 +1,11 @@
 <!-- Aside -->
 <app-sidebar></app-sidebar>
-<!-- Main -->
 <!-- Main Content -->
 <div class="main-content">
   <app-navbar></app-navbar>
 
   <!-- Back Button -->
   <div class="mb-3">
-    <!-- <button class="mobile-toggle me-3" onclick="toggleSidebar()">
-      <i class="fas fa-bars"></i>
-    </button> -->
     <div>
       <button
         (click)="navigateBack()"
@@ -57,33 +53,23 @@
     </div>
 
     <div class="provider-stats">
-      <div class="stat-item">
-        <span class="stat-value">5.0</span>
-        <div class="rating-stars">
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-        </div>
-        <span class="stat-label">127 reviews</span>
-      </div>
+
       <div class="stat-item">
         <span class="stat-value">523</span>
         <span class="stat-label">Jobs Completed</span>
       </div>
-      <div class="stat-item">
+      <!-- <div class="stat-item">
         <span class="stat-value">98%</span>
         <span class="stat-label">On-Time Rate</span>
-      </div>
-      <div class="stat-item">
+      </div> -->
+      <!-- <div class="stat-item">
         <span class="stat-value">&lt; 1hr</span>
         <span class="stat-label">Response Time</span>
-      </div>
-      <div class="stat-item">
+      </div> -->
+      <!-- <div class="stat-item">
         <span class="stat-value">2.5mi</span>
         <span class="stat-label">Distance</span>
-      </div>
+      </div> -->
     </div>
 
     <div class="profile-actions mt-4">
@@ -243,10 +229,6 @@
             maxlength="100"
             formControlName="business_tagline"
           />
-          <!-- <small class="info-text">
-            A short, catchy phrase that describes your business (max 100
-            characters)
-          </small> -->
         </div>
       </div>
       <div class="row">
@@ -684,119 +666,9 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      <!-- @if(!showAvailabilityForm){ -->
       <h2>Availability</h2>
-      <!-- } -->
-      <!-- @else {
-      <h2>Set Availability</h2>
-      } -->
-      <!-- <div class="d-flex justify-content-between align-items-center mb-3">
-        <button
-          class="btn btn-sm rounded-pill px-3 btn-primary"
-          (click)="toggleAvailabilityForm()"
-        >
-          <i class="bi bi-pencil-square me-1"></i>
-          Set Availability
-        </button>
-      </div> -->
     </div>
-    <!-- @if(!showAvailabilityForm){ -->
-    <!-- <div
-      class="d-md-flex d-lg-flex d-sm-block justify-content-between items-center"
-    >
-      <div class="w-50 p-2">
-        <div class="availability-legend">
-          <div class="legend-item">
-            <div class="legend-color legend-available"></div>
-            <span>Available</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color legend-busy"></div>
-            <span>UnAvailable</span>
-          </div>
-        </div>
-        <div class="calendar-widget">
-          <div class="calendar-header">
-            <button class="btn btn-sm">
-              <i class="fas fa-chevron-left"></i>
-            </button>
-            <h5 class="mb-0">January 2025</h5>
-            <button class="btn btn-sm">
-              <i class="fas fa-chevron-right"></i>
-            </button>
-          </div>
-          <div class="calendar-grid">
-            <div class="text-muted small">S</div>
-            <div class="text-muted small">M</div>
-            <div class="text-muted small">T</div>
-            <div class="text-muted small">W</div>
-            <div class="text-muted small">T</div>
-            <div class="text-muted small">F</div>
-            <div class="text-muted small">S</div>
-            <div class="calendar-day">1</div>
-            <div class="calendar-day">2</div>
-            <div class="calendar-day">3</div>
-            <div class="calendar-day">4</div>
-            <div class="calendar-day">5</div>
-            <div class="calendar-day day-available">6</div>
-            <div class="calendar-day day-available">7</div>
-            <div class="calendar-day day-limited">8</div>
-            <div class="calendar-day day-available">9</div>
-            <div class="calendar-day day-available">10</div>
-            <div class="calendar-day day-busy">11</div>
-            <div class="calendar-day day-available">12</div>
-            <div class="calendar-day day-available">13</div>
-            <div class="calendar-day day-limited">14</div>
-            <div class="calendar-day day-available">15</div>
-            <div class="calendar-day day-available">16</div>
-            <div class="calendar-day day-available">17</div>
-            <div class="calendar-day day-limited">18</div>
-            <div class="calendar-day">19</div>
-            <div class="calendar-day">20</div>
-            <div class="calendar-day">21</div>
-            <div class="calendar-day">22</div>
-            <div class="calendar-day">23</div>
-            <div class="calendar-day">24</div>
-            <div class="calendar-day">25</div>
-            <div class="calendar-day">26</div>
-            <div class="calendar-day">27</div>
-            <div class="calendar-day">28</div>
-            <div class="calendar-day">28</div>
-            <div class="calendar-day">30</div>
-            <div class="calendar-day">31</div>
-          </div>
-        </div>
-      </div>
-      <div class="w-50 p-2">
-        <h5 class="mb-3">
-          <strong>Slots Available</strong>
-        </h5>
-        <div class="">
-          <div class="">
-            <ul class="list-unstyled">
-              <li class="mb-2">
-                <span>2025-09-10: </span>
-                <span>
-                  <span>From</span> &nbsp;
-                  <input type="time" />
-                </span>
-                -
-                <span>
-                  <span>To</span> &nbsp;
-                  <input type="time" />
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="mt-3">
-          <button class="btn btn-primary">Book Now</button>
-        </div>
-      </div>
-    </div> -->
 
-    <!-- } -->
-    <!-- @if(showAvailabilityForm) { -->
     <div class="">
       <div class="">
         <div class="availability-card fade-in">
@@ -890,7 +762,6 @@
       </div>
     </div>
 
-    <!-- } -->
   </div>
 
   <!-- Service Area Section -->
@@ -913,7 +784,6 @@
       <i class="fas fa-map-marked-alt fa-3x"></i>
       <p>Interactive Map Coming Soon</p>
     </div>
-    <!-- <h5 class="mb-3">We Serve These Areas:</h5> -->
     <div class="coverage-list">
       @if(service_areas.length > 0){ @for(service_area of service_areas; track
       service_area.id){
@@ -1040,82 +910,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <div class="form-section">
-      <div class="row">
-        <div class="col-md-3 mb-3">
-          <label for="businessAddress" class="form-label"
-            >Areas You Serve <span class="required">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="businessAddress"
-            placeholder="123 Main Street"
-            required
-          />
-        </div>
-        <div class="col-md-3 mb-3">
-          <label for="businessCity" class="form-label">Physical Address</label>
-          <input
-            type="text"
-            class="form-control"
-            id="businessCity"
-            placeholder="New York"
-            required
-          />
-        </div>
-        <div class="col-md-3 mb-3">
-          <label for="businessCity" class="form-label"
-            >Service Radius (km)</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="businessCity"
-            placeholder="New York"
-            required
-          />
-        </div>
-        <div class="col-md-3 mb-3">
-          <br />
-          <button class="btn btn-danger">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-x-square-fill"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"
-              />
-            </svg></button
-          >&nbsp;
-          <button class="btn btn-primary">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-pencil-square"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
-              />
-              <path
-                fill-rule="evenodd"
-                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div class="row">
-      </div>
-    </div> -->
     }
   </div>
 
@@ -1125,11 +919,8 @@
       class="section-title"
       style="display: flex; justify-content: space-between; align-items: center"
     >
-      <!-- @if(!showFrequentlyAskedQuestionsForm){
+
       <h2>Frequently Asked Questions</h2>
-      }@else { -->
-      <h2>Frequently Asked Questions</h2>
-      <!-- } -->
       <button
         class="btn btn-primary"
         (click)="toggleFrequentlyAskedQuestionsForm()"
@@ -1167,35 +958,6 @@
       </ng-template>
     </div>
 
-    <!-- <div class="faq-list">
-      <div class="faq-list">
-        @if(faqs.length > 0){
-           @for (faq of faqs; track faq.id; let i = $index) {
-        <div class="faq-item">
-          <div
-            class="faq-question"
-            (click)="toggleFAQ(i)"
-            [class.active]="faq.isOpen"
-          >
-            <span>{{ faq.question }}</span>
-            <i
-              class="fas"
-              [ngClass]="faq.isOpen ? 'fa-chevron-up' : 'fa-chevron-down'"
-            ></i>
-          </div>
-          @if (faq.isOpen) {
-          <div class="faq-answer">
-            <p>{{ faq.answer }}</p>
-          </div>
-          }
-        </div>
-        }
-        }@else{
-          <div>No faqs</div>
-        }
-
-      </div>
-    </div> -->
     }@if(showFrequentlyAskedQuestionsForm){
     <!-- FAQ Section -->
     <form class="form-section" [formGroup]="frequentlyAskedQuestionsForm">
@@ -1204,9 +966,6 @@
           class="faq-item"
           style="background-color: var(--light-gray); padding: 20px"
         >
-          <!-- <button type="button" class="remove-btn" onclick="removeFAQ(this)">
-            <i class="fas fa-times"></i>
-          </button> -->
           <div class="mb-3">
             <label class="form-label">Question</label>
             <input
