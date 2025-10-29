@@ -28,6 +28,17 @@ jobs:
       run: |
         docker build -t "${{ secrets.IMAGE_NAME }}:${BRANCH_TAG}" -t "${{ secrets.IMAGE_NAME }}:${GIT_COMMIT_SHA}" .
 
+    ####
+    - name: Debug secrets visibility
+      run: |
+        echo "Username: ${{ secrets.DOCKER_HUB_USERNAME }}"
+        if [ -z "${{ secrets.DOCKER_HUB_TOKEN }}" ]; then
+          echo "❌ Token is missing or empty"
+        else
+          echo "✅ Token detected (hidden for security)"
+        fi
+
+      ####
     - name: Push Docker image to Docker Hub
       if: github.event_name == 'push'
       run: |
