@@ -31,7 +31,7 @@ jobs:
     - name: Push Docker image to Docker Hub
       if: github.event_name == 'push'
       run: |
-        echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+        echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
         docker push "${{ secrets.IMAGE_NAME }}:${BRANCH_TAG}"
         docker push "${{ secrets.IMAGE_NAME }}:${GIT_COMMIT_SHA}"
 
