@@ -1,0 +1,996 @@
+<!-- Aside -->
+<app-sidebar></app-sidebar>
+<!-- Main Content -->
+<div class="main-content">
+  <app-navbar></app-navbar>
+
+  <!-- Back Button -->
+  <div class="mb-3">
+    <div>
+      <button
+        (click)="navigateBack()"
+        class="btn btn-link text-decoration-none badge-item badge-insured"
+      >
+        <i class="fas fa-arrow-left me-2"></i>Back
+      </button>
+    </div>
+  </div>
+
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="provider-info">
+      <div class="provider-logo">
+        <img
+          [src]="business_details?.business_logo"
+          alt="Business Logo"
+          style="width: 100%; height: 100%; border-radius: 15px"
+        />
+      </div>
+      <div class="provider-details">
+        <h1 class="provider-name">{{ business_details?.business_name }}</h1>
+        <p class="provider-tagline">
+          {{ business_details?.business_tagline }}
+        </p>
+        <div class="provider-badges">
+          <span class="badge-item badge-licensed">
+            <i class="fas fa-check-circle"></i>
+             <span *ngIf="!business_details?.is_verified">Not Verified</span>
+            <span *ngIf="business_details?.is_verified">Verified</span>
+          </span>
+          <span
+            class="badge-item"
+            [ngClass]="{
+              'badge-verified': business_details?.available === true,
+              'day-busy': business_details?.available === false
+            }"
+          >
+            <i class="fas fa-check-circle"></i>
+            <span *ngIf="!business_details?.available">UnAvailable</span>
+            <span *ngIf="business_details?.available">Available</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="provider-stats">
+
+      <div class="stat-item">
+        <span class="stat-value">523</span>
+        <span class="stat-label">Jobs Completed</span>
+      </div>
+      <!-- <div class="stat-item">
+        <span class="stat-value">98%</span>
+        <span class="stat-label">On-Time Rate</span>
+      </div> -->
+      <!-- <div class="stat-item">
+        <span class="stat-value">&lt; 1hr</span>
+        <span class="stat-label">Response Time</span>
+      </div> -->
+      <!-- <div class="stat-item">
+        <span class="stat-value">2.5mi</span>
+        <span class="stat-label">Distance</span>
+      </div> -->
+    </div>
+
+    <div class="profile-actions mt-4">
+      <button class="btn btn-hire-now">
+        <i class="fas fa-briefcase me-2"></i>Hire Now
+      </button>
+      <button class="btn btn-message">
+        <i class="fas fa-comment me-2"></i>Send Message
+      </button>
+      <button class="btn btn-save">
+        <i class="fas fa-heart me-2"></i>Save
+      </button>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showForm){
+      <h2>About {{ business_details?.business_name }}</h2>
+      }@else {
+      <h2>Add Basic Information</h2>
+      }
+      <button class="btn btn-primary" (click)="toggleBasicInfoForm()">
+        <i class="fas fa-edit me-2"></i
+        ><span>{{ business_details ? "Edit" : "Add" }}</span>
+      </button>
+    </div>
+
+    @if(!showForm){
+    <div>
+      <p class="mb-3">
+        {{ business_details?.business_description }}
+      </p>
+    </div>
+    } @if(showForm) {
+    <!-- Basic Information Section -->
+    <form class="form-section" [formGroup]="basicInfoForm">
+      <div class="logo-upload-container">
+        <div class="logo-preview" id="logoPreview">
+          <!-- Show initials if no logo selected -->
+          @if (!logoPreviewUrl) {
+          <span id="logoInitials">{{ logoInitials }}</span>
+          }
+
+          <!-- Show uploaded logo preview -->
+          @if (logoPreviewUrl) {
+          <div class="logo-img-wrapper">
+            <img [src]="logoPreviewUrl" alt="Logo Preview" class="logo-img" />
+            <button
+              type="button"
+              class="remove-logo-btn"
+              (click)="removeLogo()"
+            >
+              ✕
+            </button>
+          </div>
+          }
+
+          <input
+            type="file"
+            id="logoInput"
+            accept="image/*"
+            style="display: none"
+            (change)="onFileSelected($event)"
+          />
+        </div>
+
+        <div>
+          <div
+            class="logo-upload-btn"
+            onclick="document.getElementById('logoInput').click()"
+          >
+            <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
+            <p class="mb-0">Click to upload logo</p>
+            <small class="text-muted">PNG, JPG up to 5MB</small>
+          </div>
+          @if (basicInfoForm.get('business_logo')?.touched &&
+          basicInfoForm.get('business_logo')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Business logo is required.</small>
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- <div class="row">
+        <div class="col-md-6 mb-3" *ngIf="!business_details?.business_name">
+          <label for="businessName" class="form-label"
+            >Business Name <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessName"
+            placeholder="Enter your business name"
+            formControlName="business_name"
+          />
+          @if (basicInfoForm.get('business_name')?.touched &&
+          basicInfoForm.get('business_name')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Business name is required.</small>
+          </div>
+          }
+        </div>
+        <div class="col-md-6 mb-3" *ngIf="!business_details?.registration_number">
+          <label for="registration_number" class="form-label"
+            >Registration Number <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="registration_number"
+            formControlName="registration_number"
+            placeholder="Registration number"
+          />
+          @if (basicInfoForm.get('registration_number')?.touched &&
+          basicInfoForm.get('registration_number')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Registration number is required.</small>
+          </div>
+          }
+        </div>
+      </div> -->
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="businessName" class="form-label"
+            >Business Name <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessName"
+            placeholder="Enter your business name"
+            formControlName="business_name"
+          />
+          @if (basicInfoForm.get('business_name')?.touched &&
+          basicInfoForm.get('business_name')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Business name is required.</small>
+          </div>
+          }
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="businessTagline" class="form-label"
+            >Business Tagline</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessTagline"
+            placeholder="Your trusted partner for all errand services"
+            maxlength="100"
+            formControlName="business_tagline"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="registration_number" class="form-label"
+            >Registration Number <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="registration_number"
+            formControlName="registration_number"
+            placeholder="Registration number"
+          />
+          @if (basicInfoForm.get('registration_number')?.touched &&
+          basicInfoForm.get('registration_number')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Registration number is required.</small>
+          </div>
+          }
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="kra_pin" class="form-label"
+            >KRA PIN <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="kra_pin"
+            placeholder="KRA PIN"
+            formControlName="kra_pin"
+          />
+          @if (basicInfoForm.get('kra_pin')?.touched &&
+          basicInfoForm.get('kra_pin')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>KRA PIN is required.</small>
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="businessDescription" class="form-label"
+          >Business Description <span class="required">*</span></label
+        >
+        <textarea
+          class="form-control"
+          id="businessDescription"
+          rows="4"
+          placeholder="Tell customers about your business, experience, and what makes you unique..."
+          formControlName="business_description"
+        ></textarea>
+        @if (basicInfoForm.get('business_description')?.touched &&
+        basicInfoForm.get('business_description')?.invalid) {
+        <div class="text-danger mt-1">
+          <small>Business description is required.</small>
+        </div>
+        }
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="businessPhone" class="form-label"
+            >Business Phone <span class="required">*</span></label
+          >
+          <input
+            type="tel"
+            class="form-control"
+            id="businessPhone"
+            placeholder="+1 (555) 123-4567"
+            formControlName="business_phone"
+          />
+          @if (basicInfoForm.get('business_phone')?.touched &&
+          basicInfoForm.get('business_phone')?.invalid) {
+          <div class="text-danger mt-1">
+            <small>Business phone is required.</small>
+          </div>
+          }
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="businessEmail" class="form-label"
+            >Business Email <span class="required">*</span></label
+          >
+          <input
+            type="email"
+            class="form-control"
+            id="businessEmail"
+            placeholder="business@example.com"
+            formControlName="business_email"
+          />
+          @if (basicInfoForm.get('business_email')?.touched &&
+          basicInfoForm.get('business_email')?.invalid) {
+          <div class="text-danger mt-1">
+            @if (basicInfoForm.get('business_email')?.errors?.['required']) {
+            <small>Email is required.</small>
+            } @if (basicInfoForm.get('business_email')?.errors?.['email']) {
+            <small>Enter a valid email address.</small>
+            }
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="facebook" class="form-label">Facebook</label>
+          <input
+            type="url"
+            class="form-control"
+            id="facebook"
+            placeholder="Facebook URL"
+            formControlName="facebook"
+          />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="twitter" class="form-label">X</label>
+          <input
+            type="url"
+            class="form-control"
+            id="twitter"
+            placeholder="https://twitter.com/yourprofile"
+            formControlName="twitter"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="instagram" class="form-label">Instagram</label>
+          <input
+            type="url"
+            class="form-control"
+            id="instagram"
+            placeholder="Instagram URL"
+            formControlName="instagram"
+          />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="linkedin" class="form-label">LinkedIn</label>
+          <input
+            type="url"
+            class="form-control"
+            id="linkedin"
+            placeholder="https://linkedin.com/in/yourprofile"
+            formControlName="linkedin"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="businessWebsite" class="form-label">Website</label>
+          <input
+            type="url"
+            class="form-control"
+            id="businessWebsite"
+            formControlName="website"
+            placeholder="https://www.example.com"
+          />
+        </div>
+      </div>
+
+      <button
+        (click)="addBusinessInfo()"
+        [disabled]="basicInfoForm.invalid"
+        type="button"
+        class="btn btn-add"
+      >
+        <i class="fas fa-plus me-2"></i>Add Details
+      </button>
+    </form>
+    }
+  </div>
+
+  <!-- Services Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showServiceForm){
+      <h2>Our Services</h2>
+      }@else {
+      <h2>Add Services</h2>
+      }
+      <button class="btn btn-primary" (click)="toggleServiceForm()">
+        <i class="fas fa-edit me-2"></i>Add Service
+      </button>
+    </div>
+    @if(!showServiceForm){
+    <div class="services-grid">
+      @if(services_list?.length > 0){ @for(service of services_list; track
+      service.id){
+      <div class="service-card">
+        <h5 class="service-name">{{ service.name | titlecase }}</h5>
+        <div class="service-price">
+          Ksh.{{ service.price_from }}-Ksh.{{ service.price_to }}/{{
+            service.price_type
+          }}
+        </div>
+        <div>
+          <button class="btn btn-danger" (click)="deleteService(service.id)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-x-square-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"
+              />
+            </svg></button
+          >&nbsp;&nbsp;
+          <ng-template #content let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">
+                Update {{ service.name }}
+              </h4>
+              <button
+                type="button"
+                class="btn-close"
+                aria-label="Close"
+                (click)="modal.dismiss('Cross click')"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <app-update-service
+                (serviceUpdated)="onServiceUpdated()"
+                [service_name]="service.name"
+                [category]="service.category"
+                [price_type]="service.price_type"
+                [price_from]="service.price_from"
+                [price_to]="service.price_to"
+                [service_id]="service.id"
+              ></app-update-service>
+            </div>
+          </ng-template>
+          <button class="btn btn-primary" (click)="open(content)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-pencil-square"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+              />
+              <path
+                fill-rule="evenodd"
+                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      } }
+    </div>
+    <div class="d-flex justify-content-between p-2" style="margin-left: 1rem">
+      <ngb-pagination
+        [collectionSize]="totalServiceItems()"
+        [page]="page()"
+        [pageSize]="pageSize()"
+        (pageChange)="onServiceListPageChange($event)"
+      >
+      </ngb-pagination>
+    </div>
+    } @if(showServiceForm) {
+    <!-- Services Section -->
+    <form class="form-section" [formGroup]="serviceInfoForm">
+      <div id="servicesList">
+        <div class="service-item">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label"
+                >Service Name <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                placeholder="e.g., Grocery Shopping"
+                formControlName="name"
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Service Category</label>
+              <select class="form-select" formControlName="category">
+                <option selected>Service Category</option>
+                @for(category of categories; track category.id){
+                <option value="{{ category.id }}">{{ category.name }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Pricing Type</label>
+              <select class="form-select" formControlName="price_type">
+                <option value="hourly">Hourly Rate</option>
+                <option value="fixed">Fixed Price</option>
+                <option value="quote">By Quote</option>
+                <option value="negotiable">Negotiable</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Price From ($)</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="25"
+                min="0"
+                step="0.01"
+                formControlName="price_from"
+              />
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Price To ($)</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="50"
+                min="0"
+                step="0.01"
+                formControlName="price_to"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-add" (click)="addService()">
+        <i class="fas fa-plus me-2"></i>Add Service
+      </button>
+    </form>
+    }
+  </div>
+
+  <!-- Reviews Section -->
+  <div class="profile-section">
+    <h2 class="section-title">Customer Reviews</h2>
+
+    <!-- Review Summary -->
+    <div class="review-summary">
+      <div class="review-average">
+        <div class="review-score">5.0</div>
+        <div class="review-stars">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="review-count">Based on 127 reviews</div>
+      </div>
+      <div class="review-breakdown">
+        <div class="rating-bar">
+          <span class="rating-label">5 stars</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 92%"></div>
+          </div>
+          <span class="rating-percent">92%</span>
+        </div>
+        <div class="rating-bar">
+          <span class="rating-label">4 stars</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 6%"></div>
+          </div>
+          <span class="rating-percent">6%</span>
+        </div>
+        <div class="rating-bar">
+          <span class="rating-label">3 stars</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 2%"></div>
+          </div>
+          <span class="rating-percent">2%</span>
+        </div>
+        <div class="rating-bar">
+          <span class="rating-label">2 stars</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 0%"></div>
+          </div>
+          <span class="rating-percent">0%</span>
+        </div>
+        <div class="rating-bar">
+          <span class="rating-label">1 star</span>
+          <div class="rating-progress">
+            <div class="rating-fill" style="width: 0%"></div>
+          </div>
+          <span class="rating-percent">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review Items -->
+    <div class="reviews-list">
+      <div class="review-item">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <div class="reviewer-avatar">JD</div>
+            <div>
+              <div class="reviewer-name">John Doe</div>
+              <div class="review-date">2 days ago</div>
+            </div>
+          </div>
+          <div class="review-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+        </div>
+        <p class="review-content">
+          Excellent service! Quick Errands Co. has been handling my weekly
+          grocery shopping for the past 3 months, and I couldn't be happier.
+        </p>
+        <span class="review-service">Grocery Shopping</span>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <button class="btn btn-outline-primary">Load More Reviews</button>
+    </div>
+  </div>
+
+  <!-- Availability Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      <h2>Availability</h2>
+    </div>
+
+    <div class="">
+      <div class="">
+        <div class="availability-card fade-in">
+          <div
+            class="selection-feedback text-center"
+            [ngClass]="{ show: showFeedback }"
+          >
+            <div
+              class="alert border-0 rounded-3 mb-3"
+              [ngClass]="{
+                'alert-success': business_details?.available === true,
+                'alert-danger': business_details?.available === false
+              }"
+              role="alert"
+            >
+              <ng-container *ngIf="business_details?.available === true">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                You're now marked as <strong>Available</strong>
+              </ng-container>
+              <ng-container *ngIf="business_details?.available === false">
+                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                You're now marked as <strong>Unavailable</strong>
+              </ng-container>
+            </div>
+          </div>
+
+          <p class="mb-2 opacity-90 fw-bold">Update your availability status</p>
+          <span *ngIf="!selectedStatus">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            Please select your availability status
+          </span>
+          <!-- Main Content -->
+          <div>
+            <div class="row w-50 mb-4">
+              <div class="col-6">
+                <div
+                  class="availability-option available p-4 h-100 text-center"
+                  [ngClass]="{
+                    selected: selectedStatus === 'available',
+                    'pulse-animation':
+                      selectedStatus === 'available' && showPulse
+                  }"
+                  (click)="selectOption('available')"
+                >
+                  <div class="status-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                  </div>
+                  <h5 class="fw-bold text-success mb-2">Available</h5>
+                  <p class="text-muted small mb-0">
+                    Ready to take on new tasks and meetings
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div
+                  class="availability-option unavailable p-4 h-100 text-center"
+                  [ngClass]="{
+                    selected: selectedStatus === 'unavailable',
+                    'pulse-animation':
+                      selectedStatus === 'unavailable' && showPulse
+                  }"
+                  (click)="selectOption('unavailable')"
+                >
+                  <div class="status-icon">
+                    <i class="bi bi-x-circle-fill"></i>
+                  </div>
+                  <h5 class="fw-bold text-danger mb-2">Unavailable</h5>
+                  <p class="text-muted small mb-0">
+                    Currently busy or away from work
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Selection Feedback -->
+            <div class="selection-feedback" [ngClass]="{ show: showFeedback }">
+              <button
+                class="btn btn-set-availability btn-primary"
+                (click)="saveAvailability()"
+                [disabled]="!selectedStatus"
+              >
+                <ng-container>
+                  <i class="bi bi-check-lg me-2"></i>
+                  Save
+                </ng-container>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Service Area Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      @if(!showServiceAreaForm){
+      <h2>Service Area</h2>
+      }@else {
+      <h2>Service Area</h2>
+      }
+      <button class="btn btn-primary" (click)="toggleServiceAreaForm()">
+        <i class="fas fa-edit me-2"></i>Add Service Area
+      </button>
+    </div>
+    @if(!showServiceAreaForm){
+    <div class="map-container">
+      <i class="fas fa-map-marked-alt fa-3x"></i>
+      <p>Interactive Map Coming Soon</p>
+    </div>
+    <div class="coverage-list">
+      @if(service_areas.length > 0){ @for(service_area of service_areas; track
+      service_area.id){
+      <div class="coverage-item">
+        <i class="fas fa-check-circle"></i>
+        <span>{{ service_area.area_name }}</span>
+      </div>
+      } }
+    </div>
+    <div class="d-flex justify-content-between p-2" style="margin-left: 1rem">
+      <ngb-pagination
+        [collectionSize]="totalServiceAreaItems()"
+        [page]="page()"
+        [pageSize]="pageSize()"
+        (pageChange)="onServiceAreaPageChange($event)"
+      >
+      </ngb-pagination>
+    </div>
+    } @if(showServiceAreaForm) {
+    <!-- Service Area Section -->
+    <div class="form-section">
+      <div class="row">
+        <!-- Areas You Serve -->
+        <div class="col-md-3 mb-3">
+          <label for="businessAddress" class="form-label"
+            >Areas You Serve <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="businessAddress"
+            [(ngModel)]="area"
+            placeholder="e.g. Nairobi CBD"
+            required
+            name="area"
+          />
+        </div>
+
+        <!-- Physical Address -->
+        <div class="col-md-3 mb-3">
+          <label for="businessCity" class="form-label">Physical Address</label>
+          <input
+            type="text"
+            class="form-control"
+            id="businessCity"
+            [(ngModel)]="physicalAddress"
+            placeholder="e.g. Westlands"
+            required
+            name="physicalAddress"
+          />
+        </div>
+
+        <!-- Service Radius -->
+        <div class="col-md-3 mb-3">
+          <label for="serviceRadius" class="form-label"
+            >Service Radius (km)</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="serviceRadius"
+            [(ngModel)]="radius"
+            placeholder="e.g. 10"
+            required
+            name="radius"
+          />
+        </div>
+
+        <!-- Add Button -->
+        <div class="col-md-3 mb-4 d-flex align-items-end">
+          <button
+            class="btn btn-success"
+            (click)="addServiceArea()"
+            [disabled]="!area || !physicalAddress || !radius"
+          >
+            Add Area
+          </button>
+        </div>
+      </div>
+
+      <!-- Table for displaying added service areas -->
+      <div class="row mt-4" *ngIf="serviceAreas.length > 0">
+        <div class="col-md-10">
+          <table class="table table-bordered table-hover">
+            <thead class="table-primary">
+              <tr>
+                <th>#</th>
+                <th>Area</th>
+                <th>Physical Address</th>
+                <th>Service Radius (km)</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let service of serviceAreas; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ service.area_name }}</td>
+                <td>{{ service.physical_address }}</td>
+                <td>{{ service.service_radius }}</td>
+                <td class="text-center">
+                  <button
+                    class="btn btn-sm btn-primary me-2"
+                    (click)="editServiceArea(i)"
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-danger"
+                    (click)="removeServiceArea(i)"
+                  >
+                    <i class="bi bi-x-square-fill"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button
+            type="button"
+            class="btn btn-add"
+            (click)="submitServiceArea()"
+          >
+            <i class="fas fa-plus me-2"></i>Save
+          </button>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="profile-section">
+    <div
+      class="section-title"
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+
+      <h2>Frequently Asked Questions</h2>
+      <button
+        class="btn btn-primary"
+        (click)="toggleFrequentlyAskedQuestionsForm()"
+      >
+        <i class="fas fa-edit me-2"></i>Edit
+      </button>
+    </div>
+    @if(!showFrequentlyAskedQuestionsForm){
+    <div class="faq-list">
+      <div *ngIf="faqs.length > 0; else noFaqs">
+        <div
+          class="faq-item"
+          *ngFor="let faq of faqs; let i = index;"
+        >
+          <div
+            class="faq-question"
+            (click)="toggleFAQ(i)"
+            [class.active]="faq.isOpen"
+          >
+            <span>{{ faq.question }}</span>
+            <i
+              class="fas"
+              [ngClass]="faq.isOpen ? 'fa-chevron-up' : 'fa-chevron-down'"
+            ></i>
+          </div>
+
+          <div class="faq-answer" *ngIf="faq.isOpen">
+            <p>{{ faq.answer }}</p>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noFaqs>
+        <div>No faqs</div>
+      </ng-template>
+    </div>
+
+    }@if(showFrequentlyAskedQuestionsForm){
+    <!-- FAQ Section -->
+    <form class="form-section" [formGroup]="frequentlyAskedQuestionsForm">
+      <div id="faqList">
+        <div
+          class="faq-item"
+          style="background-color: var(--light-gray); padding: 20px"
+        >
+          <div class="mb-3">
+            <label class="form-label">Question</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="e.g., How quickly can you complete an errand?"
+              formControlName="question"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Answer</label>
+            <textarea
+              class="form-control"
+              rows="2"
+              placeholder="Provide a detailed answer..."
+              formControlName="answer"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <br />
+      <button type="button" class="btn btn-add" (click)="addFAQ()">
+        <i class="fas fa-plus me-2"></i>Add FAQ
+      </button>
+    </form>
+    }
+  </div>
+</div>

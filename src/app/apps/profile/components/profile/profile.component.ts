@@ -33,17 +33,17 @@ export class ProfileComponent implements OnInit{
 
   ngOnInit(): void {
 
-    if(this.user_type === 'CUSTOMER'){
+    // if(this.user_type === 'CUSTOMER'){
       this.getUserProfile()
-    }else if(this.user_type === 'BUSINESS'){
-      this.getBusinessProfile()
-    }
+    // }else if(this.user_type === 'BUSINESS'){
+      // this.getBusinessProfile()
+    // }
 
     this.updateProfileForm = new FormGroup({
       phone_number: new FormControl('', Validators.required),
       bio: new FormControl('', Validators.required),
     })
-    
+
     this.updatePasswordForm = new FormGroup({
       current_password: new FormControl('', Validators.required),
       new_password: new FormControl('', Validators.required),
@@ -98,11 +98,11 @@ export class ProfileComponent implements OnInit{
     console.log('updatePassword',data);
 
     this.profileService.updateUserPassword(data).subscribe((res:any)=>{
-      this.toastr.success('Password updated successfully'); 
+      this.toastr.success('Password updated successfully');
     },(error:any)=>{
 
       console.log('error',error);
-      
+
       this.toastr.error('Failed to update password');
     })
   }
@@ -130,7 +130,7 @@ export class ProfileComponent implements OnInit{
 //   const sidebar = this.elRef.nativeElement.querySelector('#sidebar');
 //   const toggle = this.elRef.nativeElement.querySelector('.mobile-toggle');
 
-//   if (window.innerWidth <= 768 && 
+//   if (window.innerWidth <= 768 &&
 //       !sidebar.contains(event.target) &&
 //       !toggle.contains(event.target)) {
 //     this.sidebarActive = false;
@@ -261,7 +261,7 @@ export class ProfileComponent implements OnInit{
   //   this.selectedCategory = category;
   // }
 
-  
+
   //  loadCategories() {
   //   this.categories$ = this._categoryService.categories$;
   //   this.categoryTotal$ = this._categoryService.total$;
@@ -403,7 +403,7 @@ export class ProfileComponent implements OnInit{
   //   })
   // }
 
-  
+
   // getProfileImg(){
   //   this.profileService.getProfileImg().subscribe((res:any)=>{
   //     console.log(res);

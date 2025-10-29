@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { SideBarService } from '../../services/side-bar.service';
 import { ActivatedRoute } from '@angular/router';
@@ -23,9 +23,15 @@ export class SidebarComponent {
       this.sidebarActive = state;
     });
 
-    this.user_type = localStorage.getItem('user_type');
+    const userTypeString = localStorage.getItem('user_type');
+    this.user_type = userTypeString ? JSON.parse(userTypeString) : null;
+
+    console.log('this.user_type',this.user_type);
+
+
+
   }
-  
+
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -45,6 +51,9 @@ export class SidebarComponent {
 
   logout(){
     localStorage.removeItem('access_token');
+    localStorage.removeItem('user_type');
+    localStorage.removeItem('user_id');
+
     this.router.navigate(['/homepage']);
   }
 }

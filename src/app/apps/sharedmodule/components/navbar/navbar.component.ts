@@ -12,8 +12,14 @@ import { SideBarService } from '../../services/side-bar.service';
 export class NavbarComponent implements OnInit {
 
   profileImg:any;
+  isCreateRoute = false;
 
-  constructor(private profileService:ProfileService,private router:Router,private sidebarService: SideBarService){}
+
+  constructor(private profileService:ProfileService,private router:Router,private sidebarService: SideBarService){
+    this.router.events.subscribe(() => {
+      this.isCreateRoute = this.router.url.includes('create');
+    });
+  }
 
 
   toggleSidebar() {

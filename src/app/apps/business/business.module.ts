@@ -6,18 +6,27 @@ import { BusinessListComponent } from './components/business-list/business-list.
 import { SharedModule } from '../sharedmodule/sharedmodule.module';
 import { BusinessDetailComponent } from './components/business-detail/business-detail.component';
 import { BDashboardComponent } from './components/b-dashboard/b-dashboard.component';
+import { BProfileComponent } from './components/b-profile/b-profile.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbAlertModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { UpdateServiceComponent } from './components/modals/update-service/update-service.component';
 
 
 @NgModule({
   declarations: [
     BusinessListComponent,
     BusinessDetailComponent,
-    BDashboardComponent
+    BDashboardComponent,
+    BProfileComponent,
+    UpdateServiceComponent
   ],
   imports: [
     CommonModule,
     BusinessRoutingModule,
     SharedModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgbPaginationModule, NgbAlertModule
 
   ]
 })
