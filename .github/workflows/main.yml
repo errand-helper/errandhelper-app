@@ -55,7 +55,7 @@ jobs:
 
     - name: Push Docker image
       run: |
-       docker push ${{secrets.IMAGE_NAME}}":${BRANCH_TAG}
+       docker push ${{secrets.IMAGE_NAME}}:${BRANCH_TAG}
        docker push ${{ secrets.IMAGE_NAME }}:${GIT_COMMIT_SHA}
 
 
