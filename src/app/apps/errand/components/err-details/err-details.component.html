@@ -1,15 +1,10 @@
 <app-sidebar></app-sidebar>
-<div class="main-content" style="position: relative;">
+<div class="main-content" style="position: relative">
   <app-navbar></app-navbar>
   <div
     class="spinner-border text-primary"
     role="status"
-    style="
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      z-index: 999;
-      "
+    style="position: absolute; top: 50%; left: 50%; z-index: 999"
     *ngIf="isLoading"
   >
     <span class="sr-only">Loading...</span>
@@ -34,14 +29,12 @@
             <span style="text-decoration: underline">Errand Title:</span>
             {{ errand.errand_title }}
           </h1>
-          <p class="reference mb-0">
-            Reference: {{ errand.reference_number }}
-          </p>
+          <p class="reference mb-0">Reference: {{ errand.reference_number }}</p>
         </div>
         <div>
           <div class="mb-2">
             <span>Status: </span
-            ><span class="status-badge">{{ errand.status | titlecase }}</span>
+            ><span class="status-badge">{{ errand.status.replace('_', ' ') | titlecase }}</span>
           </div>
           <div>
             <span>Priority: </span
@@ -155,29 +148,64 @@
           </ng-template>
         </div>
 
-        <!-- <div class="info-card" *ngIf="errand?.images?.length > 0">
-          <h5><i class="fas fa-images"></i> Reference Images</h5>
-          <div class="image-gallery">
-            <img
-              *ngFor="let img of errand.images"
-              [src]="img.image_url"
-              alt="Reference Image"
-              class="gallery-image"
-            />
-          </div>
-        </div> -->
-
         <!-- Action Buttons -->
-        <div class="action-buttons">
-          <button class="btn-primary-custom">
+        <div class="action-buttons" *ngIf="user_type ==='business' && errand.status==='pending'">
+          <button
+            class="btn-primary-custom"
+            (click)="acceptRejectErrand('accept',content)"
+          >
             <i class="fas fa-check me-2"></i>Accept Errand
           </button>
 
-          <button class="btn-secondary-custom">
+          <button
+            class="btn-secondary-custom"
+            (click)="acceptRejectErrand('reject',content)"
+          >
             <i class="fa-solid fa-xmark"></i>
             Reject Errand
           </button>
         </div>
+
+         <div class="action-buttons" *ngIf="user_type ==='business' && errand.status==='in_progress'">
+          <button
+            class="btn-primary-custom"
+            (click)="acceptRejectErrand('completed',content)"
+          >
+            <i class="fas fa-check me-2"></i>Complete
+          </button>
+        </div>
+
+        <div class="action-buttons" *ngIf="user_type ==='client' && errand.status==='pending'">
+          <button
+            class="btn-primary-custom"
+            (click)="acceptRejectErrand('cancelled',content)"
+          >
+            <i class="fas fa-check me-2"></i>Cancel
+          </button>
+        </div>
+
+        <ng-template #content let-c="close" let-d="dismiss">
+          <div class="modal-body">
+            <p>Are you sure you want to {{ actionLabel }}? </p>
+          </div>
+          <div class="d-flex justify-content-between p-2">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="c('cancel')"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="confirmAction(); c('save')"
+            >
+              Submit
+            </button>
+          </div>
+        </ng-template>
+
       </div>
 
       <div class="col-lg-4">
@@ -226,9 +254,7 @@
           <h5><i class="fas fa-credit-card"></i> Payment Details</h5>
           <div class="info-row">
             <span class="info-label">Budget Type</span>
-            <span class="info-value">{{
-              errand.budget_type | titlecase
-            }}</span>
+            <span class="info-value">{{ errand.budget_type | titlecase }}</span>
           </div>
           <div class="info-row">
             <span class="info-label">Payment Method</span>

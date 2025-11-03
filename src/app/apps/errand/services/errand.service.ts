@@ -45,4 +45,10 @@ export class ErrandService {
       headers: headers,
     })
   }
+
+  acceptOrRejectErrand(errandId: string, action: 'accept' | 'reject' | 'completed' | 'cancelled') {
+    return this.http.post(`${this.baseUrl}/order/errands/${errandId}/${action}/`, {});
+  }
+
+
 }

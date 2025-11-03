@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ErrandService } from '../../services/errand.service';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProfileService } from '../../../profile/services/profile.service';
 
 interface Location {
   address: string;
@@ -61,29 +63,41 @@ interface Errand {
   styleUrl: './err-details.component.css',
 })
 export class ErrDetailsComponent {
-  businessId!: string;
+  errandId!: string;
   errand!: Errand;
 
   selectedImageIndex: number = 0;
   duration: number = 0;
   isLoading: boolean = false;
 
+  actionLabel: string = '';
+  user_type: string = '';
+  selectedAction!: 'accept' | 'reject'  | 'completed' | 'cancelled';
+
   constructor(
     private _errandService: ErrandService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: NgbModal,
+    private profileService: ProfileService
   ) {}
 
   ngOnInit(): void {
-    // this.calculateDuration();
-    this.businessId = this.route.snapshot.paramMap.get('errand_id')!;
+    this.errandId = this.route.snapshot.paramMap.get('errand_id')!;
 
     this.getErrandDetails();
+    this.getUserProfile();
+  }
+
+  getUserProfile() {
+    this.profileService.getRole().subscribe((res: any) => {
+      this.user_type = res.role;
+    });
   }
 
   getErrandDetails() {
     this.isLoading = true;
     this._errandService
-      .getErrandDetails(this.businessId)
+      .getErrandDetails(this.errandId)
       .subscribe((res: any) => {
         this.isLoading = false;
         this.errand = res;
@@ -119,59 +133,28 @@ export class ErrDetailsComponent {
     }
   }
 
-  calculateDuration(): void {
-    const start = new Date(this.errand.start_date);
-    const end = new Date(this.errand.stop_date);
-    this.duration = Math.ceil(
-      (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
-    );
+  acceptRejectErrand(action: 'accept' | 'reject' | 'completed' | 'cancelled', content: any): void {
+    this.selectedAction = action;
+    this.actionLabel = action === 'accept' ? 'Accept Errand' : 'Reject Errand';
+    this.modalService.open(content, { centered: true });
   }
 
-  formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+  confirmAction() {
+    this.isLoading = true;
+
+    this._errandService
+      .acceptOrRejectErrand(this.errandId, this.selectedAction)
+      .subscribe({
+        next: (res) => {
+          console.log('✅ Errand updated:', res);
+          this.getErrandDetails();
+        },
+        error: (err) => {
+          // this.toast.error('Something went wrong.');
+        },
+      });
   }
 
-  formatCurrency(amount: number | string): string {
-    return parseFloat(amount.toString()).toLocaleString();
-  }
-
-  getTotalMilestones(): number {
-    return this.errand.milestones.reduce((sum, m) => sum + m.amount, 0);
-  }
-
-  getStatusClass(status: string): string {
-    const classes: { [key: string]: string } = {
-      pending: 'status-pending',
-      active: 'status-active',
-      completed: 'status-completed',
-      cancelled: 'status-cancelled',
-    };
-    return classes[status] || classes['pending'];
-  }
-
-  getPriorityClass(priority: string): string {
-    const classes: { [key: string]: string } = {
-      low: 'priority-low',
-      normal: 'priority-normal',
-      high: 'priority-high',
-      urgent: 'priority-urgent',
-    };
-    return classes[priority] || classes['normal'];
-  }
-
-  selectImage(index: number): void {
-    this.selectedImageIndex = index;
-  }
-
-  capitalizeFirst(text: string): string {
-    return text.charAt(0).toUpperCase() + text.slice(1);
-  }
 
   navigateBack() {
     window.history.back();
