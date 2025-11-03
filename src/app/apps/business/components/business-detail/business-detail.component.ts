@@ -13,6 +13,7 @@ export class BusinessDetailComponent implements OnInit {
   businessId!:string;
   business_details:any;
   faqs:any[] = [];
+  isLoading: boolean = false;
 
   constructor(
     private _businessService: BusinessService,
@@ -29,9 +30,11 @@ export class BusinessDetailComponent implements OnInit {
   }
 
   getBusinessInfo() {
+    this.isLoading = true;
     this._businessService.getBusinessDetail(this.businessId).subscribe((res:any)=>{
       this.business_details = res;
       this.faqs = res.frequently_asked_question;
+      this.isLoading = false;
     })
   }
 

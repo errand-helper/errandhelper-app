@@ -18,6 +18,7 @@ export class RegisterComponent implements OnInit {
   private fb = inject(FormBuilder)
   private toastr = inject(ToastrService)
   private route = inject(Router)
+  isLoading: boolean = false;
 
   ngOnInit() {
     this.registerForm = this.fb.group({
@@ -44,6 +45,7 @@ export class RegisterComponent implements OnInit {
       this.toastr.error('Passwords do not match');
       return;
     }
+    this.isLoading = true;
     const data:RegisterData = {
         first_name: this.registerForm.value.first_name,
         last_name: this.registerForm.value.last_name,
@@ -55,13 +57,13 @@ export class RegisterComponent implements OnInit {
       };
     this.authService.signup(data).subscribe(
       (res: RegisterResponse) => {
-        console.log(res);
+        this.isLoading = false;
         this.registerForm.reset();
         this.toastr.success(res.message);
         this.route.navigate(['/login']);
       },
       (error: ApiError) => {
-        console.log(error);
+        this.isLoading = false;
         this.toastr.error(error.error.message);
       }
     );

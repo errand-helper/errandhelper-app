@@ -39,4 +39,10 @@ export class ErrandService {
       params,
     });
   }
+
+  getErrandDetails(id:string){
+    return this.http.get(`${this.baseUrl}/order/errands/${id}`,{
+      headers: headers,
+    })
+  }
 }

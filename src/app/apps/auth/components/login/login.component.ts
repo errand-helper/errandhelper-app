@@ -12,6 +12,7 @@ import { LoginResponse } from '../../interfaces/auth';
 })
 export class LoginComponent {
   loginForm!: FormGroup;
+  isLoading: boolean = false;
 
   constructor(private authService:AuthService, private fb: FormBuilder,private toastr: ToastrService,private route: Router,){
     this.loginForm = this.fb.group({
@@ -26,18 +27,21 @@ export class LoginComponent {
     if(this.loginForm.invalid){
       return
     }
+    this.isLoading = true;
    this.authService.loginUser(data).subscribe((res:LoginResponse)=>{
     localStorage.setItem('access_token', res.access);
-    localStorage.setItem('user_type', JSON.stringify(res.role));
-    const userTypeString = localStorage.getItem('user_type');
-    const userType = userTypeString ? JSON.parse(userTypeString) : null;
+    // localStorage.setItem('user_type', JSON.stringify(res.role));
+    // const userTypeString = localStorage.getItem('user_type');
+    // const userType = userTypeString ? JSON.parse(userTypeString) : null;
     this.toastr.success('Login successful');
-    if(userType === 'business'){
+    this.isLoading = false;
+    if(res.role === 'business'){
       this.route.navigate(['/business']);
-    }else if(userType === 'client'){
+    }else if(res.role === 'client'){
         this.route.navigate(['/client']);
     }
     },(error)=>{
+      this.isLoading = false;
       this.toastr.error('An error occurred, please try again')
     })
   }
