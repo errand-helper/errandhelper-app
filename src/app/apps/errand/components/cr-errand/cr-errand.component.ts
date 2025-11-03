@@ -93,6 +93,10 @@ export class CrErrandComponent implements OnInit {
     this.createErrandForm.patchValue({ paymentMethod: method });
   }
 
+  isMilestoneTotalCorrect = false;
+
+  isLoading:boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private _businessService: BusinessService,
@@ -149,6 +153,10 @@ export class CrErrandComponent implements OnInit {
     this.createErrandForm.valueChanges.subscribe(() => {
       this.updateCostSummary();
     });
+
+    // this.milestones.valueChanges.subscribe(() => this.checkTotalBudget());
+    this.milestones.valueChanges.subscribe(() => this.checkTotalBudget());
+    this.createErrandForm.get('budgetAmount')?.valueChanges.subscribe(() => this.checkTotalBudget());
   }
 
   convertToBase64(file: File): Promise<string> {
@@ -190,17 +198,73 @@ export class CrErrandComponent implements OnInit {
     return this.createErrandForm.get('descriptions') as FormArray;
   }
 
-  addMilestone(): void {
+  addMilestone() {
     const milestoneGroup = this.fb.group({
-      description: [''],
-      amount: [0],
+      description: ['', Validators.required],
+      amount: [0, [Validators.required, Validators.min(0)]],
     });
+
+    milestoneGroup.valueChanges.subscribe(() => this.checkTotalBudget());
     this.milestones.push(milestoneGroup);
   }
 
-  removeMilestone(index: number): void {
+
+  // addMilestone(): void {
+  //   const milestoneGroup = this.fb.group({
+  //     description: [''],
+  //     amount: [0],
+  //   });
+  //   this.milestones.push(milestoneGroup);
+  // }
+
+  removeMilestone(index: number) {
     this.milestones.removeAt(index);
+    this.checkTotalBudget();
   }
+
+  checkTotalBudget() {
+    const budgetAmount = Number(this.createErrandForm.get('budgetAmount')?.value || 0);
+    const totalMilestoneAmount = this.milestones.value
+      .map((m: any) => Number(m.amount) || 0)
+      .reduce((a: number, b: number) => a + b, 0);
+
+    //  Update flag
+    this.isMilestoneTotalCorrect = totalMilestoneAmount === budgetAmount;
+
+    // Optional: still set validation error
+    if (!this.isMilestoneTotalCorrect && this.milestones.length > 0) {
+      this.createErrandForm.get('budgetAmount')?.setErrors({ totalMismatch: true });
+    } else {
+      this.createErrandForm.get('budgetAmount')?.setErrors(null);
+    }
+  }
+
+  // checkTotalBudget() {
+  //   const budgetAmount = this.createErrandForm.get('budgetAmount')?.value || 0;
+  //   const totalMilestoneAmount = this.milestones.value
+  //     .map((m: any) => Number(m.amount) || 0)
+  //     .reduce((a: number, b: number) => a + b, 0);
+
+  //   if (budgetAmount !== totalMilestoneAmount) {
+  //     this.createErrandForm
+  //       .get('budgetAmount')
+  //       ?.setErrors({ totalMismatch: true });
+  //   } else {
+  //     const errors = this.createErrandForm.get('budgetAmount')?.errors;
+  //     if (errors) {
+  //       delete errors['totalMismatch'];
+  //       if (Object.keys(errors).length === 0) {
+  //         this.createErrandForm.get('budgetAmount')?.setErrors(null);
+  //       } else {
+  //         this.createErrandForm.get('budgetAmount')?.setErrors(errors);
+  //       }
+  //     }
+  //   }
+  // }
+
+  // removeMilestone(index: number): void {
+  //   this.milestones.removeAt(index);
+  // }
 
   addItem() {
     this.descriptions.push(new FormControl(''));
@@ -226,7 +290,7 @@ export class CrErrandComponent implements OnInit {
     return this.fb.group({
       city: ['', Validators.required],
       town: ['', Validators.required],
-      streetAddress: ['', Validators.required],
+      address: ['', Validators.required],
     });
   }
 
@@ -311,16 +375,28 @@ export class CrErrandComponent implements OnInit {
     this.totalAmount = budget + this.platformFee + this.urgencyFee;
   }
 
-  toggleMilestones(): void {
+  toggleMilestones() {
+    const useMilestones = this.createErrandForm.get('useMilestones')?.value;
     this.useMilestones = !this.useMilestones;
-    this.createErrandForm.patchValue({ useMilestones: this.useMilestones });
+    if (useMilestones && this.milestones.length === 0) {
+      this.addMilestone();
+    } else if (!useMilestones) {
+      this.milestones.clear();
+    }
   }
+
+  // toggleMilestones(): void {
+  //   this.useMilestones = !this.useMilestones;
+  //   this.createErrandForm.patchValue({ useMilestones: this.useMilestones });
+  // }
 
   /** Submit form */
   onSubmit(): void {
     const selectedServiceIds = this.services
       .filter((service) => service.selected)
       .map((service) => service.id);
+
+    this.isLoading = true;
 
     if (this.createErrandForm.valid) {
       const data = {
@@ -349,11 +425,13 @@ export class CrErrandComponent implements OnInit {
 
       // return;
       this._errandService.createNewErrand(data).subscribe((res: any) => {
-        console.log(res);
+        this.isLoading = false;
+        console.log('Errand created successfully:', res);
         this._router.navigate(['errands']);
       });
     } else {
       this.createErrandForm.markAllAsTouched();
+      this.isLoading = false;
       console.log('Form submitted:', this.createErrandForm.value);
     }
   }
