@@ -1,8 +1,21 @@
 <!-- Aside -->
 <app-sidebar></app-sidebar>
 <!-- Main -->
-<div class="main-content">
+<div class="main-content" style="position: relative;">
   <app-navbar></app-navbar>
+  <div
+    class="spinner-border text-primary"
+    role="status"
+    style="
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 999;
+      "
+    *ngIf="isLoading"
+  >
+    <span class="sr-only">Loading...</span>
+  </div>
   <div class="mb-3">
     <div>
       <button

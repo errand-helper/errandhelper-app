@@ -1,5 +1,17 @@
-
-<main>
+<main style="position: relative">
+  <div
+    class="spinner-border text-primary"
+    role="status"
+    style="
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 999;
+      "
+    *ngIf="isLoading"
+  >
+    <span class="sr-only">Loading...</span>
+  </div>
   <div class="container">
     <section
       class="min-vh-100 d-flex flex-column align-items-center justify-content-center py-4"
@@ -23,26 +35,64 @@
                     [formGroup]="loginForm"
                     (ngSubmit)="loginUser()"
                   >
-                  <div class="col-12">
-                    <label for="yourEmail" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" required formControlName="email">
-                    <div class="invalid-feedback" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">Please enter your email.</div>
-                  </div>
-                  <div class="col-12">
-                    <label for="yourPassword" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" required formControlName="password">
-                    <div class="invalid-feedback" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">Please enter your password.</div>
-                  </div>
-                    
                     <div class="col-12">
-                      <button [disabled]="loginForm.invalid" class="btn create-btn w-100" type="submit">
+                      <label for="yourEmail" class="form-label">Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        class="form-control"
+                        required
+                        formControlName="email"
+                      />
+                      <div
+                        class="invalid-feedback"
+                        *ngIf="
+                          loginForm.get('email')?.invalid &&
+                          loginForm.get('email')?.touched
+                        "
+                      >
+                        Please enter your email.
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label for="yourPassword" class="form-label"
+                        >Password</label
+                      >
+                      <input
+                        type="password"
+                        name="password"
+                        class="form-control"
+                        required
+                        formControlName="password"
+                      />
+                      <div
+                        class="invalid-feedback"
+                        *ngIf="
+                          loginForm.get('password')?.invalid &&
+                          loginForm.get('password')?.touched
+                        "
+                      >
+                        Please enter your password.
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <button
+                        [disabled]="loginForm.invalid"
+                        class="btn create-btn w-100"
+                        type="submit"
+                      >
                         Login
                       </button>
                     </div>
                     <div class="col-12">
-                      <p class="mb-0" style="font-size: 16px;">
+                      <p class="mb-0" style="font-size: 16px">
                         Already have an account?
-                        <a routerLink="/register" style="color: var(--primary-blue);font-weight: 600;">Register</a>
+                        <a
+                          routerLink="/register"
+                          style="color: var(--primary-blue); font-weight: 600"
+                          >Register</a
+                        >
                       </p>
                     </div>
                   </form>
