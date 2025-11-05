@@ -59,34 +59,34 @@ jobs:
        docker push ${{ secrets.IMAGE_NAME }}:${GIT_COMMIT_SHA}
 
 
-    - name: Clean up old Docker tags (keep last 10)
-      if: github.event_name == 'push'
-      env:
-        DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-        DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
-        IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-        BRANCH_TAG: ${{ env.BRANCH_TAG }}
-      run: |
-        echo "Cleaning up old Docker tags for $IMAGE_NAME:$BRANCH_TAG ..."
+    # - name: Clean up old Docker tags (keep last 10)
+    #   if: github.event_name == 'push'
+    #   env:
+    #     DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+    #     DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+    #     IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+    #     BRANCH_TAG: ${{ env.BRANCH_TAG }}
+    #   run: |
+    #     echo "Cleaning up old Docker tags for $IMAGE_NAME:$BRANCH_TAG ..."
 
-        # Get all tags for this image
-        TAGS=$(curl -s -u "${DOCKER_HUB_USERNAME}:${DOCKER_HUB_TOKEN}" "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/?page_size=100" \
-          | jq -r '.results[].name' | grep -E "^${BRANCH_TAG}|^[0-9a-f]{7,}$" | sort)
+    #     # Get all tags for this image
+    #     TAGS=$(curl -s -u "${DOCKER_HUB_USERNAME}:${DOCKER_HUB_TOKEN}" "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/?page_size=100" \
+    #       | jq -r '.results[].name' | grep -E "^${BRANCH_TAG}|^[0-9a-f]{7,}$" | sort)
 
-        # Keep only the latest 10 tags for this branch
-        TAGS_TO_DELETE=$(echo "$TAGS" | head -n -10)
+    #     # Keep only the latest 10 tags for this branch
+    #     TAGS_TO_DELETE=$(echo "$TAGS" | head -n -10)
 
-        if [ -z "$TAGS_TO_DELETE" ]; then
-          echo "✅ Nothing to clean up. Less than 10 tags found."
-        else
-          echo "🧹 Deleting old tags:"
-          echo "$TAGS_TO_DELETE"
-          for tag in $TAGS_TO_DELETE; do
-            curl -s -X DELETE -u "${DOCKER_HUB_USERNAME}:${DOCKER_HUB_TOKEN}" \
-              "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/${tag}/" > /dev/null
-          done
-          echo "✅ Cleanup complete."
-        fi
+    #     if [ -z "$TAGS_TO_DELETE" ]; then
+    #       echo "✅ Nothing to clean up. Less than 10 tags found."
+    #     else
+    #       echo "🧹 Deleting old tags:"
+    #       echo "$TAGS_TO_DELETE"
+    #       for tag in $TAGS_TO_DELETE; do
+    #         curl -s -X DELETE -u "${DOCKER_HUB_USERNAME}:${DOCKER_HUB_TOKEN}" \
+    #           "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/${tag}/" > /dev/null
+    #       done
+    #       echo "✅ Cleanup complete."
+    #     fi
 
 
 
