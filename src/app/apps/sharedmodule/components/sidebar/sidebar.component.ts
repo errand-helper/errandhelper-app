@@ -2,6 +2,7 @@ import { Component, ElementRef, HostListener, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { SideBarService } from '../../services/side-bar.service';
 import { ActivatedRoute } from '@angular/router';
+import { ProfileService } from '../../../profile/services/profile.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,24 +12,20 @@ import { ActivatedRoute } from '@angular/router';
 export class SidebarComponent {
 
   sidebarActive = false;
-  user_type: string | null;
+  user_type: string | null = null;
 
   constructor(
     private elRef: ElementRef,
     private sidebarService: SideBarService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private profileService: ProfileService,
   ) {
     this.sidebarService.sidebarActive$.subscribe(state => {
       this.sidebarActive = state;
     });
 
-    const userTypeString = localStorage.getItem('user_type');
-    this.user_type = userTypeString ? JSON.parse(userTypeString) : null;
-
-    console.log('this.user_type',this.user_type);
-
-
+    this.getUserProfile()
 
   }
 
@@ -49,11 +46,14 @@ export class SidebarComponent {
     }
   }
 
+  getUserProfile() {
+    this.profileService.getRole().subscribe((res: any) => {
+      this.user_type = res.role;
+    });
+  }
+
   logout(){
     localStorage.removeItem('access_token');
-    localStorage.removeItem('user_type');
-    localStorage.removeItem('user_id');
-
     this.router.navigate(['/homepage']);
   }
 }

@@ -7,7 +7,7 @@ import { ErrDetailsComponent } from './components/err-details/err-details.compon
 const routes: Routes = [
     { path: '', component: ErrListComponent },
     { path: 'create/:business_id', component: CrErrandComponent },
-    { path: ':business_id', component: ErrDetailsComponent },
+    { path: ':errand_id', component: ErrDetailsComponent },
 
 
 ];

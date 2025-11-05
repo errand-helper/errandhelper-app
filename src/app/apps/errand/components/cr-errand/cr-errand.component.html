@@ -1,8 +1,22 @@
 <app-sidebar></app-sidebar>
 
-<div class="main-content">
+<div class="main-content" style="position: relative;">
   <!-- Header -->
   <app-navbar></app-navbar>
+
+  <div
+    class="spinner-border text-primary"
+    role="status"
+    style="
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 999;
+      "
+    *ngIf="isLoading"
+  >
+    <span class="sr-only">Loading...</span>
+  </div>
 
   <div class="mb-3">
     <div>
@@ -293,19 +307,19 @@
                       >Street Address <span class="text-danger">*</span></label
                     >
                     <input
-                      formControlName="streetAddress"
+                      formControlName="address"
                       type="text"
                       class="form-control"
                       [ngClass]="{
                         'is-invalid':
-                          location.get('streetAddress')?.invalid &&
-                          location.get('streetAddress')?.touched
+                          location.get('address')?.invalid &&
+                          location.get('address')?.touched
                       }"
                     />
                     <div
                       *ngIf="
-                        location.get('streetAddress')?.invalid &&
-                        location.get('streetAddress')?.touched
+                        location.get('address')?.invalid &&
+                        location.get('address')?.touched
                       "
                       class="invalid-feedback"
                     >
@@ -611,6 +625,17 @@
                 placeholder="Enter budget amount"
                 formControlName="budgetAmount"
               />
+
+              <div
+                *ngIf="
+                  createErrandForm
+                    .get('budgetAmount')
+                    ?.hasError('totalMismatch')
+                "
+                class="text-danger mt-1"
+              >
+                ⚠️ The total of all milestones must equal the budget amount.
+              </div>
             </div>
 
             <div
@@ -627,7 +652,7 @@
               />
             </div>
 
-            <div class="mb-3">
+            <div class="my-3">
               <div class="form-check">
                 <input
                   class="form-check-input"
@@ -681,9 +706,13 @@
                 type="button"
                 class="btn btn-outline-primary btn-sm"
                 (click)="addMilestone()"
+                [disabled]="isMilestoneTotalCorrect"
               >
                 <i class="fas fa-plus me-2"></i>Add Milestone
               </button>
+              <div *ngIf="isMilestoneTotalCorrect" class="text-success mt-2">
+                ✅ Total milestone amount matches budget.
+              </div>
             </div>
 
             <div class="mb-3 mt-4">
