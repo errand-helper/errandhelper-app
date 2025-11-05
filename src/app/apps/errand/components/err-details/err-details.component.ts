@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { ErrandService } from '../../services/errand.service';
+import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProfileService } from '../../../profile/services/profile.service';
 
 interface Location {
   address: string;
@@ -9,8 +13,8 @@ interface Location {
 
 interface Image {
   id: number;
-  image_url: string;
-  uploaded_at: string;
+  image_url?: string;
+  uploaded_at?: string;
 }
 
 interface Service {
@@ -27,8 +31,8 @@ interface Milestone {
 
 interface Errand {
   id: string;
-  locations: Location[];
-  images: Image[];
+  locations?: Location[];
+  images?: Image[];
   start_date: string;
   stop_date: string;
   reference_number: string;
@@ -53,114 +57,106 @@ interface Errand {
   business: string;
 }
 
-
 @Component({
   selector: 'app-err-details',
   templateUrl: './err-details.component.html',
-  styleUrl: './err-details.component.css'
+  styleUrl: './err-details.component.css',
 })
 export class ErrDetailsComponent {
-
-  errand: Errand = {
-    id: "5efeca44-4527-4d5a-a228-2a1239f291ce",
-    locations: [
-      { address: "", town: "Westlands Town", location: "", city: "Nairobi city" },
-      { address: "", town: "Thika town", location: "", city: "Nairobi City" },
-      { address: "", town: "CBD", location: "", city: "Nairobi" }
-    ],
-    images: [
-      { id: 12, image_url: "https://erranddocs.s3.amazonaws.com/errands/81ed8961-0957-44db-8d57-aade0a2eeb5f.jpg", uploaded_at: "2025-10-20T07:40:09.880591Z" },
-      { id: 13, image_url: "https://erranddocs.s3.amazonaws.com/errands/20618e23-9052-421c-af55-333510fd4a38.jpg", uploaded_at: "2025-10-20T07:40:11.327036Z" }
-    ],
-    start_date: "2025-10-21T10:38:00Z",
-    stop_date: "2025-10-22T10:38:00Z",
-    reference_number: "202510200740087RB",
-    errand_title: "Grocery Shopping",
-    descriptions: ["Instructions 1", "Instructions 2", "Instructions 3"],
-    priority: "normal",
-    budget_type: "fixed",
-    budget_amount: "10000.00",
-    estimated_hours: 20,
-    use_milestones: true,
-    payment_method: "card",
-    special_instructions: "To be done by end of day",
-    contact_preference: "platform",
-    agree_terms: true,
-    agree_escrow: true,
-    services: [
-      { id: 1, name: "Grocery Shopping", description: "Food and household items", category: "Delivery" },
-      { id: 2, name: "Pharmacy Run", description: "Medicine and health products", category: "Shopping" }
-    ],
-    milestones: [
-      { description: "mileston 1", amount: 5000 },
-      { description: "mileston 2", amount: 3000 },
-      { description: "milestone 3", amount: 2000 }
-    ],
-    status: "pending",
-    created_at: "2025-10-20T07:40:08.382383Z",
-    updated_at: "2025-10-20T07:40:08.382386Z",
-    client: "0d5d11b6-3fce-4937-bb77-5df7850b99ef",
-    business: "baf2357c-57de-44d2-89d9-b7799fea72be"
-  };
+  errandId!: string;
+  errand!: Errand;
 
   selectedImageIndex: number = 0;
   duration: number = 0;
+  isLoading: boolean = false;
+
+  actionLabel: string = '';
+  user_type: string = '';
+  selectedAction!: 'accept' | 'reject'  | 'completed' | 'cancelled';
+
+  constructor(
+    private _errandService: ErrandService,
+    private route: ActivatedRoute,
+    private modalService: NgbModal,
+    private profileService: ProfileService
+  ) {}
 
   ngOnInit(): void {
-    this.calculateDuration();
+    this.errandId = this.route.snapshot.paramMap.get('errand_id')!;
+
+    this.getErrandDetails();
+    this.getUserProfile();
   }
 
-  calculateDuration(): void {
-    const start = new Date(this.errand.start_date);
-    const end = new Date(this.errand.stop_date);
-    this.duration = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-  }
-
-  formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+  getUserProfile() {
+    this.profileService.getRole().subscribe((res: any) => {
+      this.user_type = res.role;
     });
   }
 
-  formatCurrency(amount: number | string): string {
-    return parseFloat(amount.toString()).toLocaleString();
+  getErrandDetails() {
+    this.isLoading = true;
+    this._errandService
+      .getErrandDetails(this.errandId)
+      .subscribe((res: any) => {
+        this.isLoading = false;
+        this.errand = res;
+        // console.log(this.errand);
+      });
   }
 
-  getTotalMilestones(): number {
-    return this.errand.milestones.reduce((sum, m) => sum + m.amount, 0);
+  getDuration(start: string | undefined, end: string | undefined): string {
+    if (!start || !end) return '—';
+
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const diffMs = endDate.getTime() - startDate.getTime();
+
+    if (diffMs <= 0) return '0 min';
+
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const diffHours = Math.floor(
+      (diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    if (diffDays > 0) {
+      return `${diffDays} day${diffDays > 1 ? 's' : ''} ${diffHours} hr${
+        diffHours > 1 ? 's' : ''
+      }`;
+    } else if (diffHours > 0) {
+      return `${diffHours} hr${diffHours > 1 ? 's' : ''} ${diffMinutes} min${
+        diffMinutes > 1 ? 's' : ''
+      }`;
+    } else {
+      return `${diffMinutes} min${diffMinutes > 1 ? 's' : ''}`;
+    }
   }
 
-  getStatusClass(status: string): string {
-    const classes: { [key: string]: string } = {
-      'pending': 'status-pending',
-      'active': 'status-active',
-      'completed': 'status-completed',
-      'cancelled': 'status-cancelled'
-    };
-    return classes[status] || classes['pending'];
+  acceptRejectErrand(action: 'accept' | 'reject' | 'completed' | 'cancelled', content: any): void {
+    this.selectedAction = action;
+    this.actionLabel = action === 'accept' ? 'Accept Errand' : 'Reject Errand';
+    this.modalService.open(content, { centered: true });
   }
 
-  getPriorityClass(priority: string): string {
-    const classes: { [key: string]: string } = {
-      'low': 'priority-low',
-      'normal': 'priority-normal',
-      'high': 'priority-high',
-      'urgent': 'priority-urgent'
-    };
-    return classes[priority] || classes['normal'];
-  }
+  confirmAction() {
+    this.isLoading = true;
 
-  selectImage(index: number): void {
-    this.selectedImageIndex = index;
-  }
-
-  capitalizeFirst(text: string): string {
-    return text.charAt(0).toUpperCase() + text.slice(1);
+    this._errandService
+      .acceptOrRejectErrand(this.errandId, this.selectedAction)
+      .subscribe({
+        next: (res) => {
+          console.log('✅ Errand updated:', res);
+          this.getErrandDetails();
+        },
+        error: (err) => {
+          // this.toast.error('Something went wrong.');
+        },
+      });
   }
 
 
+  navigateBack() {
+    window.history.back();
+  }
 }

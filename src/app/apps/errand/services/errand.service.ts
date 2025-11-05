@@ -39,4 +39,16 @@ export class ErrandService {
       params,
     });
   }
+
+  getErrandDetails(id:string){
+    return this.http.get(`${this.baseUrl}/order/errands/${id}`,{
+      headers: headers,
+    })
+  }
+
+  acceptOrRejectErrand(errandId: string, action: 'accept' | 'reject' | 'completed' | 'cancelled') {
+    return this.http.post(`${this.baseUrl}/order/errands/${errandId}/${action}/`, {});
+  }
+
+
 }
