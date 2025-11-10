@@ -34,7 +34,9 @@
         <div>
           <div class="mb-2">
             <span>Status: </span
-            ><span class="status-badge">{{ errand.status.replace('_', ' ') | titlecase }}</span>
+            ><span class="status-badge">{{
+              errand.status.replace("_", " ") | titlecase
+            }}</span>
           </div>
           <div>
             <span>Priority: </span
@@ -149,7 +151,50 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="action-buttons" *ngIf="user_type ==='business' && errand.status==='pending'">
+        <div
+          class="action-buttons"
+          *ngIf="user_type === 'business' && errand.status === 'pending'"
+        >
+          <button
+            class="btn-action accept"
+            (click)="acceptRejectErrand('accept', content)"
+          >
+            <i class="fas fa-check me-2"></i>Accept Errand
+          </button>
+
+          <button
+            class="btn-action reject"
+            (click)="acceptRejectErrand('reject', content)"
+          >
+            <i class="fa-solid fa-xmark"></i>Reject Errand
+          </button>
+        </div>
+
+        <div
+          class="action-buttons"
+          *ngIf="user_type === 'business' && errand.status === 'in_progress'"
+        >
+          <button
+            class="btn-action complete"
+            (click)="acceptRejectErrand('completed', content)"
+          >
+            <i class="fas fa-check me-2"></i>Complete
+          </button>
+        </div>
+
+        <div
+          class="action-buttons"
+          *ngIf="user_type === 'client' && errand.status === 'pending'"
+        >
+          <button
+            class="btn-action cancel"
+            (click)="acceptRejectErrand('cancelled', content)"
+          >
+            <i class="fas fa-check me-2"></i>Cancel
+          </button>
+        </div>
+
+        <!-- <div class="action-buttons" *ngIf="user_type ==='business' && errand.status==='pending'">
           <button
             class="btn-primary-custom"
             (click)="acceptRejectErrand('accept',content)"
@@ -182,11 +227,11 @@
           >
             <i class="fas fa-check me-2"></i>Cancel
           </button>
-        </div>
+        </div> -->
 
         <ng-template #content let-c="close" let-d="dismiss">
           <div class="modal-body">
-            <p>Are you sure you want to {{ actionLabel }}? </p>
+            <p>Are you sure you want to {{ actionLabel }}?</p>
           </div>
           <div class="d-flex justify-content-between p-2">
             <button
@@ -205,7 +250,6 @@
             </button>
           </div>
         </ng-template>
-
       </div>
 
       <div class="col-lg-4">

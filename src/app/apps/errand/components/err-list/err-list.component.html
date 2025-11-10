@@ -1,15 +1,10 @@
 <app-sidebar></app-sidebar>
-<div class="main-content" style="position: relative;">
+<div class="main-content" style="position: relative">
   <app-navbar></app-navbar>
   <div
     class="spinner-border text-primary"
     role="status"
-    style="
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      z-index: 999;
-      "
+    style="position: absolute; top: 50%; left: 50%; z-index: 999"
     *ngIf="isLoading"
   >
     <span class="sr-only">Loading...</span>
@@ -35,7 +30,7 @@
         >
           <option value="">All Status</option>
           <option value="pending">Pending</option>
-          <option value="active">Active</option>
+          <option value="in_progress">In progress</option>
           <option value="completed">Completed</option>
         </select>
 
@@ -75,11 +70,26 @@
           </td>
           <td>{{ errand.created_at | date : "longDate" }}</td>
           <td>
-            <span class="status-badge status-pending">{{ errand.status.replace('_', ' ') | titlecase }}</span>
+            <span
+              class="status-badge"
+              [ngClass]="{
+                pending: errand.status === 'pending',
+                'in-progress': errand.status === 'in_progress',
+                completed: errand.status === 'completed',
+                rejected: errand.status === 'rejected',
+                cancelled: errand.status === 'cancelled'
+              }"
+            >
+              {{ errand.status.replace("_", " ") | titlecase }}
+            </span>
+
+            <!-- <span class="status-badge">{{ errand.status.replace('_', ' ') | titlecase }}</span> -->
           </td>
           <td>
             <div class="action-buttons">
-              <button class="btn btn-secondary" [routerLink]="[errand.id]">View</button>
+              <button class="btn btn-secondary" [routerLink]="[errand.id]">
+                View
+              </button>
               <!-- <button class="btn btn-reject" *ngIf="isClient === 'business'">Reject</button> -->
               <!-- <button class="btn btn-delete" *ngIf="isClient === 'client' && errand.status ==='pending'">Delete</button> -->
             </div>

@@ -12,6 +12,7 @@ import {
 import { BusinessService } from '../../../business/services/business.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ErrandService } from '../../services/errand.service';
+import { ToastrService } from 'ngx-toastr';
 
 interface Service {
   id: number;
@@ -102,7 +103,8 @@ export class CrErrandComponent implements OnInit {
     private _businessService: BusinessService,
     private route: ActivatedRoute,
     private _router: Router,
-    private _errandService: ErrandService
+    private _errandService: ErrandService,
+    private _toastr: ToastrService
   ) {}
 
   validateLocations(): ValidatorFn {
@@ -426,13 +428,19 @@ export class CrErrandComponent implements OnInit {
       // return;
       this._errandService.createNewErrand(data).subscribe((res: any) => {
         this.isLoading = false;
-        console.log('Errand created successfully:', res);
+        // console.log('Errand created successfully:', res);
         this._router.navigate(['errands']);
+        this._toastr.success('Errand created successfully!');
+      }, (error: any) => {
+        this.isLoading = false;
+        // console.error('Error creating errand:', error);
+        this._toastr.error(error?.error?.error || 'Failed to create errand. Please try again.');
       });
     } else {
       this.createErrandForm.markAllAsTouched();
       this.isLoading = false;
-      console.log('Form submitted:', this.createErrandForm.value);
+      // this._toastr.success('Errand created successfully!');
+      // console.log('Form submitted:', this.createErrandForm.value);
     }
   }
 
