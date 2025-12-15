@@ -89,14 +89,16 @@ export class CrErrandComponent implements OnInit {
   isMilestoneTotalCorrect = false;
 
   isLoading:boolean = false;
+  errandId!: string;
+  errand:any;
 
   constructor(
-    private fb: FormBuilder,
-    private _businessService: BusinessService,
-    private route: ActivatedRoute,
-    private _router: Router,
-    private _errandService: ErrandService,
-    private _toastr: ToastrService
+    private readonly fb: FormBuilder,
+    private readonly _businessService: BusinessService,
+    private readonly route: ActivatedRoute,
+    private readonly _router: Router,
+    private readonly _errandService: ErrandService,
+    private readonly _toastr: ToastrService
   ) {}
 
   validateLocations(): ValidatorFn {
@@ -119,8 +121,16 @@ export class CrErrandComponent implements OnInit {
 
   ngOnInit(): void {
     this.businessId = this.route.snapshot.paramMap.get('business_id')!;
+    console.log('Business ID:', this.businessId);
 
+    if(this.route.snapshot.paramMap.get('errand_id')){
+      this.errandId = this.route.snapshot.paramMap.get('errand_id')!;
+      this.getErrandInfo()
+    }else{
     this.getBusinessInfo();
+
+    }
+
 
     this.createErrandForm = this.fb.group({
       errandTitle: ['', Validators.required],
@@ -147,20 +157,11 @@ export class CrErrandComponent implements OnInit {
     this.createErrandForm.valueChanges.subscribe(() => {
       this.updateCostSummary();
     });
-
-    // this.milestones.valueChanges.subscribe(() => this.checkTotalBudget());
     this.milestones.valueChanges.subscribe(() => this.checkTotalBudget());
     this.createErrandForm.get('budgetAmount')?.valueChanges.subscribe(() => this.checkTotalBudget());
   }
 
-  convertToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  }
+
 
   getBusinessInfo() {
     this._businessService
@@ -168,8 +169,19 @@ export class CrErrandComponent implements OnInit {
       .subscribe((res: any) => {
         this.business_details = res;
         this.services = this.business_details?.services || [];
-        console.log('this.business_details', this.business_details);
       });
+  }
+
+  getErrandInfo() {
+    this.isLoading = true;
+    this._errandService
+      .getErrandDetails(this.errandId)
+      .subscribe((res: any) => {
+        this.isLoading = false;
+        this.errand = res;
+        console.log(this.errand);
+      });
+
   }
 
   get filteredServices() {
@@ -203,14 +215,6 @@ export class CrErrandComponent implements OnInit {
   }
 
 
-  // addMilestone(): void {
-  //   const milestoneGroup = this.fb.group({
-  //     description: [''],
-  //     amount: [0],
-  //   });
-  //   this.milestones.push(milestoneGroup);
-  // }
-
   removeMilestone(index: number) {
     this.milestones.removeAt(index);
     this.checkTotalBudget();
@@ -233,32 +237,7 @@ export class CrErrandComponent implements OnInit {
     }
   }
 
-  // checkTotalBudget() {
-  //   const budgetAmount = this.createErrandForm.get('budgetAmount')?.value || 0;
-  //   const totalMilestoneAmount = this.milestones.value
-  //     .map((m: any) => Number(m.amount) || 0)
-  //     .reduce((a: number, b: number) => a + b, 0);
 
-  //   if (budgetAmount !== totalMilestoneAmount) {
-  //     this.createErrandForm
-  //       .get('budgetAmount')
-  //       ?.setErrors({ totalMismatch: true });
-  //   } else {
-  //     const errors = this.createErrandForm.get('budgetAmount')?.errors;
-  //     if (errors) {
-  //       delete errors['totalMismatch'];
-  //       if (Object.keys(errors).length === 0) {
-  //         this.createErrandForm.get('budgetAmount')?.setErrors(null);
-  //       } else {
-  //         this.createErrandForm.get('budgetAmount')?.setErrors(errors);
-  //       }
-  //     }
-  //   }
-  // }
-
-  // removeMilestone(index: number): void {
-  //   this.milestones.removeAt(index);
-  // }
 
   addItem() {
     this.descriptions.push(new FormControl(''));
@@ -296,9 +275,7 @@ export class CrErrandComponent implements OnInit {
     this.locations.removeAt(index);
   }
 
-  // toggleCategory(category: string) {
-  //   this.selectedCategory = category;
-  // }
+
 
   toggleSelection(service: Service) {
     service.selected = !service.selected;
@@ -310,6 +287,15 @@ export class CrErrandComponent implements OnInit {
 
   triggerFileInput() {
     this.fileInput.nativeElement.click();
+  }
+
+  convertToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
   }
 
   onFilesSelected(event: any): void {
@@ -379,10 +365,6 @@ export class CrErrandComponent implements OnInit {
     }
   }
 
-  // toggleMilestones(): void {
-  //   this.useMilestones = !this.useMilestones;
-  //   this.createErrandForm.patchValue({ useMilestones: this.useMilestones });
-  // }
 
   /** Submit form */
   onSubmit(): void {
@@ -430,8 +412,7 @@ export class CrErrandComponent implements OnInit {
     } else {
       this.createErrandForm.markAllAsTouched();
       this.isLoading = false;
-      // this._toastr.success('Errand created successfully!');
-      // console.log('Form submitted:', this.createErrandForm.value);
+      this._toastr.success('Errand created successfully!');
     }
   }
 
@@ -446,6 +427,5 @@ export class CrErrandComponent implements OnInit {
 
   clearForm(){
     this.createErrandForm.reset();
-    // this.navigateBack();
   }
 }

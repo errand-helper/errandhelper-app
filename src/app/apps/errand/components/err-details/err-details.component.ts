@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ErrandService } from '../../services/errand.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileService } from '../../../profile/services/profile.service';
 import { Errand } from '../../models/errand.model';
@@ -25,8 +25,9 @@ export class ErrDetailsComponent {
   selectedAction!: 'accept' | 'reject'  | 'completed' | 'cancelled';
 
   constructor(
-    private _errandService: ErrandService,
+    private readonly _errandService: ErrandService,
     private route: ActivatedRoute,
+    private router: Router,
     private modalService: NgbModal,
     private profileService: ProfileService,
     private _toastr: ToastrService
@@ -52,7 +53,7 @@ export class ErrDetailsComponent {
       .subscribe((res: any) => {
         this.isLoading = false;
         this.errand = res;
-        // console.log(this.errand);
+        console.log(this.errand);
       });
   }
 
@@ -116,5 +117,10 @@ export class ErrDetailsComponent {
 
   navigateBack() {
     window.history.back();
+  }
+
+  editErrand() {
+    // Navigate to the errand edit page
+    this.router.navigate([`/errands/edit/${this.errand.business}/${this.errandId}`]);
   }
 }
