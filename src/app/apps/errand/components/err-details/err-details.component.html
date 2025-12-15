@@ -222,40 +222,6 @@
           </button>
         </div>
 
-        <!-- <div class="action-buttons" *ngIf="user_type ==='business' && errand.status==='pending'">
-          <button
-            class="btn-primary-custom"
-            (click)="acceptRejectErrand('accept',content)"
-          >
-            <i class="fas fa-check me-2"></i>Accept Errand
-          </button>
-
-          <button
-            class="btn-secondary-custom"
-            (click)="acceptRejectErrand('reject',content)"
-          >
-            <i class="fa-solid fa-xmark"></i>
-            Reject Errand
-          </button>
-        </div>
-
-         <div class="action-buttons" *ngIf="user_type ==='business' && errand.status==='in_progress'">
-          <button
-            class="btn-primary-custom"
-            (click)="acceptRejectErrand('completed',content)"
-          >
-            <i class="fas fa-check me-2"></i>Complete
-          </button>
-        </div>
-
-        <div class="action-buttons" *ngIf="user_type ==='client' && errand.status==='pending'">
-          <button
-            class="btn-primary-custom"
-            (click)="acceptRejectErrand('cancelled',content)"
-          >
-            <i class="fas fa-check me-2"></i>Cancel
-          </button>
-        </div> -->
 
         <ng-template #content let-c="close" let-d="dismiss">
           <div class="modal-body">
