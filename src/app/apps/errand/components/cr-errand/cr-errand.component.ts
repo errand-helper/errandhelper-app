@@ -60,28 +60,20 @@ export class CrErrandComponent implements OnInit {
     {
       id: 'card',
       label: 'Credit Card',
-      detail: '•••• 4242',
       icon: 'fas fa-credit-card',
       color: 'var(--primary-blue)',
     },
     {
-      id: 'paypal',
-      label: 'PayPal',
-      detail: 'johnexample.com',
-      icon: 'fab fa-paypal',
+      id: 'mpesa',
+      label: 'M-pesa',
+      // detail: 'johnexample.com',
+      icon: 'fa fa-phone',
       color: '#0070ba',
-    },
-    {
-      id: 'bank',
-      label: 'Bank Transfer',
-      detail: '•••• 5678',
-      icon: 'fas fa-university',
-      color: 'var(--primary-blue)',
     },
     {
       id: 'platform',
       label: 'Platform',
-      detail: '•••• 5678',
+      // detail: '•••• 5678',
       icon: 'fas fa-university',
       color: 'var(--primary-blue)',
     },
@@ -428,12 +420,11 @@ export class CrErrandComponent implements OnInit {
       // return;
       this._errandService.createNewErrand(data).subscribe((res: any) => {
         this.isLoading = false;
-        // console.log('Errand created successfully:', res);
-        this._router.navigate(['errands']);
+        console.log('Errand created successfully:', res);
+        this._router.navigate(['errands', res.id]);
         this._toastr.success('Errand created successfully!');
       }, (error: any) => {
         this.isLoading = false;
-        // console.error('Error creating errand:', error);
         this._toastr.error(error?.error?.error || 'Failed to create errand. Please try again.');
       });
     } else {
@@ -451,5 +442,10 @@ export class CrErrandComponent implements OnInit {
 
   navigateBack() {
     window.history.back();
+  }
+
+  clearForm(){
+    this.createErrandForm.reset();
+    // this.navigateBack();
   }
 }

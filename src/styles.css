@@ -212,7 +212,7 @@ body {
   transform: translateY(-2px);
 }
 
-.btn-outline-custom {
+/* .btn-outline-custom {
   color: var(--primary-blue);
   border-color: var(--primary-blue);
   font-weight: 600;
@@ -224,7 +224,7 @@ body {
   background-color: var(--primary-blue);
   border-color: var(--primary-blue);
   color: var(--primary-white);
-}
+} */
 
 /* Stats Cards */
 .stat-card {

@@ -50,4 +50,5 @@ export interface Errand {
   updated_at: string;
   client: string;
   business: string;
+  paid: boolean;
 }

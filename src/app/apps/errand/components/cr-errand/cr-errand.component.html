@@ -1,18 +1,13 @@
 <app-sidebar></app-sidebar>
 
-<div class="main-content" style="position: relative;">
+<div class="main-content" style="position: relative">
   <!-- Header -->
   <app-navbar></app-navbar>
 
   <div
     class="spinner-border text-primary"
     role="status"
-    style="
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      z-index: 999;
-      "
+    style="position: absolute; top: 50%; left: 50%; z-index: 999"
     *ngIf="isLoading"
   >
     <span class="sr-only">Loading...</span>
@@ -728,7 +723,6 @@
                 >
                   <i [class]="method.icon" [style.color]="method.color"></i>
                   <div>{{ method.label }}</div>
-                  <small>{{ method.detail }}</small>
                 </div>
 
                 <!-- Only one binding here -->
@@ -893,42 +887,33 @@
               >
             </div>
 
-            <div class="escrow-info">
+            <div class="escrow-info mb-3">
               <i class="fas fa-shield-alt me-2"></i>
               <strong>Secure Payment:</strong> Your payment is held safely in
               escrow and only released when you confirm the errand is complete.
             </div>
 
-            <div class="info-box mt-3">
+            <!-- <div class="info-box mt-3">
               <i class="fas fa-info-circle"></i>
               <small
                 >You can communicate with the provider before confirming to
                 discuss any details.</small
               >
+            </div> -->
+            <div class="form-actions mb-3">
+              <button type="submit" class="btn btn-primary-custom" style="width: 100%;">
+                <i class="fas fa-paper-plane me-2"></i>Submit Payment
+              </button>
             </div>
+            <div class="">
+                Do you want to
+                <button type="button" (click)="saveDraft()" class="btn-draft">
+                  Save as Draft
+                </button>
+                or
+                <button (click)="clearForm()" class="btn-draft">Cancel</button>?
+              </div>
           </div>
-        </div>
-      </div>
-
-      <div class="form-actions">
-        <button
-          type="button"
-          class="btn btn-outline-custom"
-          (click)="saveDraft()"
-        >
-          <i class="fas fa-save me-2"></i>Save as Draft
-        </button>
-        <div class="d-flex gap-2">
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            (click)="navigateBack()"
-          >
-            Cancel
-          </button>
-          <button type="submit" class="btn btn-primary-custom">
-            <i class="fas fa-paper-plane me-2"></i>Submit Errand Request
-          </button>
         </div>
       </div>
     </form>

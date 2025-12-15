@@ -22,16 +22,31 @@
   <!-- Main Content -->
   <div class="content-area" *ngIf="errand">
     <!-- Page Header -->
-    <div class="page-header">
+     <div class="page-header" *ngIf="!errand?.paid && user_type === 'client'" style="background-color: tomato;">
       <div class="d-flex justify-content-between align-items-center">
         <div>
+          <h3>
+            Verify Details then make payment for the errand to be started.
+          </h3>
+          <h4>You can only edit the errand details before making the payment</h4>
+        </div>
+      </div>
+    </div>
+    <div class="page-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="w-1/2">
           <h1>
             <span style="text-decoration: underline">Errand Title:</span>
             {{ errand.errand_title }}
           </h1>
           <p class="reference mb-0">Reference: {{ errand.reference_number }}</p>
         </div>
-        <div>
+        <div class="w-1/2">
+          <div class="mb-2">
+            <span>Payment: </span>
+            <span class="status-badge" *ngIf="!errand?.paid">Pending</span>
+            <span class="status-badge" *ngIf="errand?.paid">Paid</span>
+          </div>
           <div class="mb-2">
             <span>Status: </span
             ><span class="status-badge">{{
@@ -153,7 +168,7 @@
         <!-- Action Buttons -->
         <div
           class="action-buttons"
-          *ngIf="user_type === 'business' && errand.status === 'pending'"
+          *ngIf="user_type === 'business' && errand.status === 'pending' && errand?.paid"
         >
           <button
             class="btn-action accept"
@@ -191,6 +206,19 @@
             (click)="acceptRejectErrand('cancelled', content)"
           >
             <i class="fas fa-check me-2"></i>Cancel
+          </button>
+          <button
+            class="btn-action cancel"
+            (click)="acceptRejectErrand('cancelled', content)"
+          >
+            <i class="fas fa-check me-2"></i>Edit Errand
+          </button>
+
+          <button
+            class="btn-action cancel"
+            (click)="acceptRejectErrand('cancelled', content)"
+          >
+            <i class="fas fa-check me-2"></i>Make payment
           </button>
         </div>
 
