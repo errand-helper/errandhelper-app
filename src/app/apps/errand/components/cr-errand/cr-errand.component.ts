@@ -12,6 +12,7 @@ import {
 import { BusinessService } from '../../../business/services/business.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ErrandService } from '../../services/errand.service';
+import { ToastrService } from 'ngx-toastr';
 
 interface Service {
   id: number;
@@ -59,28 +60,20 @@ export class CrErrandComponent implements OnInit {
     {
       id: 'card',
       label: 'Credit Card',
-      detail: '•••• 4242',
       icon: 'fas fa-credit-card',
       color: 'var(--primary-blue)',
     },
     {
-      id: 'paypal',
-      label: 'PayPal',
-      detail: 'johnexample.com',
-      icon: 'fab fa-paypal',
+      id: 'mpesa',
+      label: 'M-pesa',
+      // detail: 'johnexample.com',
+      icon: 'fa fa-phone',
       color: '#0070ba',
-    },
-    {
-      id: 'bank',
-      label: 'Bank Transfer',
-      detail: '•••• 5678',
-      icon: 'fas fa-university',
-      color: 'var(--primary-blue)',
     },
     {
       id: 'platform',
       label: 'Platform',
-      detail: '•••• 5678',
+      // detail: '•••• 5678',
       icon: 'fas fa-university',
       color: 'var(--primary-blue)',
     },
@@ -95,14 +88,19 @@ export class CrErrandComponent implements OnInit {
 
   isMilestoneTotalCorrect = false;
 
-  isLoading:boolean = false;
+  isLoading: boolean = false;
+  errandId!: string;
+  // errand: any;
+
+  isEditMode = false;
 
   constructor(
-    private fb: FormBuilder,
-    private _businessService: BusinessService,
-    private route: ActivatedRoute,
-    private _router: Router,
-    private _errandService: ErrandService
+    private readonly fb: FormBuilder,
+    private readonly _businessService: BusinessService,
+    private readonly route: ActivatedRoute,
+    private readonly _router: Router,
+    private readonly _errandService: ErrandService,
+    private readonly _toastr: ToastrService
   ) {}
 
   validateLocations(): ValidatorFn {
@@ -126,12 +124,34 @@ export class CrErrandComponent implements OnInit {
   ngOnInit(): void {
     this.businessId = this.route.snapshot.paramMap.get('business_id')!;
 
-    this.getBusinessInfo();
+    this.createForm();
 
+    const errandId = this.route.snapshot.paramMap.get('errand_id');
+
+    if (errandId) {
+      this.isEditMode = true;
+      this.errandId = errandId;
+      this.getErrandInfo();
+    }
+    // else {
+    this.getBusinessInfo();
+    // }
+
+    this.createErrandForm.valueChanges.subscribe(() => {
+      this.updateCostSummary();
+    });
+
+    this.milestones.valueChanges.subscribe(() => this.checkTotalBudget());
+    this.createErrandForm.get('budgetAmount')?.valueChanges.subscribe(() => {
+      this.checkTotalBudget();
+    });
+  }
+
+  createForm() {
     this.createErrandForm = this.fb.group({
       errandTitle: ['', Validators.required],
       descriptions: this.fb.array([]),
-      locations: this.fb.array([this.createLocation()], {
+      locations: this.fb.array([], {
         validators: [this.validateLocations()],
       }),
       priority: ['normal', Validators.required],
@@ -149,24 +169,48 @@ export class CrErrandComponent implements OnInit {
       stopDate: ['', Validators.required],
       images: this.fb.array([]),
     });
-
-    this.createErrandForm.valueChanges.subscribe(() => {
-      this.updateCostSummary();
-    });
-
-    // this.milestones.valueChanges.subscribe(() => this.checkTotalBudget());
-    this.milestones.valueChanges.subscribe(() => this.checkTotalBudget());
-    this.createErrandForm.get('budgetAmount')?.valueChanges.subscribe(() => this.checkTotalBudget());
   }
 
-  convertToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  }
+  // ngOnInit(): void {
+  //   this.businessId = this.route.snapshot.paramMap.get('business_id')!;
+  //   console.log('Business ID:', this.businessId);
+
+  //   if(this.route.snapshot.paramMap.get('errand_id')){
+  //     this.errandId = this.route.snapshot.paramMap.get('errand_id')!;
+  //     this.getErrandInfo()
+  //   }else{
+  //   this.getBusinessInfo();
+
+  //   }
+
+  //   this.createErrandForm = this.fb.group({
+  //     errandTitle: ['', Validators.required],
+  //     descriptions: this.fb.array([]),
+  //     locations: this.fb.array([this.createLocation()], {
+  //       validators: [this.validateLocations()],
+  //     }),
+  //     priority: ['normal', Validators.required],
+  //     budgetType: ['fixed', Validators.required],
+  //     budgetAmount: [null],
+  //     estimatedHours: [null],
+  //     milestones: this.fb.array([]),
+  //     useMilestones: [false],
+  //     paymentMethod: ['', Validators.required],
+  //     specialInstructions: [''],
+  //     contactPreference: ['platform'],
+  //     agreeTerms: [false, Validators.requiredTrue],
+  //     agreeEscrow: [false, Validators.requiredTrue],
+  //     startDate: ['', Validators.required],
+  //     stopDate: ['', Validators.required],
+  //     images: this.fb.array([]),
+  //   });
+
+  //   this.createErrandForm.valueChanges.subscribe(() => {
+  //     this.updateCostSummary();
+  //   });
+  //   this.milestones.valueChanges.subscribe(() => this.checkTotalBudget());
+  //   this.createErrandForm.get('budgetAmount')?.valueChanges.subscribe(() => this.checkTotalBudget());
+  // }
 
   getBusinessInfo() {
     this._businessService
@@ -174,21 +218,119 @@ export class CrErrandComponent implements OnInit {
       .subscribe((res: any) => {
         this.business_details = res;
         this.services = this.business_details?.services || [];
-        console.log('this.business_details', this.business_details);
+        console.log(this.services);
       });
   }
 
-  get filteredServices() {
-    return this.services.filter((service) => {
-      const matchesCategory =
-        this.selectedCategory === 'All Services' ||
-        service.category === this.selectedCategory;
-      const matchesSearch = service.name
-        .toLowerCase()
-        .includes(this.searchTerm.toLowerCase());
-      return matchesCategory && matchesSearch;
+  getErrandInfo() {
+    this.isLoading = true;
+    this._errandService.getErrandDetails(this.errandId).subscribe({
+      next: (res) => {
+        this.populateForm(res);
+        this.isLoading = false;
+      },
+      error: () => (this.isLoading = false),
     });
   }
+
+  populateForm(errand: any) {
+    this.createErrandForm.patchValue({
+      errandTitle: errand.errand_title,
+      priority: errand.priority,
+      budgetType: errand.budget_type,
+      budgetAmount: errand.budget_amount,
+      estimatedHours: errand.estimated_hours,
+      paymentMethod: errand.payment_method,
+      specialInstructions: errand.special_instructions,
+      contactPreference: errand.contact_preference,
+      startDate: errand.start_date,
+      stopDate: errand.stop_date,
+      useMilestones: errand.use_milestones,
+      agreeTerms: true,
+      agreeEscrow: true,
+    });
+
+    this.selectedPriority = errand.priority;
+    this.selectedBudgetType = errand.budget_type;
+    this.selectedPayment = errand.payment_method;
+
+    this.populateDescriptions(errand.descriptions);
+    this.populateLocations(errand.locations);
+    this.populateMilestones(errand.milestones);
+    this.populateServices(errand.services);
+  }
+
+  populateDescriptions(descriptions: string[]) {
+    const control = this.descriptions;
+    control.clear();
+
+    descriptions.forEach((desc) => {
+      control.push(this.fb.control(desc, Validators.required));
+    });
+  }
+
+  populateLocations(locations: any[]) {
+    const control = this.locations;
+    control.clear();
+
+    locations.forEach((loc) => {
+      control.push(
+        this.fb.group({
+          city: [loc.city, Validators.required],
+          town: [loc.town, Validators.required],
+          address: [loc.address, Validators.required],
+        })
+      );
+    });
+  }
+
+  populateMilestones(milestones: any[]) {
+    if (!milestones || milestones.length === 0) return;
+
+    this.useMilestones = true;
+
+    const control = this.milestones;
+    control.clear();
+
+    milestones.forEach((m) => {
+      control.push(
+        this.fb.group({
+          description: [m.description, Validators.required],
+          amount: [m.amount, Validators.required],
+        })
+      );
+    });
+  }
+
+  populateServices(services: any[]) {
+    this.services.forEach((service) => {
+      service.selected = services.some((s: any) => s.id === service.id);
+    });
+  }
+
+  get filteredServices() {
+    const term = this.searchTerm.toLowerCase();
+
+    return this.services.filter((service) => {
+      return (
+        (this.selectedCategory === 'All Services' ||
+          service.category === this.selectedCategory) &&
+        service.name.toLowerCase().includes(term)
+      );
+    });
+  }
+
+  // get filteredServices() {
+  //   return this.services.filter((service) => {
+  //     const matchesCategory =
+  //       this.selectedCategory === 'All Services' ||
+  //       service.category === this.selectedCategory;
+  //     const matchesSearch = service.name
+  //       .toLowerCase()
+  //       .includes(this.searchTerm.toLowerCase());
+  //     return matchesCategory && matchesSearch;
+  //   });
+  // }
 
   get milestones(): FormArray {
     return this.createErrandForm.get('milestones') as FormArray;
@@ -208,22 +350,15 @@ export class CrErrandComponent implements OnInit {
     this.milestones.push(milestoneGroup);
   }
 
-
-  // addMilestone(): void {
-  //   const milestoneGroup = this.fb.group({
-  //     description: [''],
-  //     amount: [0],
-  //   });
-  //   this.milestones.push(milestoneGroup);
-  // }
-
   removeMilestone(index: number) {
     this.milestones.removeAt(index);
     this.checkTotalBudget();
   }
 
   checkTotalBudget() {
-    const budgetAmount = Number(this.createErrandForm.get('budgetAmount')?.value || 0);
+    const budgetAmount = Number(
+      this.createErrandForm.get('budgetAmount')?.value || 0
+    );
     const totalMilestoneAmount = this.milestones.value
       .map((m: any) => Number(m.amount) || 0)
       .reduce((a: number, b: number) => a + b, 0);
@@ -233,38 +368,13 @@ export class CrErrandComponent implements OnInit {
 
     // Optional: still set validation error
     if (!this.isMilestoneTotalCorrect && this.milestones.length > 0) {
-      this.createErrandForm.get('budgetAmount')?.setErrors({ totalMismatch: true });
+      this.createErrandForm
+        .get('budgetAmount')
+        ?.setErrors({ totalMismatch: true });
     } else {
       this.createErrandForm.get('budgetAmount')?.setErrors(null);
     }
   }
-
-  // checkTotalBudget() {
-  //   const budgetAmount = this.createErrandForm.get('budgetAmount')?.value || 0;
-  //   const totalMilestoneAmount = this.milestones.value
-  //     .map((m: any) => Number(m.amount) || 0)
-  //     .reduce((a: number, b: number) => a + b, 0);
-
-  //   if (budgetAmount !== totalMilestoneAmount) {
-  //     this.createErrandForm
-  //       .get('budgetAmount')
-  //       ?.setErrors({ totalMismatch: true });
-  //   } else {
-  //     const errors = this.createErrandForm.get('budgetAmount')?.errors;
-  //     if (errors) {
-  //       delete errors['totalMismatch'];
-  //       if (Object.keys(errors).length === 0) {
-  //         this.createErrandForm.get('budgetAmount')?.setErrors(null);
-  //       } else {
-  //         this.createErrandForm.get('budgetAmount')?.setErrors(errors);
-  //       }
-  //     }
-  //   }
-  // }
-
-  // removeMilestone(index: number): void {
-  //   this.milestones.removeAt(index);
-  // }
 
   addItem() {
     this.descriptions.push(new FormControl(''));
@@ -302,20 +412,29 @@ export class CrErrandComponent implements OnInit {
     this.locations.removeAt(index);
   }
 
-  // toggleCategory(category: string) {
-  //   this.selectedCategory = category;
-  // }
-
   toggleSelection(service: Service) {
     service.selected = !service.selected;
   }
 
-  get selectedCount() {
-    return this.services.filter((s) => s.selected).length;
+  get selectedCount(): number {
+    return this.services.reduce((count, s) => count + (s.selected ? 1 : 0), 0);
   }
+
+  // get selectedCount() {
+  //   return this.services.filter((s) => s.selected).length;
+  // }
 
   triggerFileInput() {
     this.fileInput.nativeElement.click();
+  }
+
+  convertToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
   }
 
   onFilesSelected(event: any): void {
@@ -385,56 +504,109 @@ export class CrErrandComponent implements OnInit {
     }
   }
 
-  // toggleMilestones(): void {
-  //   this.useMilestones = !this.useMilestones;
-  //   this.createErrandForm.patchValue({ useMilestones: this.useMilestones });
-  // }
-
   /** Submit form */
-  onSubmit(): void {
+  onSubmit() {
+    if (this.createErrandForm.invalid) return;
+
     const selectedServiceIds = this.services
       .filter((service) => service.selected)
       .map((service) => service.id);
 
-    this.isLoading = true;
+    const payload = {
+      errand_title: this.createErrandForm.value.errandTitle,
+      priority: this.createErrandForm.value.priority,
+      budget_type: this.createErrandForm.value.budgetType,
+      business: this.business_details.user,
+      budget_amount: this.createErrandForm.value.budgetAmount || 0,
+      estimated_hours: this.createErrandForm.value.estimatedHours,
+      use_milestones: this.createErrandForm.value.useMilestones,
+      payment_method: this.createErrandForm.value.paymentMethod,
+      special_instructions:
+        this.createErrandForm.value.specialInstructions || '',
+      contact_preference: this.createErrandForm.value.contactPreference,
+      agree_terms: this.createErrandForm.value.agreeTerms,
+      agree_escrow: this.createErrandForm.value.agreeEscrow,
+      start_date: this.createErrandForm.value.startDate,
+      stop_date: this.createErrandForm.value.stopDate,
+      descriptions: this.descriptions?.value || this.descriptions,
+      locations: this.locations?.value || this.locations,
+      milestones: this.milestones?.value || this.milestones,
+      images: this.createErrandForm.get('images')?.value || [],
+      service_ids: selectedServiceIds,
+    };
 
-    if (this.createErrandForm.valid) {
-      const data = {
-        errand_title: this.createErrandForm.value.errandTitle,
-        priority: this.createErrandForm.value.priority,
-        budget_type: this.createErrandForm.value.budgetType,
-        business: this.business_details.user,
-        budget_amount: this.createErrandForm.value.budgetAmount || 0,
-        estimated_hours: this.createErrandForm.value.estimatedHours,
-        use_milestones: this.createErrandForm.value.useMilestones,
-        payment_method: this.createErrandForm.value.paymentMethod,
-        special_instructions:
-          this.createErrandForm.value.specialInstructions || '',
-        contact_preference: this.createErrandForm.value.contactPreference,
-        agree_terms: this.createErrandForm.value.agreeTerms,
-        agree_escrow: this.createErrandForm.value.agreeEscrow,
-        start_date: this.createErrandForm.value.startDate,
-        stop_date: this.createErrandForm.value.stopDate,
-        descriptions: this.descriptions?.value || this.descriptions,
-        locations: this.locations?.value || this.locations,
-        milestones: this.milestones?.value || this.milestones,
-        images: this.createErrandForm.get('images')?.value || [],
-        service_ids: selectedServiceIds,
-      };
-      console.log(data);
+    console.log(payload);
 
-      // return;
-      this._errandService.createNewErrand(data).subscribe((res: any) => {
-        this.isLoading = false;
-        console.log('Errand created successfully:', res);
-        this._router.navigate(['errands']);
-      });
+
+    if (this.isEditMode) {
+      this._errandService
+        .updateErrand(this.errandId, payload)
+        .subscribe((res: any) => {
+          this._toastr.success('Errand updated successfully!');
+          this._router.navigate(['errands', res.id]);
+        });
+
     } else {
-      this.createErrandForm.markAllAsTouched();
-      this.isLoading = false;
-      console.log('Form submitted:', this.createErrandForm.value);
+      this._errandService.createNewErrand(payload).subscribe((res:any) => {
+        this._toastr.success('Errand created successfully!');
+        this._router.navigate(['errands', res.id]);
+      });
     }
   }
+
+  // onSubmit(): void {
+  //   const selectedServiceIds = this.services
+  //     .filter((service) => service.selected)
+  //     .map((service) => service.id);
+
+  //   this.isLoading = true;
+
+  //   if (this.createErrandForm.valid) {
+  //     const data = {
+  //       errand_title: this.createErrandForm.value.errandTitle,
+  //       priority: this.createErrandForm.value.priority,
+  //       budget_type: this.createErrandForm.value.budgetType,
+  //       business: this.business_details.user,
+  //       budget_amount: this.createErrandForm.value.budgetAmount || 0,
+  //       estimated_hours: this.createErrandForm.value.estimatedHours,
+  //       use_milestones: this.createErrandForm.value.useMilestones,
+  //       payment_method: this.createErrandForm.value.paymentMethod,
+  //       special_instructions:
+  //         this.createErrandForm.value.specialInstructions || '',
+  //       contact_preference: this.createErrandForm.value.contactPreference,
+  //       agree_terms: this.createErrandForm.value.agreeTerms,
+  //       agree_escrow: this.createErrandForm.value.agreeEscrow,
+  //       start_date: this.createErrandForm.value.startDate,
+  //       stop_date: this.createErrandForm.value.stopDate,
+  //       descriptions: this.descriptions?.value || this.descriptions,
+  //       locations: this.locations?.value || this.locations,
+  //       milestones: this.milestones?.value || this.milestones,
+  //       images: this.createErrandForm.get('images')?.value || [],
+  //       service_ids: selectedServiceIds,
+  //     };
+  //     console.log(data);
+
+  //     // return;
+  //     this._errandService.createNewErrand(data).subscribe(
+  //       (res: any) => {
+  //         this.isLoading = false;
+  //         console.log('Errand created successfully:', res);
+  //         this._router.navigate(['errands', res.id]);
+  //         this._toastr.success('Errand created successfully!');
+  //       },
+  //       (error: any) => {
+  //         this.isLoading = false;
+  //         this._toastr.error(
+  //           error?.error?.error || 'Failed to create errand. Please try again.'
+  //         );
+  //       }
+  //     );
+  //   } else {
+  //     this.createErrandForm.markAllAsTouched();
+  //     this.isLoading = false;
+  //     this._toastr.success('Errand created successfully!');
+  //   }
+  // }
 
   saveDraft(): void {
     console.log('Draft saved:', this.createErrandForm.value);
@@ -443,5 +615,9 @@ export class CrErrandComponent implements OnInit {
 
   navigateBack() {
     window.history.back();
+  }
+
+  clearForm() {
+    this.createErrandForm.reset();
   }
 }

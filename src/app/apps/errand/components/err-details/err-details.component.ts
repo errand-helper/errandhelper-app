@@ -1,61 +1,11 @@
 import { Component } from '@angular/core';
 import { ErrandService } from '../../services/errand.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileService } from '../../../profile/services/profile.service';
+import { Errand } from '../../models/errand.model';
+import { ToastrService } from 'ngx-toastr';
 
-interface Location {
-  address: string;
-  town: string;
-  location: string;
-  city: string;
-}
-
-interface Image {
-  id: number;
-  image_url?: string;
-  uploaded_at?: string;
-}
-
-interface Service {
-  id: number;
-  name: string;
-  description: string;
-  category: string;
-}
-
-interface Milestone {
-  description: string;
-  amount: number;
-}
-
-interface Errand {
-  id: string;
-  locations?: Location[];
-  images?: Image[];
-  start_date: string;
-  stop_date: string;
-  reference_number: string;
-  errand_title: string;
-  descriptions: string[];
-  priority: string;
-  budget_type: string;
-  budget_amount: string;
-  estimated_hours: number;
-  use_milestones: boolean;
-  payment_method: string;
-  special_instructions: string;
-  contact_preference: string;
-  agree_terms: boolean;
-  agree_escrow: boolean;
-  services: Service[];
-  milestones: Milestone[];
-  status: string;
-  created_at: string;
-  updated_at: string;
-  client: string;
-  business: string;
-}
 
 @Component({
   selector: 'app-err-details',
@@ -75,10 +25,12 @@ export class ErrDetailsComponent {
   selectedAction!: 'accept' | 'reject'  | 'completed' | 'cancelled';
 
   constructor(
-    private _errandService: ErrandService,
+    private readonly _errandService: ErrandService,
     private route: ActivatedRoute,
+    private router: Router,
     private modalService: NgbModal,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private _toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -101,7 +53,7 @@ export class ErrDetailsComponent {
       .subscribe((res: any) => {
         this.isLoading = false;
         this.errand = res;
-        // console.log(this.errand);
+        console.log(this.errand);
       });
   }
 
@@ -135,22 +87,29 @@ export class ErrDetailsComponent {
 
   acceptRejectErrand(action: 'accept' | 'reject' | 'completed' | 'cancelled', content: any): void {
     this.selectedAction = action;
-    this.actionLabel = action === 'accept' ? 'Accept Errand' : 'Reject Errand';
+    this.actionLabel = action === 'accept' ? 'Accept Errand' : action === 'reject' ? 'Reject Errand' : action === 'completed' ? 'Mark as Completed' : 'Cancel Errand';
     this.modalService.open(content, { centered: true });
   }
 
   confirmAction() {
     this.isLoading = true;
 
+    console.log(this.errandId, this.selectedAction);
+
+
     this._errandService
       .acceptOrRejectErrand(this.errandId, this.selectedAction)
       .subscribe({
         next: (res) => {
           console.log('✅ Errand updated:', res);
+          this.isLoading = false;
+          this.modalService.dismissAll();
           this.getErrandDetails();
         },
         error: (err) => {
-          // this.toast.error('Something went wrong.');
+          this.isLoading = false;
+          console.error('❌ Error updating errand:', err);
+          this._toastr.error('Something went wrong.');
         },
       });
   }
@@ -158,5 +117,10 @@ export class ErrDetailsComponent {
 
   navigateBack() {
     window.history.back();
+  }
+
+  editErrand() {
+    // Navigate to the errand edit page
+    this.router.navigate([`/errands/edit/${this.errand.business_id}/${this.errandId}`]);
   }
 }
