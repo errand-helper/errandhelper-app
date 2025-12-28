@@ -51,4 +51,5 @@ export interface Errand {
   client: string;
   business: string;
   paid: boolean;
+  business_id: string;
 }

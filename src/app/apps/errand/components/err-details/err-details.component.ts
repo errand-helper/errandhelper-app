@@ -121,6 +121,6 @@ export class ErrDetailsComponent {
 
   editErrand() {
     // Navigate to the errand edit page
-    this.router.navigate([`/errands/edit/${this.errand.business}/${this.errandId}`]);
+    this.router.navigate([`/errands/edit/${this.errand.business_id}/${this.errandId}`]);
   }
 }

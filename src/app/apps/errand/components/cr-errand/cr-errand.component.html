@@ -37,7 +37,7 @@
         </div>
         <div class="provider-details">
           <div class="provider-name">
-            {{ business_details?.business_name || errand?.business_name }}
+            {{ business_details?.business_name  }}
           </div>
           <div class="provider-rating">
             <span class="rating-stars">
@@ -68,7 +68,8 @@
               <button class="mobile-toggle mb-3">
                 <i class="fas fa-bars"></i>
               </button>
-              <h1 class="h3 mb-0">Create New Errand</h1>
+              <h1 class="h3 mb-0" *ngIf="!isEditMode">Create New Errand</h1>
+              <h1 class="h3 mb-0" *ngIf="isEditMode">Edit Errand</h1>
               <p class="text-muted mb-0">
                 Post your errand request and get it done by a trusted provider
               </p>
@@ -97,7 +98,7 @@
             <div class="services-section">
               <div class="header">
                 <label for="errandTitle" class="form-label"
-                  >Services Required <span class="required">*</span></label
+                  >Services Offered by {{business_details?.business_name}} <span class="required">*</span></label
                 >
                 <span class="badge">{{ selectedCount }} selected</span>
               </div>
