@@ -10,10 +10,16 @@ const headers = new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
 })
 export class ErrandService {
   baseUrl = environment.baseUrl;
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   createNewErrand(data: any) {
     return this.http.post(`${this.baseUrl}/order/errands/`, data, {
+      headers: headers,
+    });
+  }
+
+  updateErrand(errandId: string, data: any) {
+    return this.http.put(`${this.baseUrl}/order/errands/${errandId}/`, data, {
       headers: headers,
     });
   }

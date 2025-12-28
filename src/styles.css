@@ -212,7 +212,7 @@ body {
   transform: translateY(-2px);
 }
 
-.btn-outline-custom {
+/* .btn-outline-custom {
   color: var(--primary-blue);
   border-color: var(--primary-blue);
   font-weight: 600;
@@ -224,7 +224,7 @@ body {
   background-color: var(--primary-blue);
   border-color: var(--primary-blue);
   color: var(--primary-white);
-}
+} */
 
 /* Stats Cards */
 .stat-card {
@@ -460,3 +460,65 @@ body {
   color: #007bff;
 }
 
+
+
+.btn-action {
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+/* Different colors for each action */
+.accept {
+  background-color: #28a745; /* green */
+}
+.accept:hover {
+  background-color: #218838;
+}
+
+.reject {
+  background-color: #dc3545; /* red */
+}
+.reject:hover {
+  background-color: #c82333;
+}
+
+.complete {
+  background-color: #007bff; /* blue */
+}
+.complete:hover {
+  background-color: #0069d9;
+}
+
+.cancel {
+  background-color: #ffc107; /* yellow */
+  color: #000;
+}
+.cancel:hover {
+  background-color: #e0a800;
+}
+
+.pending {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.in-progress {
+  background-color: #17a2b8;
+}
+
+.completed {
+  background-color: #28a745;
+}
+
+.rejected {
+  background-color: #dc3545;
+}
+
+.cancelled {
+  background-color: #6c757d;
+}

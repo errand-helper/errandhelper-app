@@ -1,18 +1,13 @@
 <app-sidebar></app-sidebar>
 
-<div class="main-content" style="position: relative;">
+<div class="main-content" style="position: relative">
   <!-- Header -->
   <app-navbar></app-navbar>
 
   <div
     class="spinner-border text-primary"
     role="status"
-    style="
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      z-index: 999;
-      "
+    style="position: absolute; top: 50%; left: 50%; z-index: 999"
     *ngIf="isLoading"
   >
     <span class="sr-only">Loading...</span>
@@ -42,7 +37,7 @@
         </div>
         <div class="provider-details">
           <div class="provider-name">
-            {{ business_details?.business_name }}
+            {{ business_details?.business_name  }}
           </div>
           <div class="provider-rating">
             <span class="rating-stars">
@@ -73,7 +68,8 @@
               <button class="mobile-toggle mb-3">
                 <i class="fas fa-bars"></i>
               </button>
-              <h1 class="h3 mb-0">Create New Errand</h1>
+              <h1 class="h3 mb-0" *ngIf="!isEditMode">Create New Errand</h1>
+              <h1 class="h3 mb-0" *ngIf="isEditMode">Edit Errand</h1>
               <p class="text-muted mb-0">
                 Post your errand request and get it done by a trusted provider
               </p>
@@ -102,7 +98,7 @@
             <div class="services-section">
               <div class="header">
                 <label for="errandTitle" class="form-label"
-                  >Services Required <span class="required">*</span></label
+                  >Services Offered by {{business_details?.business_name}} <span class="required">*</span></label
                 >
                 <span class="badge">{{ selectedCount }} selected</span>
               </div>
@@ -114,18 +110,6 @@
                 [(ngModel)]="searchTerm"
                 [ngModelOptions]="{ standalone: true }"
               />
-
-              <!-- Categories -->
-              <!-- <div class="categories">
-                <button
-                  *ngFor="let category of business_details?.services"
-                  class="category-btn"
-                  [class.active]="category === selectedCategory"
-                  (click)="toggleCategory(category)"
-                >
-                  {{ category.category }}
-                </button>
-              </div> -->
 
               <!-- Services Grid -->
               <div class="services-grid">
@@ -193,23 +177,6 @@
                 separate items
               </p>
             </div>
-
-            <!-- <div class="mb-3">
-              <label for="errandDescription" class="form-label"
-                >Add Instructions <span class="required">*</span></label
-              >
-              <textarea
-                class="form-control"
-                id="errandDescription"
-                placeholder="Describe what you need done, include specific requirements, preferences, and any important details..."
-                rows="4"
-                formControlName="errandDescription"
-              ></textarea>
-              <div class="info-text">
-                The more details you provide, the better the service provider
-                can assist you
-              </div>
-            </div> -->
           </div>
 
           <div class="form-section">
@@ -220,7 +187,7 @@
               Location & Schedule
             </h2>
             <div>
-              <label class="form-label"
+              <label class="form-label" for="location"
                 >Errand Locations <span class="required">*</span>
                 <span *ngIf="locations.controls.length > 0">{{
                   locations.controls.length
@@ -241,7 +208,6 @@
                   class="d-flex justify-content-between align-items-center mb-2"
                 >
                   <h6>
-                    <!-- Location {{ i + 1 }} -->
                     <span class="badge bg-info text-white ms-2"
                       >Stop {{ i + 1 }}</span
                     >
@@ -303,7 +269,7 @@
                   </div>
 
                   <div class="col-md-12">
-                    <label class="form-label"
+                    <label class="form-label" for="address"
                       >Street Address <span class="text-danger">*</span></label
                     >
                     <input
@@ -326,58 +292,6 @@
                       Street address is required
                     </div>
                   </div>
-
-                  <!-- <div class="col-md-6">
-                    <label class="form-label"
-                      >Start Date and Time
-                      <span class="text-danger">*</span></label
-                    >
-                    <input
-                      formControlName="startDate"
-                      type="datetime-local"
-                      class="form-control"
-                      [ngClass]="{
-                        'is-invalid':
-                          location.get('startDate')?.invalid &&
-                          location.get('startDate')?.touched
-                      }"
-                    />
-                    <div
-                      *ngIf="
-                        location.get('startDate')?.invalid &&
-                        location.get('startDate')?.touched
-                      "
-                      class="invalid-feedback"
-                    >
-                      Start date is required
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <label class="form-label"
-                      >Stop Date and Time
-                      <span class="text-danger">*</span></label
-                    >
-                    <input
-                      formControlName="stopDate"
-                      type="datetime-local"
-                      class="form-control"
-                      [ngClass]="{
-                        'is-invalid':
-                          location.get('stopDate')?.invalid &&
-                          location.get('stopDate')?.touched
-                      }"
-                    />
-                    <div
-                      *ngIf="
-                        location.get('stopDate')?.invalid &&
-                        location.get('stopDate')?.touched
-                      "
-                      class="invalid-feedback"
-                    >
-                      Stop date is required
-                    </div>
-                  </div> -->
                 </div>
 
                 <div
@@ -408,7 +322,7 @@
 
             <div class="row g-3">
               <div class="col-md-6">
-                <label class="form-label"
+                <label class="form-label" for="startDate"
                   >Start Date and Time <span class="text-danger">*</span></label
                 >
                 <input
@@ -433,7 +347,7 @@
               </div>
 
               <div class="col-md-6">
-                <label class="form-label"
+                <label class="form-label" for="stopDate"
                   >Stop Date and Time <span class="text-danger">*</span></label
                 >
                 <input
@@ -458,66 +372,8 @@
               </div>
             </div>
 
-            <!-- <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="">City</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="City"
-                  formControlName="city"
-                />
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="">Town/Area</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Town or Area"
-                  formControlName="town"
-                />
-              </div>
-              <div class="col-md-12 mb-3">
-                <label for="errandAddress" class="form-label"
-                  >Street Address <span class="required">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="errandAddress"
-                  placeholder="Street Address (e.g., 123 Main Street, Building A, Apt 4B)"
-                  formControlName="errandAddress"
-                />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="startDate" class="form-label"
-                  >Start Date and Time<span class="required">*</span></label
-                >
-                <input
-                  type="datetime-local"
-                  class="form-control"
-                  id="startDate"
-                  formControlName="startDate"
-                />
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="stopDate" class="form-label"
-                  >Stop Time and Time<span class="required">*</span></label
-                >
-                <input
-                  type="datetime-local"
-                  class="form-control"
-                  id="stopDate"
-                  formControlName="stopDate"
-                />
-              </div>
-            </div> -->
-
             <div class="mt-3">
-              <label class="form-label"
+              <label class="form-label" for="priority"
                 >Priority Level <span class="required">*</span></label
               >
               <div class="priority-options">
@@ -567,7 +423,7 @@
             </h2>
 
             <div class="mb-3">
-              <label class="form-label">
+              <label class="form-label" for="budget-type">
                 Budget Type <span class="required">*</span>
               </label>
 
@@ -728,7 +584,6 @@
                 >
                   <i [class]="method.icon" [style.color]="method.color"></i>
                   <div>{{ method.label }}</div>
-                  <small>{{ method.detail }}</small>
                 </div>
 
                 <!-- Only one binding here -->
@@ -893,42 +748,30 @@
               >
             </div>
 
-            <div class="escrow-info">
+            <div class="escrow-info mb-3">
               <i class="fas fa-shield-alt me-2"></i>
               <strong>Secure Payment:</strong> Your payment is held safely in
               escrow and only released when you confirm the errand is complete.
             </div>
 
-            <div class="info-box mt-3">
-              <i class="fas fa-info-circle"></i>
-              <small
-                >You can communicate with the provider before confirming to
-                discuss any details.</small
+            <div class="form-actions mb-3">
+              <button
+                type="submit"
+                class="btn btn-primary-custom"
+                style="width: 100%"
               >
+                <i class="fas fa-paper-plane me-2"></i>Submit Payment
+              </button>
+            </div>
+            <div class="">
+              Do you want to
+              <button type="button" (click)="saveDraft()" class="btn-draft">
+                Save as Draft
+              </button>
+              or
+              <button (click)="clearForm()" class="btn-draft">Cancel</button>?
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="form-actions">
-        <button
-          type="button"
-          class="btn btn-outline-custom"
-          (click)="saveDraft()"
-        >
-          <i class="fas fa-save me-2"></i>Save as Draft
-        </button>
-        <div class="d-flex gap-2">
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            (click)="navigateBack()"
-          >
-            Cancel
-          </button>
-          <button type="submit" class="btn btn-primary-custom">
-            <i class="fas fa-paper-plane me-2"></i>Submit Errand Request
-          </button>
         </div>
       </div>
     </form>
