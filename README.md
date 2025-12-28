@@ -24,8 +24,9 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 ## Merge Instruction
 
-```<your-branch> --> dev-server --> <maintainer-merges-to-master>```
-```<your-branch> --> staging-server ```
+- ```<your-branch> --> dev-server --> <maintainer-merges-to-master>```
+
+- ```<your-branch> --> staging-server ```
 
 
 ## Further help
