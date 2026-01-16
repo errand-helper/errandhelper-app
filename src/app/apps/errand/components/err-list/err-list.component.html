@@ -77,7 +77,8 @@
                 'in-progress': errand.status === 'in_progress',
                 completed: errand.status === 'completed',
                 rejected: errand.status === 'rejected',
-                cancelled: errand.status === 'cancelled'
+                cancelled: errand.status === 'cancelled',
+                awaiting_payment: errand.status === 'awaiting_payment'
               }"
             >
               {{ errand.status.replace("_", " ") | titlecase }}
