@@ -22,15 +22,68 @@
   <!-- Main Content -->
   <div class="content-area" *ngIf="errand">
     <!-- Page Header -->
-     <div class="page-header" *ngIf="!errand?.paid && user_type === 'client'" style="background-color: tomato;">
+    <div
+      class="page-header d-flex justify-content-between align-items-center"
+      *ngIf="!errand?.paid && user_type === 'client'"
+      style="background-color: tomato"
+    >
       <div class="d-flex justify-content-between align-items-center">
         <div>
           <h3>
             Verify Details then make payment for the errand to be started.
           </h3>
-          <h4>You can only edit the errand details before making the payment</h4>
+          <h4>
+            You can only edit the errand details before making the payment
+          </h4>
+
         </div>
       </div>
+      <button
+        class="btn-action cancel"
+        (click)="makePayment('make_payment', content1)"
+      >
+        <i class="fas fa-check me-2"></i>Make payment
+      </button>
+
+      <!-- payment modal -->
+      <ng-template #content1 let-c="close" let-d="dismiss">
+        <div class="modal-body">
+          <p class="m-0">Make payment of KES {{ errand.budget_amount }}</p>
+        </div>
+        <form [formGroup]="paymentForm" class="p-3">
+          <label for="phoneNumber" class="form-label"
+            >Phone Number for Payment <span class="required">*</span></label
+          >
+          <input
+            type="tel"
+            class="form-control"
+            id="phoneNumber"
+            placeholder="e.g., 254712345678"
+            formControlName="phoneNumber"
+          />
+          <div class="info-text">
+            Required for mobile money payment processing
+          </div>
+        </form>
+        <div class="d-flex justify-content-between p-2">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="c('cancel')"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="initiatePayment(); c('save')"
+          >
+            Submit
+          </button>
+        </div>
+      </ng-template>
+
+      <!-- payment modal end -->
     </div>
     <div class="page-header">
       <div class="d-flex justify-content-between align-items-center">
@@ -168,7 +221,11 @@
         <!-- Action Buttons -->
         <div
           class="action-buttons"
-          *ngIf="user_type === 'business' && errand.status === 'pending' && errand?.paid"
+          *ngIf="
+            user_type === 'business' &&
+            errand.status === 'pending' &&
+            errand?.paid
+          "
         >
           <button
             class="btn-action accept"
@@ -203,25 +260,14 @@
         >
           <button
             class="btn-action cancel"
-            (click)="acceptRejectErrand('cancelled', content)"
+            (click)="acceptRejectErrand('cancel', content)"
           >
             <i class="fas fa-check me-2"></i>Cancel
           </button>
-          <button
-            class="btn-action cancel"
-            (click)="editErrand()"
-          >
+          <button class="btn-action cancel" (click)="editErrand()">
             <i class="fas fa-check me-2"></i>Edit Errand
           </button>
-
-          <button
-            class="btn-action cancel"
-            (click)="acceptRejectErrand('cancelled', content)"
-          >
-            <i class="fas fa-check me-2"></i>Make payment
-          </button>
         </div>
-
 
         <ng-template #content let-c="close" let-d="dismiss">
           <div class="modal-body">
