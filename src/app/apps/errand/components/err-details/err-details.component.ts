@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ErrandService } from '../../services/errand.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -6,13 +6,14 @@ import { ProfileService } from '../../../profile/services/profile.service';
 import { Errand } from '../../models/errand.model';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-err-details',
   templateUrl: './err-details.component.html',
   styleUrl: './err-details.component.css',
 })
-export class ErrDetailsComponent {
+export class ErrDetailsComponent implements OnInit {
   errandId!: string;
   errand!: Errand;
 
@@ -39,12 +40,13 @@ export class ErrDetailsComponent {
 
   constructor(
     private readonly _errandService: ErrandService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private modalService: NgbModal,
-    private profileService: ProfileService,
-    private _toastr: ToastrService,
-    private fb: FormBuilder
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly modalService: NgbModal,
+    private readonly profileService: ProfileService,
+    private readonly _toastr: ToastrService,
+    private readonly fb: FormBuilder,
+    private readonly spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -56,6 +58,7 @@ export class ErrDetailsComponent {
     this.paymentForm = this.fb.group({
       phoneNumber: ['', Validators.required],
     });
+
   }
 
   getUserProfile() {
@@ -65,13 +68,12 @@ export class ErrDetailsComponent {
   }
 
   getErrandDetails() {
-    this.isLoading = true;
+    this.spinner.show();
     this._errandService
       .getErrandDetails(this.errandId)
       .subscribe((res: any) => {
-        // this.isLoading = false;
         this.errand = res;
-        // console.log(this.errand);
+        this.spinner.hide();
       });
   }
 
@@ -112,10 +114,10 @@ export class ErrDetailsComponent {
     this.modalService.open(content, { centered: true });
   }
 
-  makePayment(action: 'make_payment', content1: any): void {
-    this.actionLabel = this.getActionLabel(action);
-    this.modalService.open(content1, { centered: true });
-  }
+  // makePayment(action: 'make_payment', content1: any): void {
+  //   this.actionLabel = this.getActionLabel(action);
+  //   this.modalService.open(content1, { centered: true });
+  // }
 
   private getActionLabel(action: string): string {
     const labelMap: { [key: string]: string } = {
@@ -129,7 +131,8 @@ export class ErrDetailsComponent {
   }
 
   initiatePayment() {
-    this.isLoading = true;
+    // this.isLoading = true;
+    this.spinner.show();
 
     if (this.paymentForm.invalid) {
       this.paymentForm.markAllAsTouched();
@@ -138,25 +141,30 @@ export class ErrDetailsComponent {
 
     const phone_number = this.paymentForm.get('phoneNumber')?.value;
     const amount = this.errand.budget_amount;
-return
+
     this._errandService
       .makePayment(this.errandId, { phone_number, amount })
       .subscribe({
         next: (res: any) => {
           console.log('Payment initiated:', res);
-          this.checkPaymentStatus(res.CheckoutRequestID);
-          // this.getErrandDetails();
+          // this.checkPaymentStatus(res.CheckoutRequestID);
+          this.checkoutRequestId = res.CheckoutRequestID;
+          this.spinner.hide();
         },
         error: (err) => {
-          this.isLoading = false;
+          // this.isLoading = false;
+          this.spinner.hide();
           console.error('Error initiating payment:', err);
           this._toastr.error('Something went wrong.');
         },
       });
   }
 
-  checkPaymentStatus(checkoutId: string) {
-    this.isLoading = true;
+  checkPaymentStatus() {
+    // this.isLoading = true;
+    // this.spinner.show();
+
+    const checkoutId = this.checkoutRequestId;
     const interval = setInterval(() => {
       this.attempts++;
 
@@ -167,7 +175,7 @@ return
 
           if (res.ResponseCode === '0') {
             // this.completed = true;
-            // clearInterval(interval);
+            clearInterval(interval);
           }
 
           if (res.ResponseCode && res.ResponseCode !== '0') {
