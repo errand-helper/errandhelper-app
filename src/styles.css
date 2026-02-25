@@ -522,3 +522,7 @@ body {
 .cancelled {
   background-color: #6c757d;
 }
+
+.awaiting_payment {
+  background-color: #fd7e14;
+}

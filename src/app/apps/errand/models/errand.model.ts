@@ -46,6 +46,7 @@ export interface Errand {
   services: Service[];
   milestones: Milestone[];
   status: string;
+  completed_at?: string;
   created_at: string;
   updated_at: string;
   client: string;
