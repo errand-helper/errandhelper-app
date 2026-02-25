@@ -1,4 +1,17 @@
-<main>
+<main style="position: relative">
+    <div
+    class="spinner-border text-primary"
+    role="status"
+    style="
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 999;
+      "
+    *ngIf="isLoading"
+  >
+    <span class="sr-only">Loading...</span>
+  </div>
   <div class="container">
     <section
       class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4"

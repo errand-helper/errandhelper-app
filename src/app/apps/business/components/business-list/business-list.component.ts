@@ -26,6 +26,8 @@ export class BusinessListComponent implements OnInit, OnDestroy {
 
   showAllCategories = false;
 
+  isLoading: boolean = false;
+
   toggleCategories() {
     this.showAllCategories = !this.showAllCategories;
   }
@@ -80,6 +82,7 @@ export class BusinessListComponent implements OnInit, OnDestroy {
   }
 
   getBusinessList() {
+    this.isLoading = true;
     this._businessService
       .getBusinessList(
         this.page(),
@@ -92,6 +95,7 @@ export class BusinessListComponent implements OnInit, OnDestroy {
         next: (res: any) => {
           this.business_list = res.results;
           this.totalServiceItems.set(res.count);
+          this.isLoading = false;
         },
         error: (err) => console.error('Error loading businesses:', err),
       });

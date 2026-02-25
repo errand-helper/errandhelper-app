@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbAlertModule, NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { DecimalPipe } from '@angular/common';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+// import { NgxSpinnerModule } from 'ngx-spinner';
 // import { MessagesComponent } from './apps/components/messages/messages.component';
 
 
@@ -30,7 +31,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     BrowserAnimationsModule,
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
-    NgbPaginationModule, NgbAlertModule
+    NgbPaginationModule, NgbAlertModule,
+    // NgxSpinnerModule,
+    // NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ],
   providers: [
     DecimalPipe,

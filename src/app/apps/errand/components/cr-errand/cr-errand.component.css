@@ -490,8 +490,7 @@ textarea.form-control {
 }
 
 /* Action Buttons */
-.form-actions {
-  /* position: sticky; */
+/* .form-actions {
   bottom: 20px;
   background-color: var(--primary-white);
   padding: 20px;
@@ -502,10 +501,10 @@ textarea.form-control {
   align-items: center;
   gap: 15px;
   z-index: 10;
-}
+} */
 
 /* Info Box */
-.info-box {
+/* .info-box {
   background-color: rgba(0, 255, 255, 0.05);
   border-left: 4px solid var(--primary-cyan);
   padding: 15px;
@@ -516,7 +515,7 @@ textarea.form-control {
 .info-box i {
   color: var(--primary-cyan);
   margin-right: 10px;
-}
+} */
 
 /* Required Indicator */
 .required {
@@ -874,3 +873,19 @@ h1{
   color: var(--primary-dark);
   margin: 0;
 }
+
+
+
+.btn-draft{
+  border: none;
+  background-color: transparent;
+  text-decoration: underline;
+  color: #007bff;
+}
+
+
+
+
+
+
+

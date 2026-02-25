@@ -23,6 +23,12 @@ export class ProfileService {
     });
   }
 
+  getRole(){
+    return this.http.get(`${this.baseUrl}/role`,{
+      headers: headers,
+    })
+  }
+
   getBusinessProfile(){
     return this.http.get<any[]>(`${this.baseUrl}business_profile/`, {
       headers: headers,
