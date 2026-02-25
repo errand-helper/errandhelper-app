@@ -72,7 +72,12 @@ export class ErrandService {
     });
   }
 
-
-
+  releaseEscrow(errandId: string) {
+    return this.http.post(
+      `${this.baseUrl}/order/escrow/release/`,
+      { errand_id: errandId },
+      { headers }
+    );
+  }
 
 }

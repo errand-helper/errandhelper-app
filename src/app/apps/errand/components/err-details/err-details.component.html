@@ -52,7 +52,8 @@
       </div>
       <button class="btn-action cancel" (click)="initiatePayment()">
         <i class="fas fa-check me-2"></i>Make payment
-      </button>&nbsp;&nbsp;
+      </button>
+      &nbsp;&nbsp;
       <button class="btn-action cancel" (click)="checkPaymentStatus()">
         <i class="fas fa-check me-2"></i>Verify payment
       </button>
@@ -268,7 +269,7 @@
 
         <div
           class="action-buttons"
-          *ngIf="user_type === 'client' && errand.status === 'pending'"
+          *ngIf="user_type === 'client' && errand.status === 'unpaid'"
         >
           <button
             class="btn-action cancel"
@@ -279,6 +280,21 @@
           <button class="btn-action cancel" (click)="editErrand()">
             <i class="fas fa-check me-2"></i>Edit Errand
           </button>
+        </div>
+
+        <div class="action-buttons" *ngIf="canReleaseEscrow()">
+          <button
+            class="btn-action complete"
+            [disabled]="isReleasingEscrow"
+            (click)="releaseEscrowPayment()"
+          >
+            <i class="fas fa-money-bill-transfer me-2"></i>
+            {{ isReleasingEscrow ? "Releasing..." : "Release Escrow Funds" }}
+          </button>
+          <p class="mb-0">
+            Funds are auto-released to the business wallet 4 hours after
+            completion if you do not release manually.
+          </p>
         </div>
 
         <ng-template #content let-c="close" let-d="dismiss">

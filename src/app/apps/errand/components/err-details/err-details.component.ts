@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ErrandService } from '../../services/errand.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -13,7 +13,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './err-details.component.html',
   styleUrl: './err-details.component.css',
 })
-export class ErrDetailsComponent implements OnInit {
+export class ErrDetailsComponent implements OnInit, OnDestroy {
   errandId!: string;
   errand!: Errand;
 
@@ -37,6 +37,9 @@ export class ErrDetailsComponent implements OnInit {
   attempts = 0;
   maxAttempts = 60;
   checkoutRequestId!: string;
+  isReleasingEscrow = false;
+  private paymentStatusInterval: ReturnType<typeof setInterval> | null = null;
+  private isCheckingPaymentStatus = false;
 
   constructor(
     private readonly _errandService: ErrandService,
@@ -61,6 +64,10 @@ export class ErrDetailsComponent implements OnInit {
 
   }
 
+  ngOnDestroy(): void {
+    this.clearPaymentStatusInterval();
+  }
+
   getUserProfile() {
     this.profileService.getRole().subscribe((res: any) => {
       this.user_type = res.role;
@@ -71,10 +78,48 @@ export class ErrDetailsComponent implements OnInit {
     this.spinner.show();
     this._errandService
       .getErrandDetails(this.errandId)
-      .subscribe((res: any) => {
-        this.errand = res;
-        this.spinner.hide();
+      .subscribe({
+        next: (res: any) => {
+          this.errand = res;
+          this.spinner.hide();
+        },
+        error: () => {
+          this.spinner.hide();
+        },
       });
+  }
+
+  canReleaseEscrow(): boolean {
+    return (
+      this.user_type === 'client' &&
+      !!this.errand?.paid &&
+      this.errand?.status === 'completed'
+    );
+  }
+
+  releaseEscrowPayment(): void {
+    if (!this.canReleaseEscrow() || this.isReleasingEscrow) {
+      return;
+    }
+
+    this.isReleasingEscrow = true;
+    this.spinner.show();
+
+    this._errandService.releaseEscrow(this.errandId).subscribe({
+      next: (res: any) => {
+        this._toastr.success(res?.status === 'already_released' ? 'Funds were already released.' : 'Escrow released successfully.');
+        this.getErrandDetails();
+      },
+      error: (err) => {
+        const message =
+          err?.error?.detail || 'Failed to release escrow. Please try again.';
+        this._toastr.error(message);
+      },
+      complete: () => {
+        this.isReleasingEscrow = false;
+        this.spinner.hide();
+      },
+    });
   }
 
   getDuration(start: string | undefined, end: string | undefined): string {
@@ -131,13 +176,17 @@ export class ErrDetailsComponent implements OnInit {
   }
 
   initiatePayment() {
-    // this.isLoading = true;
     this.spinner.show();
 
     if (this.paymentForm.invalid) {
       this.paymentForm.markAllAsTouched();
+      this.spinner.hide();
       return;
     }
+
+    this.failed = false;
+    this.failureReason = '';
+    this.attempts = 0;
 
     const phone_number = this.paymentForm.get('phoneNumber')?.value;
     const amount = this.errand.budget_amount;
@@ -147,62 +196,80 @@ export class ErrDetailsComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           console.log('Payment initiated:', res);
-          // this.checkPaymentStatus(res.CheckoutRequestID);
           this.checkoutRequestId = res.CheckoutRequestID;
-          this.spinner.hide();
+          this.checkPaymentStatus();
         },
         error: (err) => {
-          // this.isLoading = false;
           this.spinner.hide();
           console.error('Error initiating payment:', err);
-          this._toastr.error('Something went wrong.');
+          this.failed = true;
+          this.failureReason = 'Error initiating payment';
+          this._toastr.error(this.failureReason);
         },
       });
   }
 
   checkPaymentStatus() {
-    // this.isLoading = true;
-    // this.spinner.show();
+    this.clearPaymentStatusInterval();
 
-    const checkoutId = this.checkoutRequestId;
-    const interval = setInterval(() => {
+    this.paymentStatusInterval = setInterval(() => {
+      if (this.isCheckingPaymentStatus) {
+        return;
+      }
+
       this.attempts++;
-
+      this.isCheckingPaymentStatus = true;
       this._errandService
-        .checkPaymentStatus(checkoutId)
-        .subscribe((res: any) => {
-          console.log('res', res);
+        .checkPaymentStatus(this.checkoutRequestId)
+        .subscribe({
+          next: (res: any) => {
+            this.isCheckingPaymentStatus = false;
+            console.log('res', res);
 
-          if (res.ResponseCode === '0') {
-            // this.completed = true;
-            clearInterval(interval);
-          }
+            if (res.ResultCode === '0') {
+              this._toastr.success(res.ResultDesc);
+              this.clearPaymentStatusInterval();
+              this.spinner.hide();
+              this.getErrandDetails();
+              return;
+            }
 
-          if (res.ResponseCode && res.ResponseCode !== '0') {
+            if (res.ResultCode && res.ResultCode !== '0') {
+              this.failed = true;
+              this.failureReason = res.ResponseDesc || 'Payment failed';
+              this.clearPaymentStatusInterval();
+              this.spinner.hide();
+              this._toastr.error(this.failureReason);
+              return;
+            }
+
+            if (this.attempts >= this.maxAttempts) {
+              this.failed = true;
+              this.failureReason = 'Timed out waiting for confirmation';
+              this.clearPaymentStatusInterval();
+              this.spinner.hide();
+              this._toastr.error(this.failureReason);
+            }
+          },
+          error: (err) => {
+            this.isCheckingPaymentStatus = false;
             this.failed = true;
-            this.failureReason = res.ResponseDesc || 'Payment failed';
-            clearInterval(interval);
-          }
-
-          if (this.attempts >= this.maxAttempts) {
-            this.failed = true;
-            this.failureReason = 'Timed out waiting for confirmation';
-            clearInterval(interval);
-          }
+            this.failureReason = 'Error checking payment status';
+            this.clearPaymentStatusInterval();
+            this.spinner.hide();
+            this._toastr.error(this.failureReason);
+            console.error('Error checking payment status:', err);
+          },
         });
     }, 2000);
-    // }
-    // Implement payment status check logic here
-    // this._errandService.checkPaymentStatus(checkoutId).subscribe({
-    //   next: (res) => {
-    //     console.log('Payment status:', res);
-    //     this.isLoading = false;
-    //     this.modalService.dismissAll();
-    //   },
-    //   error: (err) => {
-    //     console.error('Error checking payment status:', err);
-    //   }
-    // });
+  }
+
+  private clearPaymentStatusInterval(): void {
+    if (this.paymentStatusInterval) {
+      clearInterval(this.paymentStatusInterval);
+      this.paymentStatusInterval = null;
+    }
+    this.isCheckingPaymentStatus = false;
   }
 
   confirmAction() {
