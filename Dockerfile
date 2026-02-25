@@ -6,10 +6,11 @@ COPY package.json package-lock.json ./
 
 RUN npm ci
 
-RUN npm install -g @angular/cli
+# RUN npm install -g @angular/cli
 COPY . .
-RUN npm install
-RUN ng build
+RUN npm run build
+# RUN npm install
+# RUN ng build
 
 # Stage 2: Serve the Angular application with Nginx
 FROM nginx:latest
