@@ -8,6 +8,7 @@ import { CrErrandComponent } from './components/cr-errand/cr-errand.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbAlertModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { ErrDetailsComponent } from './components/err-details/err-details.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { ErrDetailsComponent } from './components/err-details/err-details.compon
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbPaginationModule, NgbAlertModule
+    NgbPaginationModule, NgbAlertModule,
+    NgxSpinnerModule.forRoot({ type: '' })
   ]
 })
 export class ErrandModule { }
