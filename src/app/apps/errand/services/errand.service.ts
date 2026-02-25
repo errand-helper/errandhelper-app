@@ -52,9 +52,32 @@ export class ErrandService {
     })
   }
 
-  acceptOrRejectErrand(errandId: string, action: 'accept' | 'reject' | 'completed' | 'cancelled') {
+  acceptOrRejectErrand(errandId: string, action: 'accept' | 'reject' | 'completed' | 'cancel' | 'make_payment') {
     return this.http.post(`${this.baseUrl}/order/errands/${errandId}/${action}/`, {});
   }
 
+  makePayment(errandId: string, data: any) {
+    return this.http.post(`${this.baseUrl}/order/mpesa/initiate/`, {
+      errand_id: errandId,
+      phone_number: data.phone_number,
+      amount: data.amount,
+      // headers: headers,
+    })
+  }
+
+  checkPaymentStatus(checkoutId: string) {
+    return this.http.post(`${this.baseUrl}/order/mpesa/status/`, {
+      checkout_request_id: checkoutId,
+      // headers: headers,
+    });
+  }
+
+  releaseEscrow(errandId: string) {
+    return this.http.post(
+      `${this.baseUrl}/order/escrow/release/`,
+      { errand_id: errandId },
+      { headers }
+    );
+  }
 
 }

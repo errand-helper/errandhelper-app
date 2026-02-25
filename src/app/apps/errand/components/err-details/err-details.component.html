@@ -1,14 +1,15 @@
 <app-sidebar></app-sidebar>
 <div class="main-content" style="position: relative">
   <app-navbar></app-navbar>
-  <div
+  <!-- <div
     class="spinner-border text-primary"
     role="status"
     style="position: absolute; top: 50%; left: 50%; z-index: 999"
     *ngIf="isLoading"
   >
     <span class="sr-only">Loading...</span>
-  </div>
+  </div> -->
+  <ngx-spinner type="ball-clip-rotate"></ngx-spinner>
   <div class="mb-3">
     <div>
       <button
@@ -22,15 +23,80 @@
   <!-- Main Content -->
   <div class="content-area" *ngIf="errand">
     <!-- Page Header -->
-     <div class="page-header" *ngIf="!errand?.paid && user_type === 'client'" style="background-color: tomato;">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <h3>
-            Verify Details then make payment for the errand to be started.
-          </h3>
-          <h4>You can only edit the errand details before making the payment</h4>
-        </div>
+    <div
+      class="page-header"
+      *ngIf="!errand?.paid && user_type === 'client'"
+      style="background-color: tomato"
+    >
+      <div class="">
+        <h3>Verify Details then make payment for the errand to be started.</h3>
+        <h4>You can only edit the errand details before making the payment</h4>
       </div>
+      <div class="w-50">
+        <p class="m-0">Make payment of KES {{ errand.budget_amount }}</p>
+        <form [formGroup]="paymentForm" class="p-3">
+          <label for="phoneNumber" class="form-label" style="color: black;"
+            >Phone Number for Payment <span class="required">*</span></label
+          >
+          <input
+            type="tel"
+            class="form-control"
+            id="phoneNumber"
+            placeholder="e.g., 254712345678"
+            formControlName="phoneNumber"
+          />
+          <div class="info-text">
+            Required for mobile money payment processing
+          </div>
+        </form>
+      </div>
+      <button class="btn-action cancel" (click)="initiatePayment()">
+        <i class="fas fa-check me-2"></i>Make payment
+      </button>
+      &nbsp;&nbsp;
+      <button class="btn-action cancel" (click)="checkPaymentStatus()">
+        <i class="fas fa-check me-2"></i>Verify payment
+      </button>
+
+      <!-- payment modal -->
+      <!-- <ng-template #content1 let-c="close" let-d="dismiss">
+        <div class="modal-body">
+          <p class="m-0">Make payment of KES {{ errand.budget_amount }}</p>
+        </div>
+        <form [formGroup]="paymentForm" class="p-3">
+          <label for="phoneNumber" class="form-label"
+            >Phone Number for Payment <span class="required">*</span></label
+          >
+          <input
+            type="tel"
+            class="form-control"
+            id="phoneNumber"
+            placeholder="e.g., 254712345678"
+            formControlName="phoneNumber"
+          />
+          <div class="info-text">
+            Required for mobile money payment processing
+          </div>
+        </form>
+        <div class="d-flex justify-content-between p-2">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="c('cancel')"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="initiatePayment(); c('save')"
+          >
+            Submit
+          </button>
+        </div>
+      </ng-template> -->
+
+      <!-- payment modal end -->
     </div>
     <div class="page-header">
       <div class="d-flex justify-content-between align-items-center">
@@ -168,7 +234,11 @@
         <!-- Action Buttons -->
         <div
           class="action-buttons"
-          *ngIf="user_type === 'business' && errand.status === 'pending' && errand?.paid"
+          *ngIf="
+            user_type === 'business' &&
+            errand.status === 'pending' &&
+            errand?.paid
+          "
         >
           <button
             class="btn-action accept"
@@ -199,29 +269,33 @@
 
         <div
           class="action-buttons"
-          *ngIf="user_type === 'client' && errand.status === 'pending'"
+          *ngIf="user_type === 'client' && errand.status === 'unpaid'"
         >
           <button
             class="btn-action cancel"
-            (click)="acceptRejectErrand('cancelled', content)"
+            (click)="acceptRejectErrand('cancel', content)"
           >
             <i class="fas fa-check me-2"></i>Cancel
           </button>
-          <button
-            class="btn-action cancel"
-            (click)="editErrand()"
-          >
+          <button class="btn-action cancel" (click)="editErrand()">
             <i class="fas fa-check me-2"></i>Edit Errand
-          </button>
-
-          <button
-            class="btn-action cancel"
-            (click)="acceptRejectErrand('cancelled', content)"
-          >
-            <i class="fas fa-check me-2"></i>Make payment
           </button>
         </div>
 
+        <div class="action-buttons" *ngIf="canReleaseEscrow()">
+          <button
+            class="btn-action complete"
+            [disabled]="isReleasingEscrow"
+            (click)="releaseEscrowPayment()"
+          >
+            <i class="fas fa-money-bill-transfer me-2"></i>
+            {{ isReleasingEscrow ? "Releasing..." : "Release Escrow Funds" }}
+          </button>
+          <p class="mb-0">
+            Funds are auto-released to the business wallet 4 hours after
+            completion if you do not release manually.
+          </p>
+        </div>
 
         <ng-template #content let-c="close" let-d="dismiss">
           <div class="modal-body">
