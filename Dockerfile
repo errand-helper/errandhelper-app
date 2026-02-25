@@ -4,7 +4,7 @@ WORKDIR /app
 # COPY package*.json ./
 COPY package.json package-lock.json ./
 
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 # RUN npm install -g @angular/cli
 COPY . .
