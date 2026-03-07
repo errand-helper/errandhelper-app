@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-RUN npm ci --legacy-peer-deps
+RUN npm ci --legacy-peer-deps || npm install --legacy-peer-deps
 
 
 COPY . .
@@ -16,5 +16,4 @@ COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist/errandhelper-app/browser /usr/share/nginx/html
 
 EXPOSE 80
-
 
